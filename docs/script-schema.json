@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OsonQonun video-ssenariy",
+  "description": "AI yozadigan va pleyer o'ynaydigan multfilm ssenariysi. Bitta ssenariy = bitta 1-3 daqiqalik video.",
+  "type": "object",
+  "required": ["title", "scenes"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string", "description": "Video nomi" },
+    "level": { "enum": ["bola", "fuqaro", "talaba"], "description": "Tushuntirish darajasi" },
+    "subject": { "type": "string", "description": "Fan yoki soha, masalan: Mehnat huquqi" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Hujjat nomi, masalan: O'zbekiston Respublikasi Konstitutsiyasi" },
+        "url": { "type": "string", "description": "lex.uz dagi rasmiy manba" }
+      }
+    },
+    "verified": { "type": "boolean", "description": "Yurist tekshirgan bo'lsa true -> 'Tekshirilgan' belgisi" },
+    "summary": { "type": "array", "items": { "type": "string" }, "description": "Video ostidagi qisqa konspekt" },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["background", "lines"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string", "description": "Sahna nomi: Hayotiy vaziyat, Savol, Tushuntirish, Ehtiyot bo'ling!, Endi nima qilish kerak?" },
+          "background": { "enum": ["mahalla", "bozor", "idora", "sud", "universitet"] },
+          "characters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id"],
+              "properties": {
+                "id": { "enum": ["afandi", "aqlvoy", "qoshni", "ishberuvchi", "sotuvchi", "hokim", "sudya", "talabaqiz", "xodima", "inspektor", "bola"] },
+                "position": { "enum": ["left", "center", "right"] },
+                "enter": { "enum": ["slide", "pop", "fade"] }
+              }
+            }
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["speaker", "text"],
+              "properties": {
+                "speaker": { "type": "string", "description": "characters[].id dan biri" },
+                "text": { "type": "string", "description": "Replika (1-2 gap)" },
+                "emotion": { "enum": ["neutral", "happy", "worried", "surprised", "serious"] },
+                "gesture": { "enum": ["none", "point", "wave", "explain", "think", "warn", "shrug"] }
+              }
+            }
+          },
+          "onScreenText": {
+            "type": "object",
+            "description": "Ekranda chiqadigan matn: modda raqami, asosiy so'z, bosqich nomi yoki qadamlar",
+            "properties": {
+              "kind": { "enum": ["title", "article", "keyword", "warning", "steps", "stage"] },
+              "label": { "type": "string", "description": "Masalan: Konstitutsiya, 31-modda" },
+              "text": { "type": "string" },
+              "items": { "type": "array", "items": { "type": "string" }, "description": "kind=steps bo'lsa qadamlar" }
+            }
+          },
+          "articleRef": {
+            "type": "object",
+            "properties": {
+              "act": { "type": "string" },
+              "article": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          },
+          "stop": { "type": "boolean", "description": "Kazus: shu sahnadan oldin pleyer to'xtaydi va 'Siz qanday hal qilardingiz?' chiqadi" },
+          "duration": { "type": "number", "description": "Replikasiz sahna uchun soniya" }
+        }
+      }
+    }
+  }
+}
