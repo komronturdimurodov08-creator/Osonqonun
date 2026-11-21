@@ -30,8 +30,20 @@ function App() {
     const root = document.documentElement;
     root.classList.toggle("big-font", !!store.settings.bigFont);
     root.classList.toggle("hc", !!store.settings.contrast);
-    Translit.setMode(store.settings.alphabet, document.body);
-  }, [store.settings.bigFont, store.settings.contrast, store.settings.alphabet]);
+    I18n.setLang(curLang(store), document.body);
+  }, [store.settings.bigFont, store.settings.contrast, store.settings.lang, store.settings.alphabet]);
+  // Til menyusi: tashqariga bosilganda yoki Esc bilan yopiladi
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef(null);
+  useEffect(() => {
+    if (!langOpen) return;
+    const onDoc = (e) => { if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false); };
+    const onKey = (e) => { if (e.key === "Escape") setLangOpen(false); };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDoc); document.removeEventListener("keydown", onKey); };
+  }, [langOpen]);
+  const chooseLang = (id) => { Store.set((s) => ({ ...s, settings: { ...s.settings, lang: id, alphabet: id === "uzc" ? "cyr" : "lat" } })); setLangOpen(false); };
   const go = (r, mode) => {
     const target = mode === "savol" ? "savol" : r;
     if (location.hash.replace("#", "") === target) { setRoute(target); window.scrollTo(0, 0); }
@@ -44,7 +56,6 @@ function App() {
   const tab = TAB_OF[route];
   const nav = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Darslar va kazuslar"], ["profile", "Profil"]];
   const CRUMB = { make: "Multfilm yasash", savol: "Anonim savol", learn: "Darslar va kazuslar", lessons: "Video darslar", recap: "Takrorlash", roadmap: "Huquqlar yo'l xaritasi", profile: "Profil" };
-  const toggleAlphabet = () => Store.set((s) => ({ ...s, settings: { ...s.settings, alphabet: s.settings.alphabet === "lat" ? "cyr" : "lat" } }));
   const toggleBig = () => Store.set((s) => ({ ...s, settings: { ...s.settings, bigFont: !s.settings.bigFont } }));
   const toggleHc = () => Store.set((s) => ({ ...s, settings: { ...s.settings, contrast: !s.settings.contrast } }));
   const side = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Kazus-multfilmlar"], ["lessons", "Video darslar"], ["roadmap", "Huquqlar yo'l xaritasi"], ["savol", "Anonim savol"], ["profile", "Profil"]];
@@ -53,7 +64,7 @@ function App() {
       <LawBackground />
       <aside className="sidebar" aria-label="Bo'limlar">
         <a className="logo" href="#home" aria-label="OsonQonun bosh sahifa">
-          <svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#fff" /><path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#f2b134" /><circle cx="20" cy="20" r="4" fill="#0b5fd9" /></svg>
+          <img className="logo-img" src={LOGO_SRC} alt="" width="48" height="48" />
           <span className="notr">Oson<b>Qonun</b></span>
         </a>
         <p className="side-label">Xizmatlar</p>
@@ -73,25 +84,39 @@ function App() {
       <div className="content">
         <header className="topbar">
           <a className="mob-logo" href="#home" aria-label="OsonQonun bosh sahifa">
-            <svg viewBox="0 0 40 40" width="36" height="36" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#0b5fd9" /><path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#f2b134" /><circle cx="20" cy="20" r="4" fill="#fff" /></svg>
+            <img className="logo-img" src={LOGO_SRC} alt="" width="38" height="38" />
             <span className="notr">Oson<b>Qonun</b></span>
           </a>
           <div className="portal-title">Huquqiy ta'lim va targ'ibot<br />interaktiv platformasi</div>
           <div className="top-actions">
-            <button className="round-act" onClick={toggleAlphabet} aria-label="Alifboni almashtirish" title="Alifboni almashtirish: lotin / kirill">
-              <i className="ra-ico ra-emblem" aria-hidden="true">
-                <svg viewBox="0 0 100 100" width="52" height="52">
-                  <circle cx="47" cy="47" r="42" fill="currentColor" />
-                  <path d="M64 80 84 88a2.5 2.5 0 0 0 3.2-3.4L78 65z" fill="currentColor" />
-                  <g fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round">
-                    <circle cx="47" cy="47" r="25" />
-                    <ellipse cx="47" cy="47" rx="10" ry="25" />
-                    <path d="M22 47h50M27 33q20 9 40 0M27 61q20-9 40 0" />
-                  </g>
-                </svg>
-              </i>
-              <span className="ra-txt"><b>Alifbo</b><small className="notr">{store.settings.alphabet === "lat" ? "Lotin → Кирилл" : "Кирилл → Lotin"}</small></span>
-            </button>
+            <div className="lang-wrap" ref={langRef}>
+              <button className="round-act" onClick={() => setLangOpen((o) => !o)} aria-haspopup="menu" aria-expanded={langOpen} aria-label="Tilni tanlash" title="Tilni tanlash">
+                <i className="ra-ico ra-emblem" aria-hidden="true">
+                  <svg viewBox="0 0 100 100" width="52" height="52">
+                    <circle cx="47" cy="47" r="42" fill="currentColor" />
+                    <path d="M64 80 84 88a2.5 2.5 0 0 0 3.2-3.4L78 65z" fill="currentColor" />
+                    <g fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round">
+                      <circle cx="47" cy="47" r="25" />
+                      <ellipse cx="47" cy="47" rx="10" ry="25" />
+                      <path d="M22 47h50M27 33q20 9 40 0M27 61q20-9 40 0" />
+                    </g>
+                  </svg>
+                </i>
+                <span className="ra-txt"><b>Til</b><small className="notr">{LANGS.find((l) => l.id === curLang(store)).short} · {LANGS.find((l) => l.id === curLang(store)).name}</small></span>
+              </button>
+              {langOpen && (
+                <ul className="lang-menu notr" role="menu">
+                  {LANGS.map((l) => (
+                    <li key={l.id} role="none">
+                      <button role="menuitemradio" aria-checked={curLang(store) === l.id} className={cx("lang-item", curLang(store) === l.id && "on")} onClick={() => chooseLang(l.id)} lang={l.html}>
+                        <b>{l.short}</b><span>{l.name}</span>
+                        {curLang(store) === l.id && <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5 10 17l9-10" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <button className={cx("round-act", store.settings.bigFont && "on")} onClick={toggleBig} aria-pressed={!!store.settings.bigFont}>
               <i className="ra-ico ra-blue" aria-hidden="true">A+</i>
               <span className="ra-txt"><b>Shrift</b><small>Kattaroq matn</small></span>

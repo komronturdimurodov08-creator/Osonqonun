@@ -487,3 +487,20 @@ textarea:focus,input:focus{border-color:var(--lapis);outline:none;box-shadow:0 0
 }
 @media (prefers-reduced-motion:reduce){.topic-ico{animation:none!important}}
 .hc .welcome{background:#000}.hc .sidebar{background:#000}.hc .topic{background:#000!important}
+
+/* ---------- Til menyusi ---------- */
+.lang-wrap{position:relative}
+.lang-menu{position:absolute;top:calc(100% + 8px);left:0;z-index:60;min-width:220px;margin:0;padding:6px;list-style:none;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(15,45,99,.16);animation:fadeIn .15s ease}
+.lang-item{display:flex;align-items:center;gap:.8rem;width:100%;min-height:46px;padding:.4rem .8rem;border:0;border-radius:10px;background:transparent;color:var(--ink);cursor:pointer;text-align:left;font-size:.98rem}
+.lang-item b{display:inline-grid;place-items:center;min-width:46px;height:30px;border-radius:8px;background:var(--soft);color:var(--blue);font-weight:900;font-size:.85rem;letter-spacing:.03em}
+.lang-item span{flex:1;font-weight:700}
+.lang-item svg{color:var(--blue)}
+.lang-item:hover{background:var(--soft)}
+.lang-item.on{background:var(--soft)}.lang-item.on b{background:var(--blue);color:#fff}
+@media (max-width:900px){.lang-menu{left:auto;right:0}}
+
+/* ---------- Logotip (tarozi + ochiq kitob) ---------- */
+.logo-img{display:block;flex:none;border-radius:12px;object-fit:cover}
+.sidebar .logo-img{width:48px;height:48px;box-shadow:0 0 0 2px rgba(255,255,255,.85),0 6px 16px rgba(4,30,90,.35)}
+.mob-logo .logo-img{width:38px;height:38px;border-radius:10px}

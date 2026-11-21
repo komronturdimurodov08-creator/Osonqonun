@@ -49,7 +49,7 @@ with sync_playwright() as p:
     pg.screenshot(path=out + "11-roadmap.png", full_page=True)
     # profile + cyrillic
     pg.goto(url + "#profile"); time.sleep(0.4)
-    pg.click("text=Кирилл"); time.sleep(0.5)
+    pg.click("text=УЗБ · Ўзбекча"); time.sleep(0.5)
     pg.screenshot(path=out + "12-profile-cyr.png", full_page=True)
     # mobile
     m = page(390, 844)

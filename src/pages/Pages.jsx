@@ -38,7 +38,7 @@ function HomePage({ go }) {
       <section className="weekly">
         <div className="weekly-text">
           <span className="eyebrow">Haftaning multfilmi · Mehnat huquqi</span>
-          <h2>Qonunni <em>multfilm</em> tushuntiradi</h2>
+          <h2>Qonunni multfilm tushuntiradi</h2>
           <p>Afandi va Aqlvoy har qanday hujjat, modda yoki kazusni 1–3 daqiqalik multfilmga aylantiradi — subtitr, ovoz va lex.uz manbasi bilan.</p>
           <div className="hero-tags"><span>1–3 daqiqa</span><span>Ovoz va subtitr</span><span>lex.uz manbasi</span></div>
         </div>
@@ -327,10 +327,9 @@ function ProfilePage() {
       <section className="panel settings">
         <h3>Qulaylik</h3>
         <div className="field">
-          <span>Alifbo</span>
-          <div className="seg">
-            <button className={cx(store.settings.alphabet === "lat" && "on")} onClick={() => set("alphabet", "lat")}>Lotin</button>
-            <button className={cx(store.settings.alphabet === "cyr" && "on")} onClick={() => set("alphabet", "cyr")}>Кирилл</button>
+          <span>Til</span>
+          <div className="seg notr">
+            {LANGS.map((l) => <button key={l.id} className={cx(curLang(store) === l.id && "on")} aria-pressed={curLang(store) === l.id} onClick={() => set("lang", l.id)} lang={l.html}>{l.short} · {l.name}</button>)}
           </div>
         </div>
         <Toggle k="bigFont" label="Katta shrift" desc="Barcha matnlar kattaroq" />

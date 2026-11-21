@@ -20,7 +20,7 @@ const defaultState = {
   threshold: 70,        // o'qituvchi belgilagan o'tish foizi
   saved: [],            // offline saqlangan ssenariylar
   externalVideos: {},   // scriptId -> { url, provider } — NotebookLM/YouTube batafsil videolari
-  settings: { alphabet: "lat", bigFont: false, contrast: false, voice: true, voiceEngine: "auto", maleVoice: "", femaleVoice: "" }
+  settings: { lang: "", alphabet: "lat", bigFont: false, contrast: false, voice: true, voiceEngine: "auto", maleVoice: "", femaleVoice: "" }
 };
 const Store = (() => {
   let state = defaultState;
@@ -177,7 +177,7 @@ const Speech = (() => {
   let all = [];
   const FEM = /(female|woman|madina|zira|seda|yelda|emel|filiz|milena|irina|svetlana|alena|daria|dariya|ekaterina|aigul|aigerim|samantha|karen|tessa|victoria|anna|ayşe|zeynep|aida|amira|natasha|katya|elena|lilya|sabina|nigora)/i;
   const MALE = /(\bmale|\bman\b|sardor|ahmet|tolga|dmitri|dmitry|pavel|yuri|daulet|erkek|maxim|aleksandr|alexander|artem|daniel|cem|emre)/i;
-  const langScore = (v) => { const l = (v.lang || "").toLowerCase(); return l.startsWith("uz") ? 100 : l.startsWith("tr") ? 60 : l.startsWith("kk") ? 50 : l.startsWith("ky") ? 45 : l.startsWith("ru") ? 40 : 0; };
+  const langScore = (v) => { const l = (v.lang || "").toLowerCase(); const sl = typeof I18n !== "undefined" ? I18n.speechLang() : "uz"; if (sl !== "uz") return l.startsWith(sl) ? 100 : 0; return l.startsWith("uz") ? 100 : l.startsWith("tr") ? 60 : l.startsWith("kk") ? 50 : l.startsWith("ky") ? 45 : l.startsWith("ru") ? 40 : 0; };
   const quality = (v) => (/natural|neural|online|premium|enhanced/i.test(v.name) ? 25 : 0) + (/google/i.test(v.name) ? 10 : 0);
   const score = (v) => langScore(v) + quality(v);
   function load() { if (ok) all = speechSynthesis.getVoices() || []; }
@@ -200,10 +200,13 @@ const Speech = (() => {
     try {
       speechSynthesis.cancel();
       const v = pick(who);
-      const u = new SpeechSynthesisUtterance(adaptForLang(UzNum.speakable(text), v ? v.lang : "uz"));
+      const sl = typeof I18n !== "undefined" ? I18n.speechLang() : "uz";
+      // RUS/ENG: matn tarjima qilinib, o'sha tildagi ovoz bilan o'qiladi
+      const said = sl === "uz" ? adaptForLang(UzNum.speakable(text), v ? v.lang : "uz") : I18n.t(text);
+      const u = new SpeechSynthesisUtterance(said);
       const p = VOICE_PROFILE[who] || { pitch: 1, rate: 1 };
       const femaleVoiceOnFemale = FEMALE_CHARS[who] && v && FEM.test(v.name);
-      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "uz-UZ";
+      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = sl === "ru" ? "ru-RU" : sl === "en" ? "en-US" : "uz-UZ";
       u.pitch = femaleVoiceOnFemale ? 1 : p.pitch;
       u.rate = Math.max(0.5, Math.min(2, p.rate * speed));
       let done = false;
@@ -216,6 +219,7 @@ const Speech = (() => {
     ok, speak, pick, usable,
     voices: () => all,
     hasUzbek: () => all.some((v) => (v.lang || "").toLowerCase().startsWith("uz")),
+    hasLang: (l) => all.some((v) => (v.lang || "").toLowerCase().startsWith(l)),
     cancel() { if (ok) try { speechSynthesis.cancel(); } catch (e) {} },
     voiceName: (who) => { const v = pick(who || "afandi"); return v ? v.name + " (" + v.lang + ")" : "standart"; }
   };
@@ -245,17 +249,18 @@ const Voice = (() => {
     if (pref === "browser") return "browser";
     const t = await claude();
     if (pref === "claude") return t ? "claude" : "browser";
-    // avto: brauzerda tabiiy o'zbekcha ovoz bo'lsa — u, aks holda Claude ovozi
-    if (Speech.hasUzbek()) return "browser";
+    // avto: brauzerda shu tilda tabiiy ovoz bo'lsa — u, aks holda Claude ovozi
+    const sl = I18n.speechLang();
+    if (sl !== "uz" ? Speech.hasLang(sl) : Speech.hasUzbek()) return "browser";
     return t ? "claude" : "browser";
   }
   const lineFor = (text, who, id) => ({
-    text: lang === "tr" ? adaptForLang(UzNum.speakable(text), "tr") : UzNum.speakable(text),
+    text: I18n.speechLang() !== "uz" ? I18n.t(text) : lang === "tr" ? adaptForLang(UzNum.speakable(text), "tr") : UzNum.speakable(text),
     voice: CLAUDE_VOICE[who] || "buttery", id: String(id)
   });
   return {
     claude, engine, lineFor,
-    lang: () => lang,
+    lang: () => (I18n.speechLang() !== "uz" ? I18n.speechLang() : lang),
     markBroken() { broken = true; },
     clampRate: (r) => Math.max(0.7, Math.min(1.5, r))
   };

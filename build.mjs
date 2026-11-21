@@ -11,7 +11,12 @@ const esbuild = require("esbuild");
 
 // Tartib muhim: fayllar bitta umumiy ko'lamda ketma-ket ulanadi
 const ORDER = [
+  "assets/logo.js",
   "lib/core.js",
+  "data/i18n-ui.js",
+  "data/i18n-lessons.js",
+  "data/i18n-cases.js",
+  "lib/i18n.js",
   "components/Character.jsx",
   "components/Backgrounds.jsx",
   "components/LawBackground.jsx",
@@ -59,6 +64,7 @@ const html = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="OsonQonun — qonunlarni multfilm orqali tushuntiruvchi platforma">
 <title>OsonQonun</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,${readFileSync(join(root, "src/assets/logo-64.png")).toString("base64")}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">

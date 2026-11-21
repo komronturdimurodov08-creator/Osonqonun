@@ -35,7 +35,8 @@ function SceneRenderer({ scene, line, frac, sceneProgress, talking, playing, ver
   const pos = vertical ? POS.v : POS.h;
   const speaker = line ? line.speaker : null;
   const sp = scene.characters.find((c) => c.id === speaker);
-  const shown = line ? line.text.slice(0, Math.ceil(line.text.length * Math.min(1, frac * 1.7 + 0.05))) : "";
+  const said = line ? I18n.t(line.text) : ""; // RUS/ENG: avval tarjima, keyin harfma-harf chiqarish
+  const shown = said.slice(0, Math.ceil(said.length * Math.min(1, frac * 1.7 + 0.05)));
   const x = sp ? pos[sp.position] : 50;
   let bubbleStyle = {}, tail = "c";
   if (vertical || !sp || sp.position === "center") bubbleStyle = { left: "50%", transform: "translateX(-50%)" };
