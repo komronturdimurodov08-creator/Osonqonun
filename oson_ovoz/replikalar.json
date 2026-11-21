@@ -1,0 +1,1292 @@
+{
+  "scripts": [
+    "weekly-sinov",
+    "case-tintuv",
+    "case-sinov",
+    "case-tatil",
+    "les-1",
+    "les-2",
+    "les-3",
+    "les-4",
+    "les-5",
+    "recap-konst",
+    "right-yashash-huquqi",
+    "right-bola-huquqlari-himoyada",
+    "right-ta-lim-olish-huquqi",
+    "right-qisman-muomala-layoqati",
+    "right-ota-ona-roziligi-bilan-ishlash",
+    "right-mehnatga-oid-layoqat",
+    "right-javobgarlik-ham-boshlanadi",
+    "right-saylash-huquqi",
+    "right-nikoh-yoshi",
+    "right-to-liq-muomala-layoqati",
+    "right-deputatlikka-saylanish",
+    "right-prezidentlikka-nomzod"
+  ],
+  "lines": [
+    {
+      "script": "weekly-sinov",
+      "scene": 1,
+      "speaker": "ishberuvchi",
+      "emotion": "happy",
+      "text": "Xush kelibsiz, Malika! Sizni ishga olamiz, faqat olti oylik sinov muddati bilan.",
+      "speakable": "Xush kelibsiz, Malika! Sizni ishga olamiz, faqat olti oylik sinov muddati bilan."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 1,
+      "speaker": "xodima",
+      "emotion": "worried",
+      "text": "Olti oy? Lekin men homiladorman, buni oldin aytgan edim-ku.",
+      "speakable": "Olti oy? Lekin men homiladorman, buni oldin aytgan edim-ku."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 1,
+      "speaker": "ishberuvchi",
+      "emotion": "serious",
+      "text": "Bizda qoida shunaqa. Rozi bo'lmasangiz, boshqa joy qidiring.",
+      "speakable": "Bizda qoida shunaqa. Rozi bo'lmasangiz, boshqa joy qidiring."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 2,
+      "speaker": "aqlvoy",
+      "emotion": "surprised",
+      "text": "Afandi bobo, ish beruvchi sinov muddatini xohlagancha belgilay oladimi?",
+      "speakable": "Afandi bobo, ish beruvchi sinov muddatini xohlagancha belgilay oladimi?"
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Yo'q, bolam. Mehnat kodeksida buning chegarasi bor. Keling, uchta qoidani o'rganamiz.",
+      "speakable": "Yo'q, bolam. Mehnat kodeksida buning chegarasi bor. Keling, uchta qoidani o'rganamiz."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Birinchi qoida: dastlabki sinov odatda uch oydan oshmaydi.",
+      "speakable": "Birinchi qoida: dastlabki sinov odatda uch oydan oshmaydi."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Faqat tashkilot rahbari, uning o'rinbosari va bosh buxgalter uchun olti oygacha bo'lishi mumkin.",
+      "speakable": "Faqat tashkilot rahbari, uning o'rinbosari va bosh buxgalter uchun olti oygacha bo'lishi mumkin."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 3,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Demak, oddiy xodimga olti oy belgilash noto'g'ri ekan.",
+      "speakable": "Demak, oddiy xodimga olti oy belgilash noto'g'ri ekan."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Ikkinchi qoida: ayrim odamlarga sinov umuman belgilanmaydi.",
+      "speakable": "Ikkinchi qoida: ayrim odamlarga sinov umuman belgilanmaydi."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Masalan, homilador ayolga, uch yoshga to'lmagan bolasi bor ayolga va o'n sakkiz yoshga to'lmaganlarga.",
+      "speakable": "Masalan, homilador ayolga, uch yoshga to'lmagan bolasi bor ayolga va o'n sakkiz yoshga to'lmaganlarga."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "surprised",
+      "text": "Unda Malika opaga sinov belgilashning o'zi qonunga zid!",
+      "speakable": "Unda Malika opaga sinov belgilashning o'zi qonunga zid!"
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Uchinchi qoida: sinov sharti mehnat shartnomasida yozilishi kerak. Yozilmagan bo'lsa, siz sinovsiz qabul qilingansiz.",
+      "speakable": "Uchinchi qoida: sinov sharti mehnat shartnomasida yozilishi kerak. Yozilmagan bo'lsa, siz sinovsiz qabul qilingansiz."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Sinov qoniqarsiz bo'lsa ham, ish beruvchi uch kun oldin yozma ogohlantirishi shart.",
+      "speakable": "Sinov qoniqarsiz bo'lsa ham, ish beruvchi uch kun oldin yozma ogohlantirishi shart."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 5,
+      "speaker": "xodima",
+      "emotion": "worried",
+      "text": "Homilador xodimani ish beruvchi o'z tashabbusi bilan bo'shata oladimi?",
+      "speakable": "Homilador xodimani ish beruvchi o'z tashabbusi bilan bo'shata oladimi?"
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Yo'q. 408-moddaga ko'ra bu taqiqlangan, tashkilot tugatilgan holat bundan mustasno.",
+      "speakable": "Yo'q. to'rt yuz sakkizinchi moddaga ko'ra bu taqiqlangan, tashkilot tugatilgan holat bundan mustasno."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 6,
+      "speaker": "aqlvoy",
+      "emotion": "neutral",
+      "text": "Xo'sh, endi Malika opa nima qilishi kerak?",
+      "speakable": "Xo'sh, endi Malika opa nima qilishi kerak?"
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Shartnomadagi sinov bandini o'qiydi, muddatni tekshiradi va yozma e'tiroz bildiradi.",
+      "speakable": "Shartnomadagi sinov bandini o'qiydi, muddatni tekshiradi va yozma e'tiroz bildiradi."
+    },
+    {
+      "script": "weekly-sinov",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Kelishilmasa, davlat mehnat inspeksiyasiga yoki sudga murojaat qiladi. Qonunni bilgan haqini oladi!",
+      "speakable": "Kelishilmasa, davlat mehnat inspeksiyasiga yoki sudga murojaat qiladi. Qonunni bilgan haqini oladi!"
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 1,
+      "speaker": "inspektor",
+      "emotion": "serious",
+      "text": "Botir aka, qo'shnilaringizdan shikoyat tushdi. Hozir uyingizda tintuv o'tkazamiz.",
+      "speakable": "Botir aka, qo'shnilaringizdan shikoyat tushdi. Hozir uyingizda tintuv o'tkazamiz."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 1,
+      "speaker": "qoshni",
+      "emotion": "surprised",
+      "text": "Sud qarori bormi? Ko'rsating-chi.",
+      "speakable": "Sud qarori bormi? Ko'rsating-chi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 1,
+      "speaker": "inspektor",
+      "emotion": "neutral",
+      "text": "Qaror shart emas, mahalla raisi og'zaki ruxsat berdi.",
+      "speakable": "Qaror shart emas, mahalla raisi og'zaki ruxsat berdi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 1,
+      "speaker": "qoshni",
+      "emotion": "worried",
+      "text": "Men bunga rozi emasman!",
+      "speakable": "Men bunga rozi emasman!"
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 2,
+      "speaker": "inspektor",
+      "emotion": "serious",
+      "text": "Rozi bo'lmasangiz ham kiramiz. Mana bu hujjatlarni olib ketamiz.",
+      "speakable": "Rozi bo'lmasangiz ham kiramiz. Mana bu hujjatlarni olib ketamiz."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 2,
+      "speaker": "qoshni",
+      "emotion": "worried",
+      "text": "Uyimga ruxsatsiz kirishdi, qog'ozlarimni olib ketishdi. Endi nima qilaman?",
+      "speakable": "Uyimga ruxsatsiz kirishdi, qog'ozlarimni olib ketishdi. Endi nima qilaman?"
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 3,
+      "speaker": "aqlvoy",
+      "emotion": "serious",
+      "text": "To'xtang! Endi navbat sizda. Inspektorning harakati qonuniymi va Botir aka huquqini qanday himoya qiladi?",
+      "speakable": "To'xtang! Endi navbat sizda. Inspektorning harakati qonuniymi va Botir aka huquqini qanday himoya qiladi?"
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "neutral",
+      "text": "Faktlar: Botir akaning uyida, uning roziligisiz tintuv o'tkazildi.",
+      "speakable": "Faktlar: Botir akaning uyida, uning roziligisiz tintuv o'tkazildi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Sud qarori yo'q edi, faqat mahalla raisining og'zaki ruxsati bor edi. Hujjatlar ham olib ketildi.",
+      "speakable": "Sud qarori yo'q edi, faqat mahalla raisining og'zaki ruxsati bor edi. Hujjatlar ham olib ketildi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Masala bitta: sud qarorisiz, egasining xohishiga qarshi uyda tintuv o'tkazish mumkinmi?",
+      "speakable": "Masala bitta: sud qarorisiz, egasining xohishiga qarshi uyda tintuv o'tkazish mumkinmi?"
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Konstitutsiyaning 31-moddasi: har kim uy-joy daxlsizligi huquqiga ega.",
+      "speakable": "Konstitutsiyaning o'ttiz birinchi moddasi: har kim uy-joy daxlsizligi huquqiga ega."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Uy-joyda tintuv faqat qonunga muvofiq va sudning qaroriga asosan o'tkaziladi.",
+      "speakable": "Uy-joyda tintuv faqat qonunga muvofiq va sudning qaroriga asosan o'tkaziladi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 7,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Mahalla raisi sud emas, qo'shnining shikoyati ham sud qarori emas.",
+      "speakable": "Mahalla raisi sud emas, qo'shnining shikoyati ham sud qarori emas."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 7,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "To'g'ri. Qonunda alohida holatlar bo'lishi mumkin, lekin bu voqeada ular yo'q. Demak, 31-modda talabi bajarilmagan.",
+      "speakable": "To'g'ri. Qonunda alohida holatlar bo'lishi mumkin, lekin bu voqeada ular yo'q. Demak, o'ttiz birinchi modda talabi bajarilmagan."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 8,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Xulosa: tintuv noqonuniy. 55-moddaga ko'ra Botir aka huquqini sud orqali himoya qiladi.",
+      "speakable": "Xulosa: tintuv noqonuniy. ellik beshinchi moddaga ko'ra Botir aka huquqini sud orqali himoya qiladi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 8,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "29-moddaga ko'ra advokat yordamidan foydalanadi va hujjatlarini qaytarishni talab qiladi.",
+      "speakable": "yigirma to'qqizinchi moddaga ko'ra advokat yordamidan foydalanadi va hujjatlarini qaytarishni talab qiladi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 9,
+      "speaker": "talabaqiz",
+      "emotion": "worried",
+      "text": "Talabalar odatda qayerda adashadi?",
+      "speakable": "Talabalar odatda qayerda adashadi?"
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Birinchidan, rais yoki boshqa mansabdorning ruxsatini yetarli deb o'ylashadi. Konstitutsiya sud qarorini talab qiladi.",
+      "speakable": "Birinchidan, rais yoki boshqa mansabdorning ruxsatini yetarli deb o'ylashadi. Konstitutsiya sud qarorini talab qiladi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Ikkinchidan, 31-moddani faqat shaxsiy hayot deb tor tushunib, uy-joy daxlsizligini ko'rmay qolishadi.",
+      "speakable": "Ikkinchidan, o'ttiz birinchi moddani faqat shaxsiy hayot deb tor tushunib, uy-joy daxlsizligini ko'rmay qolishadi."
+    },
+    {
+      "script": "case-tintuv",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Uchinchidan, xulosada himoya yo'lini - sud va advokatni - ko'rsatishni unutishadi.",
+      "speakable": "Uchinchidan, xulosada himoya yo'lini, sud va advokatni, ko'rsatishni unutishadi."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 1,
+      "speaker": "xodima",
+      "emotion": "neutral",
+      "text": "Men homiladorman, buni ishga kirishda aytgan edim.",
+      "speakable": "Men homiladorman, buni ishga kirishda aytgan edim."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 1,
+      "speaker": "ishberuvchi",
+      "emotion": "neutral",
+      "text": "Mayli, shartnomaga to'rt oylik sinov muddatini yozamiz. Imzolang.",
+      "speakable": "Mayli, shartnomaga to'rt oylik sinov muddatini yozamiz. Imzolang."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 2,
+      "speaker": "ishberuvchi",
+      "emotion": "serious",
+      "text": "Malika, siz sinovdan o'tmadingiz. Mana buyruq, ertadan ishga kelmang.",
+      "speakable": "Malika, siz sinovdan o'tmadingiz. Mana buyruq, ertadan ishga kelmang."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 2,
+      "speaker": "xodima",
+      "emotion": "worried",
+      "text": "Axir shartnomani imzolagan edim... Endi hech narsa qilib bo'lmaydimi?",
+      "speakable": "Axir shartnomani imzolagan edim. Endi hech narsa qilib bo'lmaydimi?"
+    },
+    {
+      "script": "case-sinov",
+      "scene": 3,
+      "speaker": "aqlvoy",
+      "emotion": "serious",
+      "text": "To'xtang! Endi navbat sizda. Malikani sinov natijasi bilan bo'shatish qonuniymi?",
+      "speakable": "To'xtang! Endi navbat sizda. Malikani sinov natijasi bilan bo'shatish qonuniymi?"
+    },
+    {
+      "script": "case-sinov",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "neutral",
+      "text": "Faktlar: Malika homilador, ish beruvchi buni bilgan.",
+      "speakable": "Faktlar: Malika homilador, ish beruvchi buni bilgan."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Shartnomaga to'rt oylik sinov yozilgan, ikki oydan so'ng «sinovdan o'tmadi» deb bo'shatilgan.",
+      "speakable": "Shartnomaga to'rt oylik sinov yozilgan, ikki oydan so'ng sinovdan o'tmadi deb bo'shatilgan."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Ikki masala bor: homilador ayolga sinov belgilash mumkinmi va uni ish beruvchi tashabbusi bilan bo'shatish mumkinmi?",
+      "speakable": "Ikki masala bor: homilador ayolga sinov belgilash mumkinmi va uni ish beruvchi tashabbusi bilan bo'shatish mumkinmi?"
+    },
+    {
+      "script": "case-sinov",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "129-modda: homilador ayolga dastlabki sinov belgilanmaydi. 130-modda: sinov odatda uch oydan oshmaydi.",
+      "speakable": "bir yuz yigirma to'qqizinchi modda: homilador ayolga dastlabki sinov belgilanmaydi. bir yuz o'ttizinchi modda: sinov odatda uch oydan oshmaydi."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "408-modda: homilador ayol bilan mehnat shartnomasini ish beruvchi tashabbusi bilan bekor qilish taqiqlanadi.",
+      "speakable": "to'rt yuz sakkizinchi modda: homilador ayol bilan mehnat shartnomasini ish beruvchi tashabbusi bilan bekor qilish taqiqlanadi."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 7,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Imzo qo'yilgan bo'lsa ham, qonunga zid shart amal qilmaydi. Demak, Malika sinovsiz qabul qilingan.",
+      "speakable": "Imzo qo'yilgan bo'lsa ham, qonunga zid shart amal qilmaydi. Demak, Malika sinovsiz qabul qilingan."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 7,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Sinov natijasi bahonasida bo'shatish ham ish beruvchi tashabbusi. 408-modda buni taqiqlaydi. Ustiga-ustak, to'rt oy - uch oydan ko'p.",
+      "speakable": "Sinov natijasi bahonasida bo'shatish ham ish beruvchi tashabbusi. to'rt yuz sakkizinchi modda buni taqiqlaydi. Ustiga-ustak, to'rt oy, uch oydan ko'p."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 8,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Xulosa: bo'shatish noqonuniy. Malika ishga tiklashni so'rab sudga yoki mehnat inspeksiyasiga murojaat qiladi.",
+      "speakable": "Xulosa: bo'shatish noqonuniy. Malika ishga tiklashni so'rab sudga yoki mehnat inspeksiyasiga murojaat qiladi."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 8,
+      "speaker": "aqlvoy",
+      "emotion": "serious",
+      "text": "Majburiy ishsizlik davri uchun haq to'lashni ham talab qiladi. Faqat kechiktirmasin - da'vo muddati qisqa.",
+      "speakable": "Majburiy ishsizlik davri uchun haq to'lashni ham talab qiladi. Faqat kechiktirmasin, da'vo muddati qisqa."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Birinchidan, imzo qo'yilgani uchun sinovni qonuniy deb hisoblashadi. Qonunga zid shart amal qilmaydi.",
+      "speakable": "Birinchidan, imzo qo'yilgani uchun sinovni qonuniy deb hisoblashadi. Qonunga zid shart amal qilmaydi."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Ikkinchidan, faqat to'rt oy uch oydan ko'p ekanini ko'rib, asosiy moddalar - 129 va 408 ni o'tkazib yuborishadi.",
+      "speakable": "Ikkinchidan, faqat to'rt oy uch oydan ko'p ekanini ko'rib, asosiy moddalar, bir yuz yigirma to'qqiz va to'rt yuz sakkiz ni o'tkazib yuborishadi."
+    },
+    {
+      "script": "case-sinov",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Uchinchidan, xulosada ishga tiklash talabini va da'vo muddatini unutishadi.",
+      "speakable": "Uchinchidan, xulosada ishga tiklash talabini va da'vo muddatini unutishadi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 1,
+      "speaker": "qoshni",
+      "emotion": "neutral",
+      "text": "Bir yildan beri ishlayapman. Yillik ta'tilimni olsam bo'ladimi?",
+      "speakable": "Bir yildan beri ishlayapman. Yillik ta'tilimni olsam bo'ladimi?"
+    },
+    {
+      "script": "case-tatil",
+      "scene": 1,
+      "speaker": "ishberuvchi",
+      "emotion": "neutral",
+      "text": "O'n besh ish kuni beraman, shu yetadi.",
+      "speakable": "O'n besh ish kuni beraman, shu yetadi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 2,
+      "speaker": "ishberuvchi",
+      "emotion": "serious",
+      "text": "Jasur, ish ko'p! Ertaga chiqmasang, seni bo'shatdim. Buyruq tayyor.",
+      "speakable": "Jasur, ish ko'p! Ertaga chiqmasang, seni bo'shatdim. Buyruq tayyor."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 2,
+      "speaker": "qoshni",
+      "emotion": "worried",
+      "text": "Men ta'tildaman-ku! Tashkilot ishlab turibdi, nega bo'shatasiz?",
+      "speakable": "Men ta'tildaman-ku! Tashkilot ishlab turibdi, nega bo'shatasiz?"
+    },
+    {
+      "script": "case-tatil",
+      "scene": 3,
+      "speaker": "aqlvoy",
+      "emotion": "serious",
+      "text": "To'xtang! Endi navbat sizda. Jasurning ta'tili to'g'ri hisoblanganmi va uni ta'til paytida bo'shatish mumkinmi?",
+      "speakable": "To'xtang! Endi navbat sizda. Jasurning ta'tili to'g'ri hisoblanganmi va uni ta'til paytida bo'shatish mumkinmi?"
+    },
+    {
+      "script": "case-tatil",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "neutral",
+      "text": "Faktlar: Jasur bir yil ishlagan, unga o'n besh ish kuni ta'til berilgan.",
+      "speakable": "Faktlar: Jasur bir yil ishlagan, unga o'n besh ish kuni ta'til berilgan."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Ta'tilning beshinchi kuni bo'shatish buyrug'i chiqarilgan. Tashkilot esa ishlab turibdi.",
+      "speakable": "Ta'tilning beshinchi kuni bo'shatish buyrug'i chiqarilgan. Tashkilot esa ishlab turibdi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Ikki masala: ta'til to'g'ri hisoblanganmi va ta'tildagi xodimni ish beruvchi bo'shata oladimi?",
+      "speakable": "Ikki masala: ta'til to'g'ri hisoblanganmi va ta'tildagi xodimni ish beruvchi bo'shata oladimi?"
+    },
+    {
+      "script": "case-tatil",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "217-modda: yillik asosiy ta'til kamida yigirma bir kalendar kun.",
+      "speakable": "ikki yuz o'n yettinchi modda: yillik asosiy ta'til kamida yigirma bir kalendar kun."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 6,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "215-modda: ta'til davrida ish joyi saqlanadi, ish beruvchi tashabbusi bilan shartnomani bekor qilib bo'lmaydi.",
+      "speakable": "ikki yuz o'n beshinchi modda: ta'til davrida ish joyi saqlanadi, ish beruvchi tashabbusi bilan shartnomani bekor qilib bo'lmaydi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 7,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "O'n besh ish kuni - eski kodeksdagi tartib. Endi ta'til kalendar kunlarida hisoblanadi.",
+      "speakable": "O'n besh ish kuni, eski kodeksdagi tartib. Endi ta'til kalendar kunlarida hisoblanadi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 7,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Tashkilot tugatilmagan. Shuning uchun ta'tildagi Jasurni bo'shatish mumkin emas.",
+      "speakable": "Tashkilot tugatilmagan. Shuning uchun ta'tildagi Jasurni bo'shatish mumkin emas."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 8,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Xulosa: Jasur kamida yigirma bir kalendar kunlik ta'tilga haqli.",
+      "speakable": "Xulosa: Jasur kamida yigirma bir kalendar kunlik ta'tilga haqli."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 8,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Bo'shatish buyrug'i noqonuniy. Jasur sudga murojaat qilib, ishga tiklanishi mumkin.",
+      "speakable": "Bo'shatish buyrug'i noqonuniy. Jasur sudga murojaat qilib, ishga tiklanishi mumkin."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Birinchidan, ta'tilni eski tartibda - ish kunlarida hisoblashadi.",
+      "speakable": "Birinchidan, ta'tilni eski tartibda, ish kunlarida hisoblashadi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Ikkinchidan, ta'tildagi xodimni himoya qiluvchi 215-moddani bilishmaydi.",
+      "speakable": "Ikkinchidan, ta'tildagi xodimni himoya qiluvchi ikki yuz o'n beshinchi moddani bilishmaydi."
+    },
+    {
+      "script": "case-tatil",
+      "scene": 9,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Uchinchidan, talaba javobida Konstitutsiyaning 45-moddasini - dam olish huquqini - ko'rsatmay qo'yishadi.",
+      "speakable": "Uchinchidan, talaba javobida Konstitutsiyaning qirq beshinchi moddasini, dam olish huquqini, ko'rsatmay qo'yishadi."
+    },
+    {
+      "script": "les-1",
+      "scene": 1,
+      "speaker": "talabaqiz",
+      "emotion": "worried",
+      "text": "Aqlvoy, imtihonda «Konstitutsiyaning ustunligi» degan savol bor. Bu nima degani?",
+      "speakable": "Aqlvoy, imtihonda Konstitutsiyaning ustunligi degan savol bor. Bu nima degani?"
+    },
+    {
+      "script": "les-1",
+      "scene": 1,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Keling, Afandi boboning o'zidan so'raymiz!",
+      "speakable": "Keling, Afandi boboning o'zidan so'raymiz!"
+    },
+    {
+      "script": "les-1",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Konstitutsiya - uyning poydevori. Boshqa barcha qonunlar shu poydevor ustiga quriladi.",
+      "speakable": "Konstitutsiya, uyning poydevori. Boshqa barcha qonunlar shu poydevor ustiga quriladi."
+    },
+    {
+      "script": "les-1",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "15-moddaga ko'ra, Konstitutsiya va qonunlarning ustunligi so'zsiz tan olinadi, Konstitutsiya oliy yuridik kuchga ega.",
+      "speakable": "o'n beshinchi moddaga ko'ra, Konstitutsiya va qonunlarning ustunligi so'zsiz tan olinadi, Konstitutsiya oliy yuridik kuchga ega."
+    },
+    {
+      "script": "les-1",
+      "scene": 2,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Demak, qonun Konstitutsiyaga zid bo'lsa, u amal qila olmaydi.",
+      "speakable": "Demak, qonun Konstitutsiyaga zid bo'lsa, u amal qila olmaydi."
+    },
+    {
+      "script": "les-1",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Yangi tahrirdagi Konstitutsiya 2023-yil 30-aprelda referendumda qabul qilingan va 1-maydan kuchga kirgan.",
+      "speakable": "Yangi tahrirdagi Konstitutsiya ikki ming yigirma uchinchi yil o'ttizinchi aprelda referendumda qabul qilingan va birinchi maydan kuchga kirgan."
+    },
+    {
+      "script": "les-1",
+      "scene": 3,
+      "speaker": "talabaqiz",
+      "emotion": "happy",
+      "text": "Demak, uni xalqning o'zi ovoz berib qabul qilgan.",
+      "speakable": "Demak, uni xalqning o'zi ovoz berib qabul qilgan."
+    },
+    {
+      "script": "les-1",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "1-modda: O'zbekiston - boshqaruvning respublika shakliga ega bo'lgan suveren, demokratik, huquqiy, ijtimoiy va dunyoviy davlat.",
+      "speakable": "birinchi modda: O'zbekiston, boshqaruvning respublika shakliga ega bo'lgan suveren, demokratik, huquqiy, ijtimoiy va dunyoviy davlat."
+    },
+    {
+      "script": "les-1",
+      "scene": 4,
+      "speaker": "talabaqiz",
+      "emotion": "happy",
+      "text": "Besh so'z - besh tamoyil. Yodlab oldim!",
+      "speakable": "Besh so'z, besh tamoyil. Yodlab oldim!"
+    },
+    {
+      "script": "les-2",
+      "scene": 1,
+      "speaker": "qoshni",
+      "emotion": "worried",
+      "text": "Qo'shnimni ikki kundan beri ushlab turishibdi, hali sudga olib borishmadi.",
+      "speakable": "Qo'shnimni ikki kundan beri ushlab turishibdi, hali sudga olib borishmadi."
+    },
+    {
+      "script": "les-2",
+      "scene": 1,
+      "speaker": "aqlvoy",
+      "emotion": "surprised",
+      "text": "Ikki kun? Sud qarorisizmi? Bu qonuniymi?",
+      "speakable": "Ikki kun? Sud qarorisizmi? Bu qonuniymi?"
+    },
+    {
+      "script": "les-2",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Avval eng asosiysi. 25-modda: yashash huquqi har bir insonning ajralmas huquqi.",
+      "speakable": "Avval eng asosiysi. yigirma beshinchi modda: yashash huquqi har bir insonning ajralmas huquqi."
+    },
+    {
+      "script": "les-2",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Yangi Konstitutsiyada o'lim jazosi taqiqlangan.",
+      "speakable": "Yangi Konstitutsiyada o'lim jazosi taqiqlangan."
+    },
+    {
+      "script": "les-2",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "27-moddaga ko'ra, qamoqqa olish va qamoqda saqlash sud qarori bilan bo'ladi.",
+      "speakable": "yigirma yettinchi moddaga ko'ra, qamoqqa olish va qamoqda saqlash sud qarori bilan bo'ladi."
+    },
+    {
+      "script": "les-2",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Sud qarorisiz shaxs qirq sakkiz soatdan ortiq ushlab turilishi mumkin emas.",
+      "speakable": "Sud qarorisiz shaxs qirq sakkiz soatdan ortiq ushlab turilishi mumkin emas."
+    },
+    {
+      "script": "les-2",
+      "scene": 3,
+      "speaker": "aqlvoy",
+      "emotion": "surprised",
+      "text": "Ikki kun - bu qirq sakkiz soat. Undan oshsa, qonun buzilgan bo'ladi!",
+      "speakable": "Ikki kun, bu qirq sakkiz soat. Undan oshsa, qonun buzilgan bo'ladi!"
+    },
+    {
+      "script": "les-2",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "28-modda: aybi sudda isbotlanmaguncha va hukm kuchga kirmaguncha shaxs aybsiz hisoblanadi.",
+      "speakable": "yigirma sakkizinchi modda: aybi sudda isbotlanmaguncha va hukm kuchga kirmaguncha shaxs aybsiz hisoblanadi."
+    },
+    {
+      "script": "les-2",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Ya'ni gumon - hali ayb emas.",
+      "speakable": "Ya'ni gumon, hali ayb emas."
+    },
+    {
+      "script": "les-2",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "29-modda: har kim malakali yuridik yordam olish huquqiga ega. Qonunda nazarda tutilgan hollarda u davlat hisobidan beriladi.",
+      "speakable": "yigirma to'qqizinchi modda: har kim malakali yuridik yordam olish huquqiga ega. Qonunda nazarda tutilgan hollarda u davlat hisobidan beriladi."
+    },
+    {
+      "script": "les-2",
+      "scene": 5,
+      "speaker": "qoshni",
+      "emotion": "serious",
+      "text": "Unda qo'shnimga darhol advokat kerak!",
+      "speakable": "Unda qo'shnimga darhol advokat kerak!"
+    },
+    {
+      "script": "les-3",
+      "scene": 1,
+      "speaker": "talabaqiz",
+      "emotion": "worried",
+      "text": "Ijtimoiy tarmoqda shahrimizdagi muammo haqida yozdim. Endi kimdir «o'chir» deyapti.",
+      "speakable": "Ijtimoiy tarmoqda shahrimizdagi muammo haqida yozdim. Endi kimdir o'chir deyapti."
+    },
+    {
+      "script": "les-3",
+      "scene": 1,
+      "speaker": "qoshni",
+      "emotion": "surprised",
+      "text": "Meni esa uyimga ruxsatsiz kirmoqchi bo'lishdi!",
+      "speakable": "Meni esa uyimga ruxsatsiz kirmoqchi bo'lishdi!"
+    },
+    {
+      "script": "les-3",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "31-modda: har kim uy-joy daxlsizligi huquqiga ega. Uy-joyda tintuv faqat qonunga muvofiq va sud qaroriga asosan o'tkaziladi.",
+      "speakable": "o'ttiz birinchi modda: har kim uy-joy daxlsizligi huquqiga ega. Uy-joyda tintuv faqat qonunga muvofiq va sud qaroriga asosan o'tkaziladi."
+    },
+    {
+      "script": "les-3",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Yozishmalar, telefon so'zlashuvlari va elektron xabarlar siri ham shu moddada himoyalangan.",
+      "speakable": "Yozishmalar, telefon so'zlashuvlari va elektron xabarlar siri ham shu moddada himoyalangan."
+    },
+    {
+      "script": "les-3",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "33-modda: har kim fikrlash, so'z va e'tiqod erkinligiga ega. Axborot izlash, olish va tarqatish huquqi ham bor.",
+      "speakable": "o'ttiz uchinchi modda: har kim fikrlash, so'z va e'tiqod erkinligiga ega. Axborot izlash, olish va tarqatish huquqi ham bor."
+    },
+    {
+      "script": "les-3",
+      "scene": 3,
+      "speaker": "talabaqiz",
+      "emotion": "happy",
+      "text": "Demak, muammo haqida yozishim - mening huquqim.",
+      "speakable": "Demak, muammo haqida yozishim, mening huquqim."
+    },
+    {
+      "script": "les-3",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "serious",
+      "text": "Lekin 60-moddaga ko'ra boshqalarning huquqi va sha'nini hurmat qilish ham burchimiz.",
+      "speakable": "Lekin oltmishinchi moddaga ko'ra boshqalarning huquqi va sha'nini hurmat qilish ham burchimiz."
+    },
+    {
+      "script": "les-3",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "To'g'ri. Erkinlik qonun doirasida: birovni haqorat qilish yoki yolg'on tarqatish javobgarlikka sabab bo'lishi mumkin.",
+      "speakable": "To'g'ri. Erkinlik qonun doirasida: birovni haqorat qilish yoki yolg'on tarqatish javobgarlikka sabab bo'lishi mumkin."
+    },
+    {
+      "script": "les-4",
+      "scene": 1,
+      "speaker": "sotuvchi",
+      "emotion": "neutral",
+      "text": "O'g'lim, maktabga borma, bugun bozorda menga yordam berasan.",
+      "speakable": "O'g'lim, maktabga borma, bugun bozorda menga yordam berasan."
+    },
+    {
+      "script": "les-4",
+      "scene": 1,
+      "speaker": "bola",
+      "emotion": "worried",
+      "text": "Lekin men o'qishni xohlayman...",
+      "speakable": "Lekin men o'qishni xohlayman."
+    },
+    {
+      "script": "les-4",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "50-modda: har kim ta'lim olish huquqiga ega. Davlat bepul umumiy o'rta ta'limni kafolatlaydi.",
+      "speakable": "ellikinchi modda: har kim ta'lim olish huquqiga ega. Davlat bepul umumiy o'rta ta'limni kafolatlaydi."
+    },
+    {
+      "script": "les-4",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "Umumiy o'rta ta'lim majburiy. Bolani maktabdan qoldirish - uning huquqini buzish.",
+      "speakable": "Umumiy o'rta ta'lim majburiy. Bolani maktabdan qoldirish, uning huquqini buzish."
+    },
+    {
+      "script": "les-4",
+      "scene": 2,
+      "speaker": "bola",
+      "emotion": "happy",
+      "text": "Hurray! Demak, men maktabga boraman!",
+      "speakable": "Hurray! Demak, men maktabga boraman!"
+    },
+    {
+      "script": "les-4",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "42-modda: har kim munosib mehnat qilish, kasbni erkin tanlash va ishsizlikdan himoyalanish huquqiga ega.",
+      "speakable": "qirq ikkinchi modda: har kim munosib mehnat qilish, kasbni erkin tanlash va ishsizlikdan himoyalanish huquqiga ega."
+    },
+    {
+      "script": "les-4",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "44-modda: majburiy mehnat taqiqlanadi.",
+      "speakable": "qirq to'rtinchi modda: majburiy mehnat taqiqlanadi."
+    },
+    {
+      "script": "les-4",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "45-modda: har kim dam olish huquqiga ega, bunga haq to'lanadigan yillik ta'til ham kiradi.",
+      "speakable": "qirq beshinchi modda: har kim dam olish huquqiga ega, bunga haq to'lanadigan yillik ta'til ham kiradi."
+    },
+    {
+      "script": "les-4",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "48-modda: har kim sog'lig'ini saqlash va malakali tibbiy yordam olish huquqiga ega.",
+      "speakable": "qirq sakkizinchi modda: har kim sog'lig'ini saqlash va malakali tibbiy yordam olish huquqiga ega."
+    },
+    {
+      "script": "les-4",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Ta'til kunlari esa Mehnat kodeksida - kamida yigirma bir kalendar kun.",
+      "speakable": "Ta'til kunlari esa Mehnat kodeksida, kamida yigirma bir kalendar kun."
+    },
+    {
+      "script": "les-5",
+      "scene": 1,
+      "speaker": "qoshni",
+      "emotion": "worried",
+      "text": "Murojaatim bo'yicha chiqqan qaror noto'g'ri deb o'ylayman. Endi nima qilay?",
+      "speakable": "Murojaatim bo'yicha chiqqan qaror noto'g'ri deb o'ylayman. Endi nima qilay?"
+    },
+    {
+      "script": "les-5",
+      "scene": 1,
+      "speaker": "hokim",
+      "emotion": "serious",
+      "text": "Qaror chiqdi, shikoyat qilishning foydasi yo'q.",
+      "speakable": "Qaror chiqdi, shikoyat qilishning foydasi yo'q."
+    },
+    {
+      "script": "les-5",
+      "scene": 2,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "55-modda: har kim o'z huquq va erkinliklarini sud orqali va qonunda taqiqlanmagan boshqa usullar bilan himoya qila oladi.",
+      "speakable": "ellik beshinchi modda: har kim o'z huquq va erkinliklarini sud orqali va qonunda taqiqlanmagan boshqa usullar bilan himoya qila oladi."
+    },
+    {
+      "script": "les-5",
+      "scene": 2,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Demak, mansabdor shaxsning qarori ustidan ham sudga murojaat qilish mumkin.",
+      "speakable": "Demak, mansabdor shaxsning qarori ustidan ham sudga murojaat qilish mumkin."
+    },
+    {
+      "script": "les-5",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Huquq bilan birga burch ham bor. 60-modda: fuqarolar Konstitutsiya va qonunlarga rioya etishi, boshqalarning huquqi va sha'nini hurmat qilishi shart.",
+      "speakable": "Huquq bilan birga burch ham bor. oltmishinchi modda: fuqarolar Konstitutsiya va qonunlarga rioya etishi, boshqalarning huquqi va sha'nini hurmat qilishi shart."
+    },
+    {
+      "script": "les-5",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "serious",
+      "text": "63-modda: qonunda belgilangan soliqlar va yig'imlarni to'lash ham burch.",
+      "speakable": "oltmish uchinchi modda: qonunda belgilangan soliqlar va yig'imlarni to'lash ham burch."
+    },
+    {
+      "script": "les-5",
+      "scene": 4,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "128-modda: o'n sakkiz yoshga to'lgan fuqarolar saylash huquqiga ega.",
+      "speakable": "bir yuz yigirma sakkizinchi modda: o'n sakkiz yoshga to'lgan fuqarolar saylash huquqiga ega."
+    },
+    {
+      "script": "les-5",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Men o'tgan yili o'n sakkizga to'ldim - endi ovoz bera olaman!",
+      "speakable": "Men o'tgan yili o'n sakkizga to'ldim, endi ovoz bera olaman!"
+    },
+    {
+      "script": "recap-konst",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Konstitutsiya - Asosiy qonun. 15-moddaga ko'ra u oliy yuridik kuchga ega; yangi tahriri 2023-yil 30-aprelda referendumda qabul qilingan.",
+      "speakable": "Konstitutsiya, Asosiy qonun. o'n beshinchi moddaga ko'ra u oliy yuridik kuchga ega; yangi tahriri ikki ming yigirma uchinchi yil o'ttizinchi aprelda referendumda qabul qilingan."
+    },
+    {
+      "script": "recap-konst",
+      "scene": 2,
+      "speaker": "aqlvoy",
+      "emotion": "neutral",
+      "text": "25-modda: yashash huquqi ajralmas, o'lim jazosi taqiqlangan. 27-modda: sud qarorisiz 48 soatdan ortiq ushlab turish mumkin emas. 28-modda: aybsizlik prezumpsiyasi.",
+      "speakable": "yigirma beshinchi modda: yashash huquqi ajralmas, o'lim jazosi taqiqlangan. yigirma yettinchi modda: sud qarorisiz qirq sakkiz soatdan ortiq ushlab turish mumkin emas. yigirma sakkizinchi modda: aybsizlik prezumpsiyasi."
+    },
+    {
+      "script": "recap-konst",
+      "scene": 3,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "31-modda: uy-joy daxlsiz, tintuv faqat sud qaroriga asosan; yozishmalar siri himoyada. 33-modda: fikr, so'z va axborot erkinligi.",
+      "speakable": "o'ttiz birinchi modda: uy-joy daxlsiz, tintuv faqat sud qaroriga asosan; yozishmalar siri himoyada. o'ttiz uchinchi modda: fikr, so'z va axborot erkinligi."
+    },
+    {
+      "script": "recap-konst",
+      "scene": 4,
+      "speaker": "aqlvoy",
+      "emotion": "neutral",
+      "text": "50-modda: umumiy o'rta ta'lim bepul va majburiy. 42-modda: mehnat qilish huquqi. 44-modda: majburiy mehnat taqiqlanadi. 45-modda: dam olish. 48-modda: sog'liqni saqlash.",
+      "speakable": "ellikinchi modda: umumiy o'rta ta'lim bepul va majburiy. qirq ikkinchi modda: mehnat qilish huquqi. qirq to'rtinchi modda: majburiy mehnat taqiqlanadi. qirq beshinchi modda: dam olish. qirq sakkizinchi modda: sog'liqni saqlash."
+    },
+    {
+      "script": "recap-konst",
+      "scene": 5,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "55-modda: huquqni sud orqali himoya qilish. 60 va 63-moddalar: qonunlarga rioya qilish va soliq to'lash burchi. 128-modda: 18 yoshdan saylash huquqi.",
+      "speakable": "ellik beshinchi modda: huquqni sud orqali himoya qilish. oltmish va oltmish uchinchi moddalar: qonunlarga rioya qilish va soliq to'lash burchi. bir yuz yigirma sakkizinchi modda: o'n sakkiz yoshdan saylash huquqi."
+    },
+    {
+      "script": "right-yashash-huquqi",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "Tug'ilganimdan menga qanday huquq ochiladi?",
+      "speakable": "Tug'ilganimdan menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-yashash-huquqi",
+      "scene": 0,
+      "speaker": "aqlvoy",
+      "emotion": "happy",
+      "text": "Zo'r savol! Afandi bobo aniq biladi.",
+      "speakable": "Zo'r savol! Afandi bobo aniq biladi."
+    },
+    {
+      "script": "right-yashash-huquqi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Yashash huquqi har bir insonning ajralmas huquqi.",
+      "speakable": "Yashash huquqi har bir insonning ajralmas huquqi."
+    },
+    {
+      "script": "right-yashash-huquqi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Konstitutsiya, 25-moddada yozilgan.",
+      "speakable": "Bu Konstitutsiya, yigirma beshinchi moddada yozilgan."
+    },
+    {
+      "script": "right-yashash-huquqi",
+      "scene": 1,
+      "speaker": "bola",
+      "emotion": "happy",
+      "text": "Endi bilaman, rahmat!",
+      "speakable": "Endi bilaman, rahmat!"
+    },
+    {
+      "script": "right-bola-huquqlari-himoyada",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Bolalar huquqlarini ta'minlash va ularning rivojlanishi uchun eng yaxshi sharoit yaratish - davlat majburiyati.",
+      "speakable": "Bolalar huquqlarini ta'minlash va ularning rivojlanishi uchun eng yaxshi sharoit yaratish, davlat majburiyati."
+    },
+    {
+      "script": "right-bola-huquqlari-himoyada",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Konstitutsiya, 78-moddada yozilgan.",
+      "speakable": "Bu Konstitutsiya, yetmish sakkizinchi moddada yozilgan."
+    },
+    {
+      "script": "right-ta-lim-olish-huquqi",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "6-7 yoshda menga qanday huquq ochiladi?",
+      "speakable": "olti-yetti yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-ta-lim-olish-huquqi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Umumiy o'rta ta'lim bepul va majburiy - maktabga borish huquqingiz ham, burchingiz ham.",
+      "speakable": "Umumiy o'rta ta'lim bepul va majburiy, maktabga borish huquqingiz ham, burchingiz ham."
+    },
+    {
+      "script": "right-ta-lim-olish-huquqi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Konstitutsiya, 50-moddada yozilgan.",
+      "speakable": "Bu Konstitutsiya, ellikinchi moddada yozilgan."
+    },
+    {
+      "script": "right-qisman-muomala-layoqati",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "14 yoshda menga qanday huquq ochiladi?",
+      "speakable": "o'n to'rt yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-qisman-muomala-layoqati",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "O'z ish haqingiz, stipendiyangiz va boshqa daromadingizni mustaqil tasarruf eta olasiz.",
+      "speakable": "O'z ish haqingiz, stipendiyangiz va boshqa daromadingizni mustaqil tasarruf eta olasiz."
+    },
+    {
+      "script": "right-qisman-muomala-layoqati",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Fuqarolik kodeksi, 27-moddada yozilgan.",
+      "speakable": "Bu Fuqarolik kodeksi, yigirma yettinchi moddada yozilgan."
+    },
+    {
+      "script": "right-ota-ona-roziligi-bilan-ishlash",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "15 yoshda menga qanday huquq ochiladi?",
+      "speakable": "o'n besh yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-ota-ona-roziligi-bilan-ishlash",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Ota-onadan birining (yoki vasiyning) yozma roziligi bilan yengil ishga qabul qilinishingiz mumkin.",
+      "speakable": "Ota-onadan birining (yoki vasiyning) yozma roziligi bilan yengil ishga qabul qilinishingiz mumkin."
+    },
+    {
+      "script": "right-ota-ona-roziligi-bilan-ishlash",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Mehnat kodeksi, 31-moddada yozilgan.",
+      "speakable": "Bu Mehnat kodeksi, o'ttiz birinchi moddada yozilgan."
+    },
+    {
+      "script": "right-mehnatga-oid-layoqat",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "16 yoshda menga qanday huquq ochiladi?",
+      "speakable": "o'n olti yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-mehnatga-oid-layoqat",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "16 yoshdan mehnat shartnomasini mustaqil tuza olasiz.",
+      "speakable": "o'n olti yoshdan mehnat shartnomasini mustaqil tuza olasiz."
+    },
+    {
+      "script": "right-mehnatga-oid-layoqat",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Mehnat kodeksi, 20-moddada yozilgan.",
+      "speakable": "Bu Mehnat kodeksi, yigirmanchi moddada yozilgan."
+    },
+    {
+      "script": "right-javobgarlik-ham-boshlanadi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Jinoiy javobgarlik umumiy qoidaga ko'ra 16 yoshdan; ayrim og'ir jinoyatlar uchun undan oldinroq.",
+      "speakable": "Jinoiy javobgarlik umumiy qoidaga ko'ra o'n olti yoshdan; ayrim og'ir jinoyatlar uchun undan oldinroq."
+    },
+    {
+      "script": "right-javobgarlik-ham-boshlanadi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Jinoyat kodeksi, 17-moddada yozilgan.",
+      "speakable": "Bu Jinoyat kodeksi, o'n yettinchi moddada yozilgan."
+    },
+    {
+      "script": "right-javobgarlik-ham-boshlanadi",
+      "scene": 1,
+      "speaker": "bola",
+      "emotion": "serious",
+      "text": "Demak, javobgarlikni ham unutmaslik kerak ekan.",
+      "speakable": "Demak, javobgarlikni ham unutmaslik kerak ekan."
+    },
+    {
+      "script": "right-saylash-huquqi",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "18 yoshda menga qanday huquq ochiladi?",
+      "speakable": "o'n sakkiz yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-saylash-huquqi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "18 yoshga to'lgan fuqarolar saylovda ovoz beradi.",
+      "speakable": "o'n sakkiz yoshga to'lgan fuqarolar saylovda ovoz beradi."
+    },
+    {
+      "script": "right-saylash-huquqi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Konstitutsiya, 128-moddada yozilgan.",
+      "speakable": "Bu Konstitutsiya, bir yuz yigirma sakkizinchi moddada yozilgan."
+    },
+    {
+      "script": "right-nikoh-yoshi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "Nikoh yoshi erkaklar va ayollar uchun 18 yosh.",
+      "speakable": "Nikoh yoshi erkaklar va ayollar uchun o'n sakkiz yosh."
+    },
+    {
+      "script": "right-nikoh-yoshi",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Oila kodeksi, 15-moddada yozilgan.",
+      "speakable": "Bu Oila kodeksi, o'n beshinchi moddada yozilgan."
+    },
+    {
+      "script": "right-to-liq-muomala-layoqati",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "O'z harakatlaringiz bilan barcha fuqarolik huquq va majburiyatlarini to'liq amalga oshirasiz.",
+      "speakable": "O'z harakatlaringiz bilan barcha fuqarolik huquq va majburiyatlarini to'liq amalga oshirasiz."
+    },
+    {
+      "script": "right-to-liq-muomala-layoqati",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Fuqarolik kodeksi, 22-moddada yozilgan.",
+      "speakable": "Bu Fuqarolik kodeksi, yigirma ikkinchi moddada yozilgan."
+    },
+    {
+      "script": "right-deputatlikka-saylanish",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "25 yoshda menga qanday huquq ochiladi?",
+      "speakable": "yigirma besh yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-deputatlikka-saylanish",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "25 yoshga to'lgan fuqaro Oliy Majlis Qonunchilik palatasiga deputat bo'lib saylanishi mumkin.",
+      "speakable": "yigirma besh yoshga to'lgan fuqaro Oliy Majlis Qonunchilik palatasiga deputat bo'lib saylanishi mumkin."
+    },
+    {
+      "script": "right-deputatlikka-saylanish",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Konstitutsiya, 92-moddada yozilgan.",
+      "speakable": "Bu Konstitutsiya, to'qson ikkinchi moddada yozilgan."
+    },
+    {
+      "script": "right-prezidentlikka-nomzod",
+      "scene": 0,
+      "speaker": "bola",
+      "emotion": "surprised",
+      "text": "35 yoshda menga qanday huquq ochiladi?",
+      "speakable": "o'ttiz besh yoshda menga qanday huquq ochiladi?"
+    },
+    {
+      "script": "right-prezidentlikka-nomzod",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "happy",
+      "text": "35 yoshdan kichik bo'lmagan, davlat tilini yaxshi biladigan va kamida 10 yil O'zbekistonda muqim yashayotgan fuqaro.",
+      "speakable": "o'ttiz besh yoshdan kichik bo'lmagan, davlat tilini yaxshi biladigan va kamida o'n yil O'zbekistonda muqim yashayotgan fuqaro."
+    },
+    {
+      "script": "right-prezidentlikka-nomzod",
+      "scene": 1,
+      "speaker": "afandi",
+      "emotion": "neutral",
+      "text": "Bu Konstitutsiya, 106-moddada yozilgan.",
+      "speakable": "Bu Konstitutsiya, bir yuz oltinchi moddada yozilgan."
+    }
+  ]
+}

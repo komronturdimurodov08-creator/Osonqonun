@@ -20,7 +20,7 @@ const defaultState = {
   threshold: 70,        // o'qituvchi belgilagan o'tish foizi
   saved: [],            // offline saqlangan ssenariylar
   externalVideos: {},   // scriptId -> { url, provider } — NotebookLM/YouTube batafsil videolari
-  settings: { alphabet: "lat", bigFont: false, contrast: false, voice: true, voiceEngine: "auto", maleVoice: "", femaleVoice: "" }
+  settings: { theme: "", lang: "", alphabet: "lat", bigFont: false, contrast: false, voice: true, voiceEngine: "auto", maleVoice: "", femaleVoice: "" }
 };
 const Store = (() => {
   let state = defaultState;
@@ -177,7 +177,7 @@ const Speech = (() => {
   let all = [];
   const FEM = /(female|woman|madina|zira|seda|yelda|emel|filiz|milena|irina|svetlana|alena|daria|dariya|ekaterina|aigul|aigerim|samantha|karen|tessa|victoria|anna|ayşe|zeynep|aida|amira|natasha|katya|elena|lilya|sabina|nigora)/i;
   const MALE = /(\bmale|\bman\b|sardor|ahmet|tolga|dmitri|dmitry|pavel|yuri|daulet|erkek|maxim|aleksandr|alexander|artem|daniel|cem|emre)/i;
-  const langScore = (v) => { const l = (v.lang || "").toLowerCase(); return l.startsWith("uz") ? 100 : l.startsWith("tr") ? 60 : l.startsWith("kk") ? 50 : l.startsWith("ky") ? 45 : l.startsWith("ru") ? 40 : 0; };
+  const langScore = (v) => { const l = (v.lang || "").toLowerCase(); const sl = typeof I18n !== "undefined" ? I18n.speechLang() : "uz"; if (sl !== "uz") return l.startsWith(sl) ? 100 : 0; return l.startsWith("uz") ? 100 : l.startsWith("tr") ? 60 : l.startsWith("kk") ? 50 : l.startsWith("ky") ? 45 : l.startsWith("ru") ? 40 : 0; };
   const quality = (v) => (/natural|neural|online|premium|enhanced/i.test(v.name) ? 25 : 0) + (/google/i.test(v.name) ? 10 : 0);
   const score = (v) => langScore(v) + quality(v);
   function load() { if (ok) all = speechSynthesis.getVoices() || []; }
@@ -200,10 +200,13 @@ const Speech = (() => {
     try {
       speechSynthesis.cancel();
       const v = pick(who);
-      const u = new SpeechSynthesisUtterance(adaptForLang(UzNum.speakable(text), v ? v.lang : "uz"));
+      const sl = typeof I18n !== "undefined" ? I18n.speechLang() : "uz";
+      // RUS/ENG: matn tarjima qilinib, o'sha tildagi ovoz bilan o'qiladi
+      const said = sl === "uz" ? adaptForLang(UzNum.speakable(text), v ? v.lang : "uz") : I18n.t(text);
+      const u = new SpeechSynthesisUtterance(said);
       const p = VOICE_PROFILE[who] || { pitch: 1, rate: 1 };
       const femaleVoiceOnFemale = FEMALE_CHARS[who] && v && FEM.test(v.name);
-      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "uz-UZ";
+      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = sl === "ru" ? "ru-RU" : sl === "en" ? "en-US" : "uz-UZ";
       u.pitch = femaleVoiceOnFemale ? 1 : p.pitch;
       u.rate = Math.max(0.5, Math.min(2, p.rate * speed));
       let done = false;
@@ -216,6 +219,7 @@ const Speech = (() => {
     ok, speak, pick, usable,
     voices: () => all,
     hasUzbek: () => all.some((v) => (v.lang || "").toLowerCase().startsWith("uz")),
+    hasLang: (l) => all.some((v) => (v.lang || "").toLowerCase().startsWith(l)),
     cancel() { if (ok) try { speechSynthesis.cancel(); } catch (e) {} },
     voiceName: (who) => { const v = pick(who || "afandi"); return v ? v.name + " (" + v.lang + ")" : "standart"; }
   };
@@ -245,19 +249,88 @@ const Voice = (() => {
     if (pref === "browser") return "browser";
     const t = await claude();
     if (pref === "claude") return t ? "claude" : "browser";
-    // avto: brauzerda tabiiy o'zbekcha ovoz bo'lsa — u, aks holda Claude ovozi
-    if (Speech.hasUzbek()) return "browser";
+    // avto: brauzerda shu tilda tabiiy ovoz bo'lsa — u, aks holda Claude ovozi
+    const sl = I18n.speechLang();
+    if (sl !== "uz" ? Speech.hasLang(sl) : Speech.hasUzbek()) return "browser";
     return t ? "claude" : "browser";
   }
   const lineFor = (text, who, id) => ({
-    text: lang === "tr" ? adaptForLang(UzNum.speakable(text), "tr") : UzNum.speakable(text),
+    text: I18n.speechLang() !== "uz" ? I18n.t(text) : lang === "tr" ? adaptForLang(UzNum.speakable(text), "tr") : UzNum.speakable(text),
     voice: CLAUDE_VOICE[who] || "buttery", id: String(id)
   });
   return {
     claude, engine, lineFor,
-    lang: () => lang,
+    lang: () => (I18n.speechLang() !== "uz" ? I18n.speechLang() : lang),
     markBroken() { broken = true; },
     clampRate: (r) => Math.max(0.7, Math.min(1.5, r))
+  };
+})();
+
+/* ---------- OsonQonun server (lex.uz qidiruvi, Gemini ssenariy, ElevenLabs ovoz) ----------
+   Ilova server orqali ochilganda (http/https) ishlaydi; fayl sifatida ochilganda — yo'q. */
+const Api = (() => {
+  const base = typeof location !== "undefined" && /^https?:$/.test(location.protocol) ? "" : null;
+  let holat = null;
+  const req = async (path, opts) => {
+    if (base === null) throw Object.assign(new Error("Server ulanmagan"), { code: "no_server" });
+    const r = await fetch(base + path, opts);
+    let d = null;
+    try { d = await r.json(); } catch (e) {}
+    if (!r.ok) throw Object.assign(new Error((d && d.xato) || "Server xatosi " + r.status), { code: r.status === 429 ? "rate_limited" : "server" });
+    return d;
+  };
+  return {
+    base: () => base,
+    holat() {
+      if (!holat) holat = base === null ? Promise.resolve(null) : req("/api/holat").catch(() => null);
+      return holat;
+    },
+    qidir: (q) => req("/api/qidir?q=" + encodeURIComponent(q)),
+    multfilm: (body, signal) => req("/api/multfilm", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal }),
+    ovozUrl: (t) => (base === null ? null : base + "/api/ovoz/" + encodeURIComponent(t))
+  };
+})();
+
+/* ---------- Studiya ovozi: oldindan ElevenLabs'da yozilgan mp3 (dist/audio/<kalit>.mp3) ----------
+   Kalitlar ro'yxatini build.mjs window.OQ_AUDIO_KEYS ga yozadi. Fayl bo'lmasa — Claude/brauzer ovoziga qaytamiz. */
+const ElevenAudio = (() => {
+  const keys = new Set((typeof window !== "undefined" && window.OQ_AUDIO_KEYS) || []);
+  const enc = typeof TextEncoder !== "undefined" ? new TextEncoder() : null;
+  // oson_ovoz.py dagi audio_kalit() bilan bir xil: FNV-1a 32-bit, UTF-8
+  const key = (who, text) => {
+    let h = 0x811c9dc5;
+    const bytes = enc ? enc.encode(who + "|" + text) : [];
+    for (let i = 0; i < bytes.length; i++) { h ^= bytes[i]; h = Math.imul(h, 0x01000193) >>> 0; }
+    return ("0000000" + h.toString(16)).slice(-8);
+  };
+  let a = null, token = 0;
+  const bad = new Set();
+  const pref = () => { const p = Store.get().settings.voiceEngine || "auto"; return p === "auto" || p === "studio"; };
+  // au — server bergan ovoz kaliti (lex.uz multfilmlari), yo'q bo'lsa — dist/audio dagi tayyor fayl
+  const has = (who, text, au) => !!who && !!text && pref() && (au ? !!Api.ovozUrl(au) && !bad.has(au) : keys.has(key(who, text)));
+  function stop() {
+    token++;
+    if (a) { a.onended = a.onerror = null; try { a.pause(); } catch (e) {} a = null; }
+  }
+  function play(who, text, rate, onend, onfail, au) {
+    stop();
+    const my = token, k = key(who, text);
+    const el = new Audio(au ? Api.ovozUrl(au) : "audio/" + k + ".mp3");
+    try { el.preservesPitch = true; el.playbackRate = rate || 1; } catch (e) {}
+    const fail = () => { if (my !== token) return; if (au) bad.add(au); else keys.delete(k); a = null; onfail && onfail(); };
+    el.onended = () => { if (my === token) { a = null; onend && onend(); } };
+    el.onerror = fail;
+    a = el;
+    const p = el.play();
+    if (p && p.catch) p.catch((e) => { if (!e || e.name !== "AbortError") fail(); });
+  }
+  return {
+    has, play, stop, key,
+    prefetch(au) { const u = au && Api.ovozUrl(au); if (u && !bad.has(au)) fetch(u).catch(() => {}); },
+    count: () => keys.size,
+    pause() { if (a) try { a.pause(); } catch (e) {} },
+    resume() { if (!a) return false; const p = a.play(); if (p && p.catch) p.catch(() => {}); return true; },
+    setRate(r) { if (a) try { a.playbackRate = r; } catch (e) {} }
   };
 })();
 

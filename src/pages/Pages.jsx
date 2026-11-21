@@ -1,35 +1,44 @@
 /* Sahifalar: Bosh sahifa, Multfilm yasash, Darslar va kazuslar, Profil */
 
+const TOPICS = [
+  { label: "Mehnat huquqi", icon: "gavel", tone: "a", to: "learn" },
+  { label: "Konstitutsiya darslari", icon: "book", tone: "b", to: "lessons" },
+  { label: "Yoshingizga mos huquqlar", icon: "scales", tone: "c", to: "roadmap" },
+  { label: "Hujjatni tushunish", icon: "scroll", tone: "d", to: "make" },
+  { label: "Anonim savol", icon: "section", tone: "g", to: "make", mode: "savol" },
+  { label: "Imtihonga takrorlash", icon: "pen", tone: "h", to: "recap" }
+];
+
 function HomePage({ go }) {
   const store = useStore();
+  const [q, setQ] = useState("");
   return (
     <div className="stack-lg">
-      <section className="hero">
-        <div className="hero-text">
-          <h1>Qonunni multfilm tushuntiradi</h1>
-          <p>Afandi va Aqlvoy har qanday hujjat, modda yoki kazusni 1–3 daqiqalik multfilmga aylantiradi — subtitr, ovoz va lex.uz manbasi bilan.</p>
+      <section className="welcome" aria-labelledby="xush">
+        <div className="welcome-top">
+          <h1 id="xush">Xush kelibsiz!</h1>
+          <form className="search" role="search" onSubmit={(e) => { e.preventDefault(); try { sessionStorage.setItem("oq-q", q); } catch (err) {} go("make", "savol"); }}>
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2.2" /><path d="m20 20-4-4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
+            <label htmlFor="q" className="sr">Huquqiy savol</label>
+            <input id="q" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Savolingizni yozing, masalan — oylik kechiksa nima qilaman?" />
+            <button className="search-go" type="submit">Multfilm olish</button>
+          </form>
         </div>
+        <div className="topics">
+          {TOPICS.map((t) => (
+            <button key={t.label} className={"topic t-" + t.tone} onClick={() => go(t.to, t.mode)}>
+              <svg className="topic-ico" viewBox="0 0 64 64" aria-hidden="true">{LAW_ICONS[t.icon]}</svg>
+              <span>{t.label}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+      <section className="weekly">
         <div className="hero-player">
-          <div className="label-row"><span className="pill hot">Haftaning multfilmi</span><span className="muted sm">Mehnat huquqi</span></div>
           <VideoPlayer key={WEEKLY.id} script={WEEKLY} onWatched={() => Store.set((s) => ({ ...s, watched: { ...s.watched, [WEEKLY.id]: true } }))} />
         </div>
       </section>
-      <div className="big-actions">
-        <button className="big-btn b1" onClick={() => go("make")}>
-          <b>Hujjatni multfilmga aylantir</b><span>Matn, rasm yoki havola — AI ssenariy yozadi</span>
-        </button>
-        <button className="big-btn b2" onClick={() => go("learn")}>
-          <b>Kazus-multfilmlar</b><span>{CASES.length} ta kazus · 5 bosqichli yechim</span>
-        </button>
-        <button className="big-btn b3" onClick={() => go("roadmap")}>
-          <b>Huquqlar yo'l xaritasi</b><span>Yoshingizga qarab qaysi huquqlar ochiladi</span>
-        </button>
-      </div>
       <VideoMeta script={WEEKLY} />
-      <section className="panel ask-strip">
-        <div><b>Savolingiz bormi?</b><p className="muted">Ro'yxatdan o'tmasdan anonim savol bering — javob qisqa multfilm shaklida.</p></div>
-        <button className="btn" onClick={() => go("make", "savol")}>Anonim savol berish</button>
-      </section>
       {store.saved.length > 0 && <SavedList />}
     </div>
   );
@@ -38,9 +47,73 @@ function HomePage({ go }) {
 const SAMPLE_DOC = "MEHNAT SHARTNOMASI (namuna). 1. Xodim sotuv bo'limiga menejer lavozimiga qabul qilinadi. 2. Xodimga 4 oy muddatga dastlabki sinov belgilanadi. 3. Ish vaqti haftasiga 40 soat. 4. Xodimga har yili 15 ish kuni ta'til beriladi. 5. Xodim ishdan bo'shamoqchi bo'lsa, ish beruvchini 14 kalendar kun oldin yozma ogohlantirishi shart. 6. Mehnat intizomini buzganlik uchun jarima qo'llanilishi mumkin.";
 const SAMPLE_Q = "Ish beruvchi 2 oydan beri oylik bermayapti va «shikoyat qilsang bo'shataman» deyapti. Nima qilishim kerak?";
 
+/* lex.uz dan jonli qidirish: so'rov -> hujjatlar -> tanlangan hujjat moddalaridan multfilm (server orqali) */
+const LEX_NAMUNA = ["Ishga kirsam sinov muddati qancha bo'ladi?", "Iste'molchi sifatida sifatsiz tovarni qaytarish", "Mehnat kodeksi 130-modda", "Ota-onaning bola oldidagi majburiyatlari"];
+function LexLiveSearch({ level, onScript }) {
+  const [q, setQ] = useState("");
+  const [busy, setBusy] = useState("");
+  const [res, setRes] = useState(null);
+  const [err, setErr] = useState("");
+  const [srv, setSrv] = useState(undefined);
+  const ctrl = useRef(null);
+  useEffect(() => { let on = true; Api.holat().then((h) => on && setSrv(h)); return () => { on = false; }; }, []);
+  const search = async (text) => {
+    const t = (text != null ? text : q).trim();
+    if (t.length < 3) { setErr("Hujjat nomi yoki savolingizni yozing."); return; }
+    setQ(t); setErr(""); setRes(null); setBusy("Qidirilmoqda: lex.uz…");
+    try { const d = await Api.qidir(t); setRes(d.natijalar || []); if (!(d.natijalar || []).length) setErr("Hech narsa topilmadi. Boshqacha yozib ko'ring: masalan, hujjat nomi bilan."); }
+    catch (e) { setErr(e.message || "Qidiruvda xato"); }
+    setBusy("");
+  };
+  const make = async (d) => {
+    setErr(""); setBusy("«" + d.title.slice(0, 50) + "» — lex.uz dan matn olinmoqda va ssenariy yozilmoqda… (20-40 soniya)");
+    ctrl.current = new AbortController();
+    try {
+      const raw = await Api.multfilm({ id: d.id, q, moddalar: d.moddalar, daraja: level, title: d.title }, ctrl.current.signal);
+      const s = normalizeScript(raw);
+      const arts = (raw.manbaModdalar || []).map((m) => m.n + "-modda").join(", ");
+      onScript(s, "Ssenariy lex.uz dagi rasmiy matn asosida yozildi" + (arts ? " (" + arts + ")" : "") + ". Baribir yurist tekshiruvidan o'tkazing.");
+    } catch (e) { if (!(e && e.name === "AbortError")) setErr(e.message || "Multfilm yasab bo'lmadi"); }
+    setBusy("");
+  };
+  if (srv === undefined) return <p className="sm muted">Server tekshirilmoqda…</p>;
+  if (!srv) return (
+    <div className="note">lex.uz dan qidirish uchun ilova <b>OsonQonun serveri</b> orqali ochilishi kerak (masalan, <span className="notr">http://localhost:8000</span> yoki internetdagi havola). Fayl sifatida ochilganda bu bo'lim ishlamaydi — «Hujjatni multfilmga aylantir» bo'limidan foydalaning.</div>
+  );
+  return (
+    <div className="stack">
+      <label className="field">
+        <span>Qaysi hujjat yoki qanday savol? (lex.uz dan qidiriladi)</span>
+        <div className="row gap">
+          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && search()}
+            placeholder="Masalan: Mehnat kodeksi sinov muddati" style={{ flex: 1 }} />
+          <button className="btn" onClick={() => search()} disabled={!!busy}>Qidirish</button>
+        </div>
+      </label>
+      <div className="row gap wrap">{LEX_NAMUNA.map((x) => <button key={x} className="btn ghost sm" onClick={() => search(x)} disabled={!!busy}>{x}</button>)}</div>
+      {!srv.ai && <p className="note">Serverda Gemini kaliti yo'q: qidiruv ishlaydi, lekin multfilm yozilmaydi.</p>}
+      {busy && <p className="note">{busy} {ctrl.current && busy.indexOf("ssenariy") > 0 && <button className="btn ghost sm" onClick={() => ctrl.current.abort()}>To'xtatish</button>}</p>}
+      {err && <p className="note">{err}</p>}
+      {res && res.length > 0 && (
+        <div className="lex-results stack">
+          {res.map((d) => (
+            <div key={d.id} className="panel lex-item row between gap wrap">
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <b>{d.title}</b>
+                <div className="sm muted">{d.sabab}{d.moddalar && d.moddalar.length ? " · moddalar: " + d.moddalar.join(", ") : ""} · <a href={d.url} target="_blank" rel="noopener">lex.uz da ochish ↗</a></div>
+              </div>
+              <button className="btn sm" onClick={() => make(d)} disabled={!!busy || !srv.ai}>Multfilm yasash</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function MakePage({ initialMode }) {
   const [mode, setMode] = useState(initialMode || "hujjat");
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => { try { const v = sessionStorage.getItem("oq-q") || ""; sessionStorage.removeItem("oq-q"); return v; } catch (e) { return ""; } });
   const [url, setUrl] = useState("");
   const [level, setLevel] = useState("fuqaro");
   const [image, setImage] = useState(null);
@@ -49,10 +122,18 @@ function MakePage({ initialMode }) {
   const [progress, setProgress] = useState(0);
   const [note, setNote] = useState("");
   const [script, setScript] = useState(null);
+  const [lex, setLex] = useState(null); // anonim savol: lex.uz bazasidan topilgan moddalar
   const [ai, setAi] = useState(null);
   const ctrl = useRef(null);
   const out = useRef(null);
-  useEffect(() => { setMode(initialMode || "hujjat"); }, [initialMode]);
+  // Server bo'lsa — standart bo'lim "lex.uz dan qidirish", aks holda "Hujjatni multfilmga aylantir"
+  useEffect(() => {
+    let on = true;
+    if (initialMode) setMode(initialMode);
+    else Api.holat().then((h) => on && setMode(h && h.server ? "lex" : "hujjat"));
+    return () => { on = false; };
+  }, [initialMode]);
+  const showScript = (s, n) => { setScript(s); setNote(n || ""); setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50); };
   useEffect(() => { let on = true; Bridge.sample().then((s) => on && setAi(!!s)); return () => { on = false; }; }, []);
 
   const onFile = async (e) => {
@@ -70,14 +151,27 @@ function MakePage({ initialMode }) {
     setBusy(true); setNote(""); setProgress(0); setScript(null);
     ctrl.current = new AbortController();
     let s = null;
+    // Javob faqat LexBase (lex.uz bilan solishtirilgan) moddalariga tayanadi. Mos modda bo'lmasa — taxmin qilmaymiz.
+    const checks = LexCheck.run(t);
+    const rank = (m) => { const c = checks.find((x) => x.id === m.entry.id); return c ? (c.ok ? 1 : 0) : 2; };
+    const matches = LexSearch.search(t).sort((a, b) => rank(a) - rank(b));
+    const scrollOut = () => setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    if (mode === "savol" || checks.length || matches.length) {
+      setLex({ q: t, matches, checks, mode });
+      if (!matches.length && !checks.length) { setBusy(false); scrollOut(); return; }
+      try {
+        s = await generateWithAI({ text: t, level, mode, onProgress: setProgress, signal: ctrl.current.signal, context: LexSearch.context(matches, checks) });
+        s.lexBased = true;
+      } catch (e) {
+        s = mode === "savol" ? lexTemplateScript(t, matches, level, checks) : docLexScript(t, checks, matches, level);
+      }
+      setBusy(false); setScript(s); scrollOut();
+      return;
+    }
+    setLex(null);
     try {
       s = await generateWithAI({ text: t, level, mode, image, onProgress: setProgress, signal: ctrl.current.signal });
-      setNote("Ssenariyni AI yozdi. Moddalarni lex.uz bilan solishtirib tekshiring.");
     } catch (e) {
-      if (e && e.code === "unavailable") setNote("AI ulanmagan — ssenariy oflayn shablon bilan tuzildi (matndagi modda, muddat va ogohlantirishlar asosida).");
-      else if (e && e.code === "rate_limited") setNote("AI hozir band — oflayn shablon ishlatildi. Birozdan keyin qayta urinib ko'ring.");
-      else if (e && e.code === "not_granted") setNote("AI'ga ruxsat berilmadi — oflayn shablon ishlatildi.");
-      else setNote("AI javobini o'qib bo'lmadi — oflayn shablon ishlatildi.");
       if (t) s = templateScript(t, level, mode);
     }
     if (s && /^https?:\/\/(www\.)?lex\.uz/i.test(url.trim())) s.source = { title: s.source && s.source.url !== LEX.lex.url ? s.source.title : "lex.uz dagi hujjat", url: url.trim() };
@@ -90,27 +184,29 @@ function MakePage({ initialMode }) {
       <div className="page-head">
         <h2>Multfilm yasash</h2>
         <div className="seg" role="tablist">
+          <button role="tab" aria-selected={mode === "lex"} className={cx(mode === "lex" && "on")} onClick={() => setMode("lex")}>lex.uz dan qidirish</button>
           <button role="tab" aria-selected={mode === "hujjat"} className={cx(mode === "hujjat" && "on")} onClick={() => setMode("hujjat")}>Hujjatni multfilmga aylantir</button>
           <button role="tab" aria-selected={mode === "savol"} className={cx(mode === "savol" && "on")} onClick={() => setMode("savol")}>Anonim savol</button>
         </div>
       </div>
+      {mode === "lex" ? (
+      <section className="panel make-form">
+        <LexLiveSearch level={level} onScript={showScript} />
+        <div className="field">
+          <span>Kimga tushuntiramiz?</span>
+          <div className="seg levels">
+            {Object.entries(LEVELS).map(([k, v]) => <button key={k} className={cx(level === k && "on")} aria-pressed={level === k} onClick={() => setLevel(k)}>{v.label}</button>)}
+          </div>
+        </div>
+        {note && <p className="note">{note}</p>}
+      </section>
+      ) : (
       <section className="panel make-form">
         <label className="field">
           <span>{mode === "savol" ? "Savolingiz (ro'yxatdan o'tish shart emas, ism yozmang)" : "Hujjat, modda yoki kazus matni"}</span>
           <textarea rows={7} value={text} onChange={(e) => setText(e.target.value)}
             placeholder={mode === "savol" ? "Masalan: Ish beruvchi oylik bermayapti..." : "Shartnoma, rasmiy xat yoki qonun moddasini shu yerga joylang"} />
         </label>
-        <div className="row gap wrap">
-          <button className="btn ghost sm" onClick={() => setText(mode === "savol" ? SAMPLE_Q : SAMPLE_DOC)}>Namuna matn</button>
-          {mode === "hujjat" && <label className="btn ghost sm file-btn">Rasm yoki .txt yuklash<input type="file" accept="image/*,.txt,.pdf,text/plain,application/pdf" onChange={onFile} /></label>}
-        </div>
-        {fileNote && <p className="sm muted">{fileNote}</p>}
-        {mode === "hujjat" && (
-          <label className="field">
-            <span>lex.uz havolasi (ixtiyoriy — videoda manba sifatida ko'rsatiladi)</span>
-            <input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://lex.uz/docs/..." />
-          </label>
-        )}
         <div className="field">
           <span>Kimga tushuntiramiz?</span>
           <div className="seg levels">
@@ -123,12 +219,13 @@ function MakePage({ initialMode }) {
           </div>
         )}
         <div className="row gap wrap center-y">
-          <button className="btn big" onClick={generate} disabled={busy}>{busy ? "Ssenariy yozilmoqda… " + (progress ? progress + " belgi" : "") : "Multfilm yaratish"}</button>
+          <button className="btn big" onClick={generate} disabled={busy}>{busy ? "Ssenariy yozilmoqda… " + (progress ? progress + " belgi" : "") : mode === "savol" ? "Javob olish" : "Multfilm yaratish"}</button>
           {busy && <button className="btn ghost" onClick={() => ctrl.current && ctrl.current.abort()}>To'xtatish</button>}
-          <span className="sm muted">{ai === null ? "" : ai ? "AI rejimi: Claude ulangan" : "AI ulanmagan: oflayn shablon ishlaydi"}</span>
         </div>
         {note && <p className="note">{note}</p>}
       </section>
+      )}
+      {lex && lex.mode === mode && <LexAnswer data={lex} refEl={script ? null : out} />}
       {script && (
         <div className="stack-lg" ref={out}>
           <div className="case-head"><span className="pill">{LEVELS[script.level] ? LEVELS[script.level].label : "Multfilm"}</span><h2>{script.title}</h2></div>
@@ -142,6 +239,54 @@ function MakePage({ initialMode }) {
         </div>
       )}
     </div>
+  );
+}
+
+/* Anonim savolga javob: lex.uz bilan solishtirilgan bazadan topilgan moddalar */
+function LexAnswer({ data, refEl }) {
+  const P = LexSearch.pick;
+  const d = LEXBASE_CHECKED.split("-").reverse().join(".");
+  return (
+    <section className="panel lex-answer" ref={refEl} aria-live="polite">
+      <div className="lex-head">
+        <span className="lex-badge">lex.uz asosida</span>
+        <h3>Qonun nima deydi</h3>
+      </div>
+      <p className="sm muted">Javob faqat platformadagi huquqiy bazaga tayanadi: <span className="notr">{LEXBASE.length}</span> ta modda. lex.uz bilan solishtirilgan sana: <span className="notr">{d}</span></p>
+      {data.checks && data.checks.length > 0 && (
+        <div className="lex-checks">
+          {data.checks.map((c) => (
+            <div key={c.id} className={cx("lex-check", c.ok ? "ok" : "bad", c.soft && "soft")}>
+              <b className="notr">{c.ok ? "✓" : "✗"}</b>
+              <div><p>{P(c.msg)}</p><span className="lex-ref notr">{LexSearch.ref(LEXBASE.find((e) => e.id === c.id))}</span></div>
+            </div>
+          ))}
+        </div>
+      )}
+      {data.matches.length ? (
+        <div className="lex-list">
+          {data.matches.map(({ entry: e }, i) => (
+            <article key={e.id} className={cx("lex-card", i === 0 && "top")}>
+              <div className="lex-ref notr">{LexSearch.ref(e)}</div>
+              <h4>{P(e.title)}</h4>
+              <p>{P(e.text)}</p>
+              <div className="lex-foot">
+                <a href={LexSearch.url(e)} target="_blank" rel="noopener">lex.uz'da rasmiy matnni ochish ↗</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="lex-none">
+          <b>Bazada bu savolga mos modda topilmadi.</b>
+          <p>Taxmin qilib javob bermaymiz — noto'g'ri huquqiy ma'lumot zarar keltirishi mumkin. Savolni boshqacha so'zlar bilan yozib ko'ring yoki rasmiy manbadan qidiring.</p>
+          <div className="row gap wrap">
+            <a className="btn ghost sm" href="https://lex.uz" target="_blank" rel="noopener">lex.uz'da qidirish ↗</a>
+          </div>
+          <p className="sm muted">Murakkab holatda bepul yuridik yordam yoki advokatga murojaat qiling (Konstitutsiya, 29-modda).</p>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -231,11 +376,14 @@ function VoiceSettings() {
       <div className="field">
         <span>Ovoz manbai</span>
         <div className="seg">
-          {[["auto", "Avtomatik"], ["claude", "Claude ovozi"], ["browser", "Brauzer ovozi"]].map(([k, l]) => (
-            <button key={k} className={cx((s.voiceEngine || "auto") === k && "on")} disabled={k === "claude" && claudeOk === false}
+          {[["auto", "Avtomatik"], ["studio", "Studiya ovozi"], ["claude", "Claude ovozi"], ["browser", "Brauzer ovozi"]].map(([k, l]) => (
+            <button key={k} className={cx((s.voiceEngine || "auto") === k && "on")} disabled={(k === "claude" && claudeOk === false) || (k === "studio" && !ElevenAudio.count())}
               onClick={() => set("voiceEngine", k)}>{l}</button>
           ))}
         </div>
+        {ElevenAudio.count() > 0 && ["auto", "studio"].includes(s.voiceEngine || "auto") && (
+          <p className="sm muted voice-now"><b>Studiya ovozi (ElevenLabs)</b> — {ElevenAudio.count()} ta replika professional ovozda tayyor. Qolgan (masalan, AI yasagan) videolar uchun:</p>
+        )}
         <p className="sm muted voice-now">Hozir: <b>{engine === "claude" ? "Claude ovozi (yuqori sifatli, tabiiy)" + (Voice.lang() ? " · til: " + Voice.lang() : "") : "Brauzer — " + Speech.voiceName("afandi")}</b>
           {claudeOk === false && " · Claude ovozi bu ko'rinishda mavjud emas (Claude.ai ichida Chrome yoki Edge'da ochilganda ishlaydi)."}</p>
       </div>
@@ -289,10 +437,9 @@ function ProfilePage() {
       <section className="panel settings">
         <h3>Qulaylik</h3>
         <div className="field">
-          <span>Alifbo</span>
-          <div className="seg">
-            <button className={cx(store.settings.alphabet === "lat" && "on")} onClick={() => set("alphabet", "lat")}>Lotin</button>
-            <button className={cx(store.settings.alphabet === "cyr" && "on")} onClick={() => set("alphabet", "cyr")}>Кирилл</button>
+          <span>Til</span>
+          <div className="seg notr">
+            {LANGS.map((l) => <button key={l.id} className={cx(curLang(store) === l.id && "on")} aria-pressed={curLang(store) === l.id} onClick={() => set("lang", l.id)} lang={l.html}>{l.short} · {l.name}</button>)}
           </div>
         </div>
         <Toggle k="bigFont" label="Katta shrift" desc="Barcha matnlar kattaroq" />

@@ -41,7 +41,7 @@ with sync_playwright() as p:
     pg.screenshot(path=out + "09-lessons.png", full_page=True)
     # make page offline generator
     pg.goto(url + "#make"); time.sleep(0.5)
-    pg.click("text=Namuna matn"); pg.click("text=Multfilm yaratish"); time.sleep(1.5)
+    pg.fill("textarea", "Xodimga 4 oy sinov muddati belgilanadi. Ta%s til 15 kun." % chr(39)); pg.click("text=Multfilm yaratish"); time.sleep(1.5)
     pg.screenshot(path=out + "10-make.png", full_page=True)
     # roadmap
     pg.goto(url + "#roadmap"); time.sleep(0.5)
@@ -49,7 +49,7 @@ with sync_playwright() as p:
     pg.screenshot(path=out + "11-roadmap.png", full_page=True)
     # profile + cyrillic
     pg.goto(url + "#profile"); time.sleep(0.4)
-    pg.click("text=Кирилл"); time.sleep(0.5)
+    pg.click("text=УЗБ · Ўзбекча"); time.sleep(0.5)
     pg.screenshot(path=out + "12-profile-cyr.png", full_page=True)
     # mobile
     m = page(390, 844)

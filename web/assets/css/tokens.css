@@ -1,0 +1,81 @@
+/* ==========================================================================
+   OsonQonun — dizayn tokenlari (design tokens)
+   Butun loyiha shu o‘zgaruvchilar orqali ishlaydi. Rang, shrift yoki o‘lchamni
+   o‘zgartirish kerak bo‘lsa — faqat shu faylni tahrirlang.
+   ========================================================================== */
+
+:root {
+  /* ---------- 1. Brend ranglari (asosiy palitra) ---------- */
+  --bg-primary: #0F2942;      /* rasmiy to‘q ko‘k — header, hero, footer */
+  --bg-secondary: #1E3A8A;    /* ikkinchi darajali ko‘k — urg‘u bloklar */
+  --accent-gold: #C59B27;     /* rasmiy oltin — FAQAT to‘q fonda yoki bezak chiziq sifatida */
+  --accent-blue: #0284C7;     /* interaktiv urg‘u — ikonka, fokus halqasi, hover chegarasi */
+  --surface-white: #FFFFFF;   /* asosiy sahifa va matn foni */
+  --surface-subtle: #F4F6F9;  /* bo‘limlar foni */
+  --text-main: #1E293B;       /* asosiy o‘qish matni (13.5:1+) */
+  --text-muted: #64748B;      /* yordamchi matn — faqat OQ fonda (4.76:1) */
+  --border-light: #E2E8F0;    /* ingichka chiziqlar, karta chegaralari */
+
+  /* ---------- 2. Kontrast uchun qo‘shimcha juftliklar ----------
+     #0284C7 oq fonda 4.1:1, #C59B27 esa 2.6:1 — WCAG AA (4.5:1) ga yetmaydi.
+     Shuning uchun matn va tugma uchun quyidagi to‘qroq variantlar ishlatiladi. */
+  --accent-blue-strong: #0369A1;  /* havola matni, tugma foni (oqda 5.9:1) */
+  --accent-blue-hover: #075985;   /* tugma/havola hover holati */
+  --accent-blue-soft: #E0F2FE;    /* tanlangan element, chip foni */
+  --accent-gold-ink: #8A6A12;     /* oltin rangdagi MATN oq fonda (5.1:1) */
+  --accent-gold-soft: #FBF5E3;    /* oltin urg‘uli quti foni */
+  --text-on-dark: #FFFFFF;        /* to‘q ko‘k ustidagi asosiy matn (14.8:1) */
+  --text-on-dark-muted: #CBD5E1;  /* to‘q ko‘k ustidagi yordamchi matn (10:1) */
+  --border-strong: #94A3B8;       /* input chegarasi */
+  --danger: #B91C1C;
+  --success: #15803D;
+
+  /* ---------- 3. Tipografiya ---------- */
+  --font-sans: "Inter", "Plus Jakarta Sans", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --fs-xs: 0.8125rem;   /* 13px — yorliq, sana */
+  --fs-sm: 0.875rem;    /* 14px — yordamchi matn */
+  --fs-base: 1rem;      /* 16px — interfeys matni */
+  --fs-lg: 1.125rem;    /* 18px — qonun matni, kirish matni */
+  --fs-h4: 1.125rem;    /* 18px */
+  --fs-h3: 1.25rem;     /* 20px */
+  --fs-h2: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);      /* 24–32px */
+  --fs-h1: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);   /* 30–44px */
+
+  --lh-tight: 1.2;      /* sarlavhalar */
+  --lh-ui: 1.5;         /* interfeys */
+  --lh-read: 1.7;       /* qonun matni va uzun o‘qish */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --ls-heading: -0.015em;  /* sarlavhalar biroz zichroq */
+  --ls-caps: 0.06em;       /* KATTA HARFLI yorliqlar */
+
+  --measure: 72ch;         /* o‘qish blokining optimal kengligi */
+
+  /* ---------- 4. Oraliqlar (4px setka) ---------- */
+  --space-1: 0.25rem;  /* 4  */
+  --space-2: 0.5rem;   /* 8  */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+
+  /* ---------- 5. Shakl, soya, harakat ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(15, 41, 66, 0.06);
+  --shadow-md: 0 4px 16px rgba(15, 41, 66, 0.08);
+  --focus-ring: 0 0 0 3px rgba(2, 132, 199, 0.45);
+  --transition: 0.2s ease;
+
+  --container: 1200px;
+  --header-h: 72px;
+}

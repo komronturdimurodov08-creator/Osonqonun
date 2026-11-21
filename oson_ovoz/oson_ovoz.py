@@ -16,6 +16,8 @@ Ishlatish (terminal):
   python oson_ovoz.py dizayn                  # 1-QADAM: har personajga o'zbekcha ovoz yaratish (3 tadan variant)
   python oson_ovoz.py dizayn Afandi           #          faqat bitta personaj uchun
   python oson_ovoz.py tanla Afandi 2          # 2-QADAM: yoqqan variantni saqlash (ovozlar.json avtomatik yangilanadi)
+  python oson_ovoz.py ilova                   # 3-QADAM: ilovadagi BARCHA multfilmlarni ovozlashtirish -> dist/audio/
+  python oson_ovoz.py ilova weekly-sinov      #          faqat bitta video (arzon sinov uchun)
   python oson_ovoz.py voices                  # akkauntingizdagi ovozlar ro'yxati (voice_id)
   python oson_ovoz.py test                    # har bir personajdan namuna ovoz
   python oson_ovoz.py scene namuna_ssenariy.json   # butun sahnani ovozlashtirish
@@ -179,6 +181,20 @@ def _env_yukla() -> None:
             break
 
 
+def _bor_voice(p: dict) -> bool:
+    vid = p.get("voice_id") or ""
+    return bool(vid) and not vid.startswith("SHU_YERGA")
+
+
+def audio_kalit(speaker: str, matn: str) -> str:
+    """Ilova bilan bir xil kalit (FNV-1a 32-bit, UTF-8): core.js dagi ElevenAudio.key bilan mos."""
+    h = 0x811C9DC5
+    for b in (speaker + "|" + matn).encode("utf-8"):
+        h ^= b
+        h = (h * 0x01000193) & 0xFFFFFFFF
+    return f"{h:08x}"
+
+
 class OvozXatosi(RuntimeError):
     pass
 
@@ -220,7 +236,7 @@ class OsonOvoz:
 
     def _voice_id(self, p: dict, til: str) -> str:
         vid = p.get(f"voice_id_{til}") or p.get("voice_id")
-        if not vid or vid.startswith("SHU_YERGA"):
+        if not vid or not _bor_voice({"voice_id": vid}):
             raise OvozXatosi("Personaj uchun voice_id kiritilmagan (ovozlar.json).")
         return vid
 
@@ -334,6 +350,9 @@ class OsonOvoz:
         for nom, p in self.personajlar.items():
             if faqat and nom.lower() != faqat.lower():
                 continue
+            if not faqat and _bor_voice(p):
+                print(f"  - {nom}: ovozi allaqachon bor, o'tkazib yuborildi (qayta yaratish: dizayn {nom})")
+                continue
             if not p.get("prompt"):
                 print(f"  - {nom}: ovozlar.json da 'prompt' yo'q, o'tkazib yuborildi")
                 continue
@@ -390,6 +409,52 @@ class OsonOvoz:
         self.personajlar[kalit]["voice_id"] = vid
         print(f"✓ OQ_{kalit} saqlandi (voice_id: {vid}) va ovozlar.json yangilandi")
         return vid
+
+    # — Ilova (EasyLaw) uchun: barcha multfilm replikalarini ovozlashtirish —
+    def ilova(self, faqat: str | None = None, replikalar: str | Path | None = None,
+              chiqish: str | Path | None = None, tasdiq: bool = True) -> None:
+        """replikalar.json dagi har bir replikani personajiga mos ovoz bilan dist/audio/<kalit>.mp3 ga yozadi."""
+        rep_yol = Path(replikalar or HERE / "replikalar.json")
+        if not rep_yol.exists():
+            raise OvozXatosi("replikalar.json yo'q. Avval EasyLaw papkasida: node oson_ovoz/eksport_replikalar.mjs")
+        data = json.loads(rep_yol.read_text(encoding="utf-8"))
+        papka = Path(chiqish or HERE.parent / "dist" / "audio")
+        papka.mkdir(parents=True, exist_ok=True)
+        xarita = self.cfg.get("ilova_personajlar", {})
+        teglar = self.cfg.get("emotsiya_teglari", {})
+
+        ish = []
+        for ln in data["lines"]:
+            if faqat and ln["script"] != faqat:
+                continue
+            f = papka / f"{audio_kalit(ln['speaker'], ln['text'])}.mp3"
+            if not f.exists():
+                ish.append((ln, f))
+        if not ish:
+            print("✓ Hammasi allaqachon tayyor, yangi ovoz kerak emas.")
+            return
+        harf = sum(len(ln["speakable"]) for ln, _ in ish)
+        print(f"Ovozlashtiriladi: {len(ish)} ta replika, ≈{harf} harf (≈{int(harf * 1.2)} kredit).")
+        if tasdiq and input("Davom etamizmi? (ha/yo'q): ").strip().lower() not in ("ha", "h", "y", "yes"):
+            print("Bekor qilindi.")
+            return
+        for i, (ln, f) in enumerate(ish, 1):
+            personaj = self._ilova_personaj(ln["speaker"], xarita)
+            matn = (teglar.get(ln.get("emotion", ""), "") + " " + ln["speakable"]).strip()
+            print(f"  [{i}/{len(ish)}] {ln['speaker']} → {personaj}: {ln['speakable'][:55]}")
+            self.say(personaj, matn, f, til="uz")
+        print(f"✓ Tayyor: {papka}. Endi EasyLaw papkasida: npm run build")
+
+    def _ilova_personaj(self, speaker: str, xarita: dict) -> str:
+        """Ilova personaji (afandi, qoshni...) uchun ovozi bor birinchi personajni tanlaydi."""
+        nomzodlar = xarita.get(speaker) or ["Hikoyachi"]
+        if isinstance(nomzodlar, str):
+            nomzodlar = [nomzodlar]
+        for nom in nomzodlar:
+            p = self.personajlar.get(nom)
+            if p and _bor_voice(p):
+                return nom
+        raise OvozXatosi(f"'{speaker}' uchun ovoz topilmadi (ovozlar.json → ilova_personajlar)")
 
     # — akkauntdagi ovozlar —
     def voices(self) -> list[dict]:
@@ -472,7 +537,7 @@ def _srt(timing: list[dict]) -> str:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def main(argv: list[str]) -> int:
-    if len(argv) < 2 or argv[1] not in ("voices", "test", "scene", "matn", "dizayn", "tanla"):
+    if len(argv) < 2 or argv[1] not in ("voices", "test", "scene", "matn", "dizayn", "tanla", "ilova"):
         print(__doc__)
         return 1
     buyruq = argv[1]
@@ -487,6 +552,8 @@ def main(argv: list[str]) -> int:
                   f"{labels.get('gender', '')} {labels.get('age', '')} {labels.get('accent', '')} {labels.get('language', '')}")
     elif buyruq == "test":
         ovoz.test()
+    elif buyruq == "ilova":
+        ovoz.ilova(argv[2] if len(argv) > 2 and not argv[2].startswith("-") else None, tasdiq="--ha" not in argv)
     elif buyruq == "dizayn":
         ovoz.dizayn(argv[2] if len(argv) > 2 else None)
     elif buyruq == "tanla":

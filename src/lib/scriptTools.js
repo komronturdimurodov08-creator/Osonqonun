@@ -22,7 +22,8 @@ function normalizeScript(raw) {
       speaker: CHARACTERS[l.speaker] ? l.speaker : "afandi",
       text: String(l.text).trim(),
       emotion: EMOTIONS.includes(l.emotion) ? l.emotion : "neutral",
-      gesture: GESTURES.includes(l.gesture) ? l.gesture : "none"
+      gesture: GESTURES.includes(l.gesture) ? l.gesture : "none",
+      ...(typeof l.audio === "string" ? { audio: l.audio } : {})
     }));
     let chars = (Array.isArray(scene.characters) ? scene.characters : [])
       .map((c) => (typeof c === "string" ? { id: c } : c))

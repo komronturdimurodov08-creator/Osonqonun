@@ -1,0 +1,23 @@
+# Render.com: OsonQonun (lex.uz qidiruvi + Gemini + ElevenLabs). Dashboard -> New -> Blueprint -> shu repo.
+services:
+  - type: web
+    name: osonqonun
+    runtime: python
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r server/requirements.txt
+    startCommand: python server/server.py
+    healthCheckPath: /api/holat
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: OQ_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: MAX_TTS_HARF_KUN
+        value: "40000"
+      - key: MAX_MULTFILM_SOAT
+        value: "30"
