@@ -1,35 +1,73 @@
 /* Sahifalar: Bosh sahifa, Multfilm yasash, Darslar va kazuslar, Profil */
 
+const TOPICS = [
+  { label: "Mehnat huquqi", icon: "gavel", tone: "a", to: "learn" },
+  { label: "Konstitutsiya darslari", icon: "book", tone: "b", to: "lessons" },
+  { label: "Yoshingizga mos huquqlar", icon: "scales", tone: "c", to: "roadmap" },
+  { label: "Hujjatni tushunish", icon: "scroll", tone: "d", to: "make" },
+  { label: "Huquqni himoya qilish", icon: "shield", tone: "e", to: "learn" },
+  { label: "Sud va nizolar", icon: "court", tone: "f", to: "learn" },
+  { label: "Anonim savol", icon: "section", tone: "g", to: "make", mode: "savol" },
+  { label: "Imtihonga takrorlash", icon: "pen", tone: "h", to: "recap" }
+];
+
 function HomePage({ go }) {
   const store = useStore();
+  const [q, setQ] = useState("");
   return (
     <div className="stack-lg">
-      <section className="hero">
-        <div className="hero-text">
-          <h1>Qonunni multfilm tushuntiradi</h1>
+      <section className="welcome" aria-labelledby="xush">
+        <div className="welcome-top">
+          <h1 id="xush">Xush kelibsiz!</h1>
+          <form className="search" role="search" onSubmit={(e) => { e.preventDefault(); try { sessionStorage.setItem("oq-q", q); } catch (err) {} go("make", "savol"); }}>
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2.2" /><path d="m20 20-4-4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
+            <label htmlFor="q" className="sr">Huquqiy savol</label>
+            <input id="q" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Savolingizni yozing, masalan — oylik kechiksa nima qilaman?" />
+            <button className="search-go" type="submit">Multfilm olish</button>
+          </form>
+        </div>
+        <div className="topics">
+          {TOPICS.map((t) => (
+            <button key={t.label} className={"topic t-" + t.tone} onClick={() => go(t.to, t.mode)}>
+              <svg className="topic-ico" viewBox="0 0 64 64" aria-hidden="true">{LAW_ICONS[t.icon]}</svg>
+              <span>{t.label}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+      <section className="weekly">
+        <div className="weekly-text">
+          <span className="eyebrow">Haftaning multfilmi · Mehnat huquqi</span>
+          <h2>Qonunni <em>multfilm</em> tushuntiradi</h2>
           <p>Afandi va Aqlvoy har qanday hujjat, modda yoki kazusni 1–3 daqiqalik multfilmga aylantiradi — subtitr, ovoz va lex.uz manbasi bilan.</p>
+          <div className="hero-tags"><span>1–3 daqiqa</span><span>Ovoz va subtitr</span><span>lex.uz manbasi</span></div>
         </div>
         <div className="hero-player">
-          <div className="label-row"><span className="pill hot">Haftaning multfilmi</span><span className="muted sm">Mehnat huquqi</span></div>
           <VideoPlayer key={WEEKLY.id} script={WEEKLY} onWatched={() => Store.set((s) => ({ ...s, watched: { ...s.watched, [WEEKLY.id]: true } }))} />
         </div>
       </section>
-      <div className="big-actions">
-        <button className="big-btn b1" onClick={() => go("make")}>
-          <b>Hujjatni multfilmga aylantir</b><span>Matn, rasm yoki havola — AI ssenariy yozadi</span>
-        </button>
-        <button className="big-btn b2" onClick={() => go("learn")}>
-          <b>Kazus-multfilmlar</b><span>{CASES.length} ta kazus · 5 bosqichli yechim</span>
-        </button>
-        <button className="big-btn b3" onClick={() => go("roadmap")}>
-          <b>Huquqlar yo'l xaritasi</b><span>Yoshingizga qarab qaysi huquqlar ochiladi</span>
-        </button>
-      </div>
-      <VideoMeta script={WEEKLY} />
-      <section className="panel ask-strip">
-        <div><b>Savolingiz bormi?</b><p className="muted">Ro'yxatdan o'tmasdan anonim savol bering — javob qisqa multfilm shaklida.</p></div>
-        <button className="btn" onClick={() => go("make", "savol")}>Anonim savol berish</button>
+      <section aria-labelledby="xizmatlar">
+        <div className="section-head"><h2 id="xizmatlar">Xizmatlar</h2><span className="muted sm">Ro'yxatdan o'tmasdan foydalanish mumkin</span></div>
+        <div className="big-actions">
+          <button className="big-btn b1" onClick={() => go("make")}>
+            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M10 12v5l4-2.5z" /></svg></i>
+            <b>Hujjatni multfilmga aylantirish</b><span>Matn, rasm yoki havola — AI ssenariy yozadi</span>
+          </button>
+          <button className="big-btn b2" onClick={() => go("learn")}>
+            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m14 4 6 6M10 8l6 6M12 6l3-3 6 6-3 3zM13 11l-8 8a1.5 1.5 0 0 0 2 2l8-8" /></svg></i>
+            <b>Kazus-multfilmlar</b><span>{CASES.length} ta kazus · 5 bosqichli yechim</span>
+          </button>
+          <button className="big-btn b3" onClick={() => go("roadmap")}>
+            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z" /><path d="M9 4v14M15 6v14" /></svg></i>
+            <b>Huquqlar yo'l xaritasi</b><span>Yoshingizga qarab qaysi huquqlar ochiladi</span>
+          </button>
+          <button className="big-btn b4" onClick={() => go("make", "savol")}>
+            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.2M12 17h.01" /></svg></i>
+            <b>Anonim savol berish</b><span>Javob qisqa multfilm shaklida keladi</span>
+          </button>
+        </div>
       </section>
+      <VideoMeta script={WEEKLY} />
       {store.saved.length > 0 && <SavedList />}
     </div>
   );
@@ -40,7 +78,7 @@ const SAMPLE_Q = "Ish beruvchi 2 oydan beri oylik bermayapti va «shikoyat qilsa
 
 function MakePage({ initialMode }) {
   const [mode, setMode] = useState(initialMode || "hujjat");
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => { try { const v = sessionStorage.getItem("oq-q") || ""; sessionStorage.removeItem("oq-q"); return v; } catch (e) { return ""; } });
   const [url, setUrl] = useState("");
   const [level, setLevel] = useState("fuqaro");
   const [image, setImage] = useState(null);
