@@ -1,0 +1,153 @@
+{
+  "model": "eleven_v4",
+  "output_format": "mp3_44100_128",
+  "language_code": true,
+  "kesh_papka": ".ovoz_kesh",
+  "default_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "style": 0.3,
+    "use_speaker_boost": true,
+    "speed": 1.0
+  },
+  "personajlar": {
+    "Hikoyachi": {
+      "aliases": [
+        "narrator",
+        "rovi"
+      ],
+      "tavsif": "Videoni ochib-yopadigan, ishonchli va iliq ovoz",
+      "voice_id": "oRYwEfcAiRVpWFCaEG7R",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.8,
+        "style": 0.2,
+        "speed": 0.97
+      },
+      "tillar": [
+        "uz",
+        "ru"
+      ],
+      "namuna": "Bugungi mavzu: shartnomani imzolashdan oldin nimalarga e'tibor berish kerak?",
+      "namuna_ru": "Сегодняшняя тема: на что обратить внимание перед подписанием договора?",
+      "prompt": "Middle-aged Uzbek man in his 40s, native Uzbek speaker. Warm, clear and trustworthy baritone voice. Calm documentary and educational explainer narration, medium pace, crisp diction. Clean studio recording, no background noise.",
+      "dizayn_matn": "Assalomu alaykum, aziz tomoshabinlar! Oson Qonun dasturiga xush kelibsiz. Bugungi mavzu: shartnomani imzolashdan oldin nimaga e'tibor berish kerak? Keling, birga bilib olamiz."
+    },
+    "Aqlvoy": {
+      "aliases": [
+        "yurist",
+        "lawyer"
+      ],
+      "tavsif": "Yurist — xotirjam, aniq, ishonch uyg'otadi",
+      "voice_id": "snfoPtmE32pX4NIg0olf",
+      "settings": {
+        "stability": 0.55,
+        "similarity_boost": 0.8,
+        "style": 0.2,
+        "speed": 0.98
+      },
+      "tillar": [
+        "uz",
+        "ru"
+      ],
+      "namuna": "Qonun bo'yicha, har bir fuqaro o'z huquqlarini bilishi va himoya qilishi mumkin.",
+      "namuna_ru": "По закону каждый гражданин может знать и защищать свои права.",
+      "prompt": "Uzbek man in his mid 30s, native Uzbek speaker, a friendly professional lawyer. Confident, calm, mid-low voice with precise articulation, measured pace and a reassuring, kind tone. Clean studio recording.",
+      "dizayn_matn": "Qonun bo'yicha, imzo qo'ygan odam shartnomadagi shartlarga rozi bo'lgan hisoblanadi. Shuning uchun avval diqqat bilan o'qing, tushunmagan joyingizni so'rang, keyin imzolang. Bu sizning huquqingiz."
+    },
+    "Jasur": {
+      "aliases": [
+        "o'smir",
+        "teen"
+      ],
+      "tavsif": "O'smir — tez gapiradi, qiziquvchan, biroz shoshqaloq",
+      "voice_id": "ZMXu9JGkmeqJsDBSY1hQ",
+      "settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.5,
+        "speed": 1.06
+      },
+      "tillar": [
+        "uz",
+        "ru"
+      ],
+      "namuna": "[excited] Voy, rostdanmi? Men buni umuman bilmagan ekanman-ku!",
+      "namuna_ru": "[excited] Серьёзно? Я вообще этого не знал!",
+      "prompt": "Young Uzbek man around 18, native Uzbek speaker. Energetic, curious and slightly cheeky, fast-talking, bright mid-high voice, very expressive and playful. Clean studio recording.",
+      "dizayn_matn": "Voy, bobo, qarang! Yangi telefonni bo'lib to'lashga oldim, faqat bitta qog'ozga qo'l qo'ydim, xolos! O'qib o'tirmadim, juda uzun ekan-da. Nima, shuning nimasi yomon ekan?"
+    },
+    "Nilufar": {
+      "aliases": [
+        "jurnalist",
+        "journalist"
+      ],
+      "tavsif": "Jurnalist — ravon, aniq diksiya, savol beruvchi",
+      "voice_id": "ACXFelHywk90OyghWBU2",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.8,
+        "style": 0.3,
+        "speed": 1.03
+      },
+      "tillar": [
+        "uz",
+        "ru"
+      ],
+      "namuna": "Aqlvoy aka, tomoshabinlarimizni bir savol qiziqtiryapti: bu holatda nima qilish kerak?",
+      "namuna_ru": "Аклвой, наших зрителей интересует вопрос: что делать в такой ситуации?",
+      "prompt": "Uzbek woman in her late 20s, native Uzbek speaker, a TV news journalist. Clear, bright and articulate voice, confident and friendly, broadcast-style diction, medium-fast pace. Clean studio recording.",
+      "dizayn_matn": "Hurmatli tomoshabinlar, bugun biz yurist Aqlvoy aka bilan suhbatlashamiz. Aqlvoy aka, tomoshabinlarimizni bir savol qiziqtiryapti: agar shartnomani o'qimasdan imzolab qo'ysak, nima bo'ladi?"
+    },
+    "Bekzod": {
+      "aliases": [
+        "o'quvchi",
+        "schoolboy"
+      ],
+      "tavsif": "Maktab o'quvchisi — yosh, quvnoq ovoz (Voice Library'dan bola ovozi tanlash tavsiya etiladi)",
+      "voice_id": "PSR0IbgMZG87LijkL8LK",
+      "settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.55,
+        "speed": 1.08
+      },
+      "tillar": [
+        "uz",
+        "ru"
+      ],
+      "namuna": "[curious] Ustoz, agar telefonimni kimdir olib qo'ysa, men nima qilishim kerak?",
+      "namuna_ru": "[curious] Учитель, а если кто-то заберёт мой телефон, что мне делать?",
+      "prompt": "Young Uzbek woman in her early 20s, native Uzbek speaker. Light, bright, high-pitched, cheerful and playful voice, energetic and curious, animated cartoon dubbing style. Clean studio recording.",
+      "dizayn_matn": "Ustoz, ustoz! Men bir narsani tushunmadim. Demak, agar men shartnomani tushunmasam, uni imzolamasligim ham mumkinmi? Hech kim meni majburlay olmaydimi? Zo'r-ku!"
+    },
+    "Afandi": {
+      "aliases": [
+        "bobo",
+        "grandfather",
+        "nasriddin"
+      ],
+      "tavsif": "Afandi bobo — keksa, hazilkash, sekin va donishmand",
+      "voice_id": "LoM8H2RtJXAmZ4hvKTtu",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.55,
+        "speed": 0.9
+      },
+      "tillar": [
+        "uz",
+        "ru"
+      ],
+      "namuna": "[laughs] Ey bolam, qonunni bilmaslik javobgarlikdan ozod qilmaydi-da!",
+      "namuna_ru": "[laughs] Эх, сынок, незнание закона не освобождает от ответственности!",
+      "prompt": "Elderly Uzbek man in his 70s, native Uzbek speaker, a wise and humorous village storyteller. Warm, deep, slightly raspy voice, slow relaxed pace, mischievous chuckling tone. Clean studio recording.",
+      "dizayn_matn": "Ey bolam, bolam... Qonunni bilmaslik javobgarlikdan ozod qilmaydi-da! Eshak ham yukini bilib ko'taradi, sen bo'lsang bilmay imzolabsan. Kel, o'tir, bir gap aytib beray."
+    }
+  },
+  "qisqartmalar": {
+    "LexCartoon": "Leks Kartun",
+    "OsonQonun": "Oson Qonun"
+  },
+  "dizayn_model": "eleven_ttv_v3"
+}
