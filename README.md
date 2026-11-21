@@ -35,6 +35,10 @@ docs/script-schema.json    video-ssenariy JSON sxemasi
 build.mjs                  bitta oflayn HTML yig'uvchi
 ```
 
+## lex.uz dan jonli qidirish (server)
+
+"Multfilm yasash → lex.uz dan qidirish": foydalanuvchi hujjat nomi yoki savolini yozadi, server lex.uz dan rasmiy matnni olib, Gemini orqali multfilm ssenariysini yozadi, personajlar ElevenLabs ovozida gapiradi. Ishga tushirish va internetga joylash: `server/README.md`.
+
 ## Studiya ovozi (ElevenLabs)
 
 Personajlar professional o'zbekcha ovozda gapiradi: `dist/audio/*.mp3` ni `oson_ovoz` moduli yaratadi, pleyer ularni avtomatik o'ynaydi (fayl bo'lmasa — Claude yoki brauzer ovozi). Batafsil: `oson_ovoz/README.md`, 9-bo'lim.
@@ -61,6 +65,6 @@ Namuna moddalar lex.uz dagi amaldagi tahrirlar asosida tayyorlangan: Konstitutsi
 ## Keyingi bosqichlar
 
 - Supabase: ro'yxatdan o'tish, bir nechta qurilmada progress, o'qituvchi paneli (guruhlar)
-- PDF'dan matn ajratish (pdf.js), lex.uz havolasidan matnni server orqali olish
+- PDF'dan matn ajratish (pdf.js)
 - Ssenariydan haqiqiy MP4 multfilm (personaj etalon rasmi asosida AI video) va 9:16 eksport
 - Qolgan fanlar: Fuqarolik, Jinoyat, Ma'muriy, Oila, protsessual huquq; rus va ingliz tillari

@@ -51,7 +51,7 @@ function App() {
       <main className="main">
         {tab === "home" && route === "roadmap" && <><button className="link-back" onClick={() => go("home")}>← Bosh sahifa</button><RightsRoadmap /></>}
         {route === "home" && <HomePage go={go} />}
-        {tab === "make" && <MakePage initialMode={route === "savol" ? "savol" : "hujjat"} />}
+        {tab === "make" && <MakePage initialMode={route === "savol" ? "savol" : undefined} />}
         {tab === "learn" && <LearnPage sub={route} go={go} />}
         {route === "profile" && <ProfilePage />}
         <footer className="foot"><span className="notr">OsonQonun</span> · Lex hackatoni, 2-yo'nalish: huquqiy ta'lim va targ'ibot · Videolar ta'limiy maqsadda, yuridik maslahat emas · Manba: <a href="https://lex.uz" target="_blank" rel="noopener">lex.uz</a></footer>

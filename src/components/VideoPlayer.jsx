@@ -98,13 +98,15 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
     if (it.first && sc.stop && !st.unlocked[it.s]) {
       st.playing = false; silenceAll(); setStopOpen(true); render(); return;
     }
-    if (st.playing && st.voice && it.text && ElevenAudio.has(it.speaker, it.text)) {
+    const au = it.l >= 0 ? script.scenes[it.s].lines[it.l].audio : undefined;
+    if (au) [1, 2].forEach((d) => { const n = tl.items[i + d]; if (n && n.l >= 0) ElevenAudio.prefetch(script.scenes[n.s].lines[n.l].audio); });
+    if (st.playing && st.voice && it.text && ElevenAudio.has(it.speaker, it.text, au)) {
       // Studiya ovozi (ElevenLabs): tayyor mp3 — replika tugagach keyingisiga o'tamiz
       stopReading(); Speech.cancel();
       st.studio = true; st.speechDone = false;
       ElevenAudio.play(it.speaker, it.text, st.speed,
         () => { const s = S.current; if (s.idx === i) { s.speechDone = true; s.doneAt = performance.now(); } },
-        () => { const s = S.current; if (s.idx === i) { s.studio = false; if (s.playing) begin(i); } });
+        () => { const s = S.current; if (s.idx === i) { s.studio = false; if (s.playing) begin(i); } }, au);
     } else if (st.playing && st.voice && it.text) {
       ElevenAudio.stop();
       if (st.engine === "claude" && tts.current) {

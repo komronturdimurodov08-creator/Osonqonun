@@ -38,6 +38,70 @@ function HomePage({ go }) {
 const SAMPLE_DOC = "MEHNAT SHARTNOMASI (namuna). 1. Xodim sotuv bo'limiga menejer lavozimiga qabul qilinadi. 2. Xodimga 4 oy muddatga dastlabki sinov belgilanadi. 3. Ish vaqti haftasiga 40 soat. 4. Xodimga har yili 15 ish kuni ta'til beriladi. 5. Xodim ishdan bo'shamoqchi bo'lsa, ish beruvchini 14 kalendar kun oldin yozma ogohlantirishi shart. 6. Mehnat intizomini buzganlik uchun jarima qo'llanilishi mumkin.";
 const SAMPLE_Q = "Ish beruvchi 2 oydan beri oylik bermayapti va «shikoyat qilsang bo'shataman» deyapti. Nima qilishim kerak?";
 
+/* lex.uz dan jonli qidirish: so'rov -> hujjatlar -> tanlangan hujjat moddalaridan multfilm (server orqali) */
+const LEX_NAMUNA = ["Ishga kirsam sinov muddati qancha bo'ladi?", "Iste'molchi sifatida sifatsiz tovarni qaytarish", "Mehnat kodeksi 130-modda", "Ota-onaning bola oldidagi majburiyatlari"];
+function LexSearch({ level, onScript }) {
+  const [q, setQ] = useState("");
+  const [busy, setBusy] = useState("");
+  const [res, setRes] = useState(null);
+  const [err, setErr] = useState("");
+  const [srv, setSrv] = useState(undefined);
+  const ctrl = useRef(null);
+  useEffect(() => { let on = true; Api.holat().then((h) => on && setSrv(h)); return () => { on = false; }; }, []);
+  const search = async (text) => {
+    const t = (text != null ? text : q).trim();
+    if (t.length < 3) { setErr("Hujjat nomi yoki savolingizni yozing."); return; }
+    setQ(t); setErr(""); setRes(null); setBusy("Qidirilmoqda: lex.uz…");
+    try { const d = await Api.qidir(t); setRes(d.natijalar || []); if (!(d.natijalar || []).length) setErr("Hech narsa topilmadi. Boshqacha yozib ko'ring: masalan, hujjat nomi bilan."); }
+    catch (e) { setErr(e.message || "Qidiruvda xato"); }
+    setBusy("");
+  };
+  const make = async (d) => {
+    setErr(""); setBusy("«" + d.title.slice(0, 50) + "» — lex.uz dan matn olinmoqda va ssenariy yozilmoqda… (20-40 soniya)");
+    ctrl.current = new AbortController();
+    try {
+      const raw = await Api.multfilm({ id: d.id, q, moddalar: d.moddalar, daraja: level, title: d.title }, ctrl.current.signal);
+      const s = normalizeScript(raw);
+      const arts = (raw.manbaModdalar || []).map((m) => m.n + "-modda").join(", ");
+      onScript(s, "Ssenariy lex.uz dagi rasmiy matn asosida yozildi" + (arts ? " (" + arts + ")" : "") + ". Baribir yurist tekshiruvidan o'tkazing.");
+    } catch (e) { if (!(e && e.name === "AbortError")) setErr(e.message || "Multfilm yasab bo'lmadi"); }
+    setBusy("");
+  };
+  if (srv === undefined) return <p className="sm muted">Server tekshirilmoqda…</p>;
+  if (!srv) return (
+    <div className="note">lex.uz dan qidirish uchun ilova <b>OsonQonun serveri</b> orqali ochilishi kerak (masalan, <span className="notr">http://localhost:8000</span> yoki internetdagi havola). Fayl sifatida ochilganda bu bo'lim ishlamaydi — «Hujjatni multfilmga aylantir» bo'limidan foydalaning.</div>
+  );
+  return (
+    <div className="stack">
+      <label className="field">
+        <span>Qaysi hujjat yoki qanday savol? (lex.uz dan qidiriladi)</span>
+        <div className="row gap">
+          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && search()}
+            placeholder="Masalan: Mehnat kodeksi sinov muddati" style={{ flex: 1 }} />
+          <button className="btn" onClick={() => search()} disabled={!!busy}>Qidirish</button>
+        </div>
+      </label>
+      <div className="row gap wrap">{LEX_NAMUNA.map((x) => <button key={x} className="btn ghost sm" onClick={() => search(x)} disabled={!!busy}>{x}</button>)}</div>
+      {!srv.ai && <p className="note">Serverda Gemini kaliti yo'q: qidiruv ishlaydi, lekin multfilm yozilmaydi.</p>}
+      {busy && <p className="note">{busy} {ctrl.current && busy.indexOf("ssenariy") > 0 && <button className="btn ghost sm" onClick={() => ctrl.current.abort()}>To'xtatish</button>}</p>}
+      {err && <p className="note">{err}</p>}
+      {res && res.length > 0 && (
+        <div className="lex-results stack">
+          {res.map((d) => (
+            <div key={d.id} className="panel lex-item row between gap wrap">
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <b>{d.title}</b>
+                <div className="sm muted">{d.sabab}{d.moddalar && d.moddalar.length ? " · moddalar: " + d.moddalar.join(", ") : ""} · <a href={d.url} target="_blank" rel="noopener">lex.uz da ochish ↗</a></div>
+              </div>
+              <button className="btn sm" onClick={() => make(d)} disabled={!!busy || !srv.ai}>Multfilm yasash</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function MakePage({ initialMode }) {
   const [mode, setMode] = useState(initialMode || "hujjat");
   const [text, setText] = useState("");
@@ -52,7 +116,14 @@ function MakePage({ initialMode }) {
   const [ai, setAi] = useState(null);
   const ctrl = useRef(null);
   const out = useRef(null);
-  useEffect(() => { setMode(initialMode || "hujjat"); }, [initialMode]);
+  // Server bo'lsa — standart bo'lim "lex.uz dan qidirish", aks holda "Hujjatni multfilmga aylantir"
+  useEffect(() => {
+    let on = true;
+    if (initialMode) setMode(initialMode);
+    else Api.holat().then((h) => on && setMode(h && h.server ? "lex" : "hujjat"));
+    return () => { on = false; };
+  }, [initialMode]);
+  const showScript = (s, n) => { setScript(s); setNote(n || ""); setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50); };
   useEffect(() => { let on = true; Bridge.sample().then((s) => on && setAi(!!s)); return () => { on = false; }; }, []);
 
   const onFile = async (e) => {
@@ -90,10 +161,23 @@ function MakePage({ initialMode }) {
       <div className="page-head">
         <h2>Multfilm yasash</h2>
         <div className="seg" role="tablist">
+          <button role="tab" aria-selected={mode === "lex"} className={cx(mode === "lex" && "on")} onClick={() => setMode("lex")}>lex.uz dan qidirish</button>
           <button role="tab" aria-selected={mode === "hujjat"} className={cx(mode === "hujjat" && "on")} onClick={() => setMode("hujjat")}>Hujjatni multfilmga aylantir</button>
           <button role="tab" aria-selected={mode === "savol"} className={cx(mode === "savol" && "on")} onClick={() => setMode("savol")}>Anonim savol</button>
         </div>
       </div>
+      {mode === "lex" ? (
+      <section className="panel make-form">
+        <LexSearch level={level} onScript={showScript} />
+        <div className="field">
+          <span>Kimga tushuntiramiz?</span>
+          <div className="seg levels">
+            {Object.entries(LEVELS).map(([k, v]) => <button key={k} className={cx(level === k && "on")} aria-pressed={level === k} onClick={() => setLevel(k)}>{v.label}</button>)}
+          </div>
+        </div>
+        {note && <p className="note">{note}</p>}
+      </section>
+      ) : (
       <section className="panel make-form">
         <label className="field">
           <span>{mode === "savol" ? "Savolingiz (ro'yxatdan o'tish shart emas, ism yozmang)" : "Hujjat, modda yoki kazus matni"}</span>
@@ -129,6 +213,7 @@ function MakePage({ initialMode }) {
         </div>
         {note && <p className="note">{note}</p>}
       </section>
+      )}
       {script && (
         <div className="stack-lg" ref={out}>
           <div className="case-head"><span className="pill">{LEVELS[script.level] ? LEVELS[script.level].label : "Multfilm"}</span><h2>{script.title}</h2></div>

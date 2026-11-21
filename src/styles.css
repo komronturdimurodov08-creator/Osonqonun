@@ -359,3 +359,7 @@ textarea:focus,input:focus{border-color:var(--lapis);outline:none;box-shadow:0 0
 .ext-steps{margin-top:.8rem;background:var(--soft);border-radius:14px;padding:.8rem 1rem}
 .ext-steps ol{margin:0;padding-left:1.2rem}.ext-steps li{margin:.5rem 0}.ext-steps li .row{margin-top:.4rem}
 .prompt{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;font-size:13px;margin:.5rem 0;max-height:220px;overflow:auto}
+
+/* lex.uz qidiruvi */
+.lex-item{padding:.8rem 1rem;align-items:center}
+.lex-item b{display:block;margin-bottom:.2rem;line-height:1.3}
