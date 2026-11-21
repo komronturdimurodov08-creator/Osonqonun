@@ -305,7 +305,7 @@ function LearnPage({ sub, go }) {
       </div>
       {tab === "cases" ? (cs ? <CaseVideo cs={cs} onBack={() => setCaseId(null)} /> : (
         <>
-          <p className="muted">Har bir kazus: voqea multfilmi → «Siz qanday hal qilardingiz?» → Afandi va Aqlvoy bilan 5 bosqichli yechim → ko'p uchraydigan xatolar. Javobingizni yozsangiz, u yechim bilan solishtiriladi.</p>
+          <p className="muted">Har bir kazus: voqea multfilmi → «Siz qanday hal qilardingiz?» → Afandi va Aqlvoy bilan 5 bosqichli yechim.</p>
           <CaseList onOpen={setCaseId} />
           <p className="sm muted">Fanlar: Konstitutsiyaviy va Mehnat huquqi (MVP). Keyingi bosqich: Fuqarolik, Jinoyat, Ma'muriy, Oila va protsessual huquq.</p>
         </>

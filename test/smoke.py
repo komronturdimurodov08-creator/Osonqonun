@@ -32,8 +32,7 @@ with sync_playwright() as p:
     for i in range(3): pg.click("button[aria-label='Keyingi sahna']"); time.sleep(0.3)
     time.sleep(1.5)
     pg.screenshot(path=out + "07-case-stop.png")
-    pg.fill("textarea", "Faktlar: uy egasining roziligisiz, sud qarorisiz tintuv. Qoida: Konstitutsiya 31-modda. Tahlil: mahalla raisi sud emas. Xulosa: tintuv noqonuniy, sudga shikoyat qilish kerak (55-modda).")
-    pg.click("text=Javobni yuborish va yechimni ko'rish"); time.sleep(3)
+    pg.click(".stop-card >> text=Yechimni ko'rsat"); time.sleep(2)
     pg.screenshot(path=out + "08-case-solution.png", full_page=True)
     # lessons
     pg.goto(url + "#lessons"); time.sleep(0.6)
