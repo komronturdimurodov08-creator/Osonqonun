@@ -1,0 +1,17 @@
+{
+  "nomi": "1-sahna_shartnoma",
+  "til": "uz",
+  "orqa_pauza": 0.35,
+  "replikalar": [
+    { "personaj": "Hikoyachi", "matn": "Oson Qonun. Bugungi mavzu: shartnomani imzolashdan oldin nimaga e'tibor berish kerak?", "pauza": 0.6 },
+    { "personaj": "Jasur", "matn": "[excited] Bobo, qarang! Telefonni bo'lib to'lashga oldim, faqat bitta qog'ozga qo'l qo'ydim, xolos!" },
+    { "personaj": "Afandi", "matn": "[sighs] Ey bolam... O'sha qog'ozni o'qidingmi o'zi?" },
+    { "personaj": "Jasur", "matn": "[hesitant] Yo'q... Juda uzun ekan-da. 12 bet!" },
+    { "personaj": "Afandi", "matn": "[laughs] Eshak ham yukini bilib ko'taradi, sen bo'lsang bilmay imzolabsan-da!", "pauza": 0.7 },
+    { "personaj": "Nilufar", "matn": "Aqlvoy aka, bunday holatlar ko'p uchraydimi? Tomoshabinlarga nima maslahat berasiz?" },
+    { "personaj": "Aqlvoy", "matn": "Juda ko'p uchraydi. Imzo qo'ygan odam shartnomadagi shartlarga rozi bo'lgan hisoblanadi. Shuning uchun avval o'qing, tushunmagan joyingizni so'rang, keyin imzolang." },
+    { "personaj": "Bekzod", "matn": "[curious] Demak, tushunmasam, imzolamasligim ham mumkinmi?" },
+    { "personaj": "Aqlvoy", "matn": "[warmly] Albatta, Bekzod. Imzolash — sizning ixtiyoringiz. Hech kim sizni majburlay olmaydi.", "pauza": 0.6 },
+    { "personaj": "Hikoyachi", "matn": "Avval o'qing — keyin imzolang. Oson Qonun bilan huquqingizni biling!" }
+  ]
+}

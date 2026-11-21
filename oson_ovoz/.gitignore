@@ -1,0 +1,5 @@
+.env
+.ovoz_kesh/
+ovoz_natija/
+ovoz_test/
+__pycache__/

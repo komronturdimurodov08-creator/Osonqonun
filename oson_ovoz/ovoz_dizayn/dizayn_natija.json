@@ -1,0 +1,122 @@
+{
+  "Hikoyachi": {
+    "prompt": "Middle-aged Uzbek man in his 40s, native Uzbek speaker. Warm, clear and trustworthy baritone voice. Calm documentary and educational explainer narration, medium pace, crisp diction. Clean studio recording, no background noise.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "oRYwEfcAiRVpWFCaEG7R",
+        "fayl": "ovoz_dizayn\\Hikoyachi_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "87tkQj5qNOAeHjAHlYhl",
+        "fayl": "ovoz_dizayn\\Hikoyachi_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "cqvIma8HHBhWqggOcQEk",
+        "fayl": "ovoz_dizayn\\Hikoyachi_3.mp3"
+      }
+    ]
+  },
+  "Aqlvoy": {
+    "prompt": "Uzbek man in his mid 30s, native Uzbek speaker, a friendly professional lawyer. Confident, calm, mid-low voice with precise articulation, measured pace and a reassuring, kind tone. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "snfoPtmE32pX4NIg0olf",
+        "fayl": "ovoz_dizayn\\Aqlvoy_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "YhhleGLWbmqiRhUtR1hT",
+        "fayl": "ovoz_dizayn\\Aqlvoy_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "rKYjrxcUkrmFqKfhxYCw",
+        "fayl": "ovoz_dizayn\\Aqlvoy_3.mp3"
+      }
+    ]
+  },
+  "Jasur": {
+    "prompt": "Young Uzbek man around 18, native Uzbek speaker. Energetic, curious and slightly cheeky, fast-talking, bright mid-high voice, very expressive and playful. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "ZMXu9JGkmeqJsDBSY1hQ",
+        "fayl": "ovoz_dizayn\\Jasur_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "sO6PPYMN7wpnUtfpqqC1",
+        "fayl": "ovoz_dizayn\\Jasur_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "ilU8VS8gSEdIPLFwFvar",
+        "fayl": "ovoz_dizayn\\Jasur_3.mp3"
+      }
+    ]
+  },
+  "Nilufar": {
+    "prompt": "Uzbek woman in her late 20s, native Uzbek speaker, a TV news journalist. Clear, bright and articulate voice, confident and friendly, broadcast-style diction, medium-fast pace. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "ACXFelHywk90OyghWBU2",
+        "fayl": "ovoz_dizayn\\Nilufar_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "97E5PcjvQ5xSEJiX76Pv",
+        "fayl": "ovoz_dizayn\\Nilufar_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "OQzF1cACvGWmg1yZqFWu",
+        "fayl": "ovoz_dizayn\\Nilufar_3.mp3"
+      }
+    ]
+  },
+  "Afandi": {
+    "prompt": "Elderly Uzbek man in his 70s, native Uzbek speaker, a wise and humorous village storyteller. Warm, deep, slightly raspy voice, slow relaxed pace, mischievous chuckling tone. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "LoM8H2RtJXAmZ4hvKTtu",
+        "fayl": "ovoz_dizayn\\Afandi_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "IIOzDb90qGffqJci7uHs",
+        "fayl": "ovoz_dizayn\\Afandi_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "QCaniGiRVgyMYqaeFEpW",
+        "fayl": "ovoz_dizayn\\Afandi_3.mp3"
+      }
+    ]
+  },
+  "Bekzod": {
+    "prompt": "Young Uzbek woman in her early 20s, native Uzbek speaker. Light, bright, high-pitched, cheerful and playful voice, energetic and curious, animated cartoon dubbing style. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "PSR0IbgMZG87LijkL8LK",
+        "fayl": "ovoz_dizayn\\Bekzod_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "YRuxualBR4iTT8FGhBCp",
+        "fayl": "ovoz_dizayn\\Bekzod_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "knuGVFm4DNKNyG68Ttmp",
+        "fayl": "ovoz_dizayn\\Bekzod_3.mp3"
+      }
+    ]
+  }
+}
