@@ -275,7 +275,7 @@ function VideoMeta({ script, extra }) {
     <div className="vmeta">
       <div className="vmeta-head">
         <h3>Qisqa konspekt</h3>
-        <span className={cx("badge", script.verified ? "ok" : "warn")}>{script.verified ? "Tekshirilgan ✓" : "Yurist tekshiruvi kutilmoqda"}</span>
+        {script.verified && <span className="badge ok">Tekshirilgan ✓</span>}
       </div>
       <ul className="konspekt">{script.summary.map((x, i) => <li key={i}>{x}</li>)}</ul>
       <p className="src">Manba: <a href={script.source.url} target="_blank" rel="noopener">{script.source.title}</a> <span className="muted notr">({script.source.url.replace("https://", "")})</span></p>
@@ -287,7 +287,6 @@ function VideoMeta({ script, extra }) {
         {extra}
       </div>
       {msg && <div className="toast" role="status">{msg}</div>}
-      <ExternalVideo script={script} />
       <p className="disclaimer">Bu video ta'limiy maqsadda, yuridik maslahat emas. Vertikal (9:16) ko'rinish uchun pleyerdagi telefon tugmasini bosing.</p>
     </div>
   );

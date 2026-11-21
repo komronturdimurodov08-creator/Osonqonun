@@ -34,35 +34,8 @@ function HomePage({ go }) {
         </div>
       </section>
       <section className="weekly">
-        <div className="weekly-text">
-          <span className="eyebrow">Haftaning multfilmi · Mehnat huquqi</span>
-          <h2>Qonunni multfilm tushuntiradi</h2>
-          <p>Afandi va Aqlvoy har qanday hujjat, modda yoki kazusni 1–3 daqiqalik multfilmga aylantiradi — subtitr, ovoz va lex.uz manbasi bilan.</p>
-          <div className="hero-tags"><span>1–3 daqiqa</span><span>Ovoz va subtitr</span><span>lex.uz manbasi</span></div>
-        </div>
         <div className="hero-player">
           <VideoPlayer key={WEEKLY.id} script={WEEKLY} onWatched={() => Store.set((s) => ({ ...s, watched: { ...s.watched, [WEEKLY.id]: true } }))} />
-        </div>
-      </section>
-      <section aria-labelledby="xizmatlar">
-        <div className="section-head"><h2 id="xizmatlar">Xizmatlar</h2><span className="muted sm">Ro'yxatdan o'tmasdan foydalanish mumkin</span></div>
-        <div className="big-actions">
-          <button className="big-btn b1" onClick={() => go("make")}>
-            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M10 12v5l4-2.5z" /></svg></i>
-            <b>Hujjatni multfilmga aylantirish</b><span>Matn, rasm yoki havola — AI ssenariy yozadi</span>
-          </button>
-          <button className="big-btn b2" onClick={() => go("learn")}>
-            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m14 4 6 6M10 8l6 6M12 6l3-3 6 6-3 3zM13 11l-8 8a1.5 1.5 0 0 0 2 2l8-8" /></svg></i>
-            <b>Kazus-multfilmlar</b><span>{CASES.length} ta kazus · 5 bosqichli yechim</span>
-          </button>
-          <button className="big-btn b3" onClick={() => go("roadmap")}>
-            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z" /><path d="M9 4v14M15 6v14" /></svg></i>
-            <b>Huquqlar yo'l xaritasi</b><span>Yoshingizga qarab qaysi huquqlar ochiladi</span>
-          </button>
-          <button className="big-btn b4" onClick={() => go("make", "savol")}>
-            <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.2M12 17h.01" /></svg></i>
-            <b>Anonim savol berish</b><span>Javob qisqa multfilm shaklida keladi</span>
-          </button>
         </div>
       </section>
       <VideoMeta script={WEEKLY} />
@@ -115,7 +88,6 @@ function MakePage({ initialMode }) {
       try {
         s = await generateWithAI({ text: t, level, mode, onProgress: setProgress, signal: ctrl.current.signal, context: LexSearch.context(matches) });
         s.lexBased = true;
-        setNote("Ssenariyni AI faqat topilgan moddalar asosida yozdi.");
       } catch (e) {
         s = lexTemplateScript(t, matches, level);
       }
@@ -125,12 +97,7 @@ function MakePage({ initialMode }) {
     }
     try {
       s = await generateWithAI({ text: t, level, mode, image, onProgress: setProgress, signal: ctrl.current.signal });
-      setNote("Ssenariyni AI yozdi. Moddalarni lex.uz bilan solishtirib tekshiring.");
     } catch (e) {
-      if (e && e.code === "unavailable") setNote("AI ulanmagan — ssenariy oflayn shablon bilan tuzildi (matndagi modda, muddat va ogohlantirishlar asosida).");
-      else if (e && e.code === "rate_limited") setNote("AI hozir band — oflayn shablon ishlatildi. Birozdan keyin qayta urinib ko'ring.");
-      else if (e && e.code === "not_granted") setNote("AI'ga ruxsat berilmadi — oflayn shablon ishlatildi.");
-      else setNote("AI javobini o'qib bo'lmadi — oflayn shablon ishlatildi.");
       if (t) s = templateScript(t, level, mode);
     }
     if (s && /^https?:\/\/(www\.)?lex\.uz/i.test(url.trim())) s.source = { title: s.source && s.source.url !== LEX.lex.url ? s.source.title : "lex.uz dagi hujjat", url: url.trim() };
@@ -153,17 +120,6 @@ function MakePage({ initialMode }) {
           <textarea rows={7} value={text} onChange={(e) => setText(e.target.value)}
             placeholder={mode === "savol" ? "Masalan: Ish beruvchi oylik bermayapti..." : "Shartnoma, rasmiy xat yoki qonun moddasini shu yerga joylang"} />
         </label>
-        <div className="row gap wrap">
-          <button className="btn ghost sm" onClick={() => setText(mode === "savol" ? SAMPLE_Q : SAMPLE_DOC)}>Namuna matn</button>
-          {mode === "hujjat" && <label className="btn ghost sm file-btn">Rasm yoki .txt yuklash<input type="file" accept="image/*,.txt,.pdf,text/plain,application/pdf" onChange={onFile} /></label>}
-        </div>
-        {fileNote && <p className="sm muted">{fileNote}</p>}
-        {mode === "hujjat" && (
-          <label className="field">
-            <span>lex.uz havolasi (ixtiyoriy — videoda manba sifatida ko'rsatiladi)</span>
-            <input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://lex.uz/docs/..." />
-          </label>
-        )}
         <div className="field">
           <span>Kimga tushuntiramiz?</span>
           <div className="seg levels">
@@ -178,7 +134,6 @@ function MakePage({ initialMode }) {
         <div className="row gap wrap center-y">
           <button className="btn big" onClick={generate} disabled={busy}>{busy ? "Ssenariy yozilmoqda… " + (progress ? progress + " belgi" : "") : mode === "savol" ? "Javob olish" : "Multfilm yaratish"}</button>
           {busy && <button className="btn ghost" onClick={() => ctrl.current && ctrl.current.abort()}>To'xtatish</button>}
-          <span className="sm muted">{ai === null ? "" : ai ? "AI rejimi: Claude ulangan" : "AI ulanmagan: oflayn shablon ishlaydi"}</span>
         </div>
         {note && <p className="note">{note}</p>}
       </section>
@@ -219,7 +174,6 @@ function LexAnswer({ data, refEl }) {
               <p>{P(e.text)}</p>
               <div className="lex-foot">
                 <a href={LexSearch.url(e)} target="_blank" rel="noopener">lex.uz'da rasmiy matnni ochish ↗</a>
-                <span className="sm muted">Yurist tekshiruvi kutilmoqda</span>
               </div>
             </article>
           ))}
