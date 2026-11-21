@@ -25,6 +25,8 @@ const ORDER = [
   "components/SceneRenderer.jsx",
   "components/VideoPlayer.jsx",
   "lib/ScriptGenerator.js",
+  "data/lexbase.js",
+  "lib/lexsearch.js",
   "data/weekly.js",
   "data/cases.js",
   "data/lessons.js",

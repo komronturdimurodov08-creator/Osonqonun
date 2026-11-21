@@ -85,6 +85,7 @@ function MakePage({ initialMode }) {
   const [progress, setProgress] = useState(0);
   const [note, setNote] = useState("");
   const [script, setScript] = useState(null);
+  const [lex, setLex] = useState(null); // anonim savol: lex.uz bazasidan topilgan moddalar
   const [ai, setAi] = useState(null);
   const ctrl = useRef(null);
   const out = useRef(null);
@@ -106,6 +107,22 @@ function MakePage({ initialMode }) {
     setBusy(true); setNote(""); setProgress(0); setScript(null);
     ctrl.current = new AbortController();
     let s = null;
+    // Anonim savol: javob faqat LexBase moddalariga tayanadi. Mos modda bo'lmasa — taxmin qilmaymiz.
+    if (mode === "savol") {
+      const matches = LexSearch.search(t);
+      setLex({ q: t, matches });
+      if (!matches.length) { setBusy(false); setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50); return; }
+      try {
+        s = await generateWithAI({ text: t, level, mode, onProgress: setProgress, signal: ctrl.current.signal, context: LexSearch.context(matches) });
+        s.lexBased = true;
+        setNote("Ssenariyni AI faqat topilgan moddalar asosida yozdi.");
+      } catch (e) {
+        s = lexTemplateScript(t, matches, level);
+      }
+      setBusy(false); setScript(s);
+      setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      return;
+    }
     try {
       s = await generateWithAI({ text: t, level, mode, image, onProgress: setProgress, signal: ctrl.current.signal });
       setNote("Ssenariyni AI yozdi. Moddalarni lex.uz bilan solishtirib tekshiring.");
@@ -159,12 +176,13 @@ function MakePage({ initialMode }) {
           </div>
         )}
         <div className="row gap wrap center-y">
-          <button className="btn big" onClick={generate} disabled={busy}>{busy ? "Ssenariy yozilmoqda… " + (progress ? progress + " belgi" : "") : "Multfilm yaratish"}</button>
+          <button className="btn big" onClick={generate} disabled={busy}>{busy ? "Ssenariy yozilmoqda… " + (progress ? progress + " belgi" : "") : mode === "savol" ? "Javob olish" : "Multfilm yaratish"}</button>
           {busy && <button className="btn ghost" onClick={() => ctrl.current && ctrl.current.abort()}>To'xtatish</button>}
           <span className="sm muted">{ai === null ? "" : ai ? "AI rejimi: Claude ulangan" : "AI ulanmagan: oflayn shablon ishlaydi"}</span>
         </div>
         {note && <p className="note">{note}</p>}
       </section>
+      {mode === "savol" && lex && <LexAnswer data={lex} refEl={script ? null : out} />}
       {script && (
         <div className="stack-lg" ref={out}>
           <div className="case-head"><span className="pill">{LEVELS[script.level] ? LEVELS[script.level].label : "Multfilm"}</span><h2>{script.title}</h2></div>
@@ -178,6 +196,45 @@ function MakePage({ initialMode }) {
         </div>
       )}
     </div>
+  );
+}
+
+/* Anonim savolga javob: lex.uz bilan solishtirilgan bazadan topilgan moddalar */
+function LexAnswer({ data, refEl }) {
+  const P = LexSearch.pick;
+  const d = LEXBASE_CHECKED.split("-").reverse().join(".");
+  return (
+    <section className="panel lex-answer" ref={refEl} aria-live="polite">
+      <div className="lex-head">
+        <span className="lex-badge">lex.uz asosida</span>
+        <h3>Qonun nima deydi</h3>
+      </div>
+      <p className="sm muted">Javob faqat platformadagi huquqiy bazaga tayanadi: <span className="notr">{LEXBASE.length}</span> ta modda. lex.uz bilan solishtirilgan sana: <span className="notr">{d}</span></p>
+      {data.matches.length ? (
+        <div className="lex-list">
+          {data.matches.map(({ entry: e }, i) => (
+            <article key={e.id} className={cx("lex-card", i === 0 && "top")}>
+              <div className="lex-ref notr">{LexSearch.ref(e)}</div>
+              <h4>{P(e.title)}</h4>
+              <p>{P(e.text)}</p>
+              <div className="lex-foot">
+                <a href={LexSearch.url(e)} target="_blank" rel="noopener">lex.uz'da rasmiy matnni ochish ↗</a>
+                <span className="sm muted">Yurist tekshiruvi kutilmoqda</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="lex-none">
+          <b>Bazada bu savolga mos modda topilmadi.</b>
+          <p>Taxmin qilib javob bermaymiz — noto'g'ri huquqiy ma'lumot zarar keltirishi mumkin. Savolni boshqacha so'zlar bilan yozib ko'ring yoki rasmiy manbadan qidiring.</p>
+          <div className="row gap wrap">
+            <a className="btn ghost sm" href="https://lex.uz" target="_blank" rel="noopener">lex.uz'da qidirish ↗</a>
+          </div>
+          <p className="sm muted">Murakkab holatda bepul yuridik yordam yoki advokatga murojaat qiling (Konstitutsiya, 29-modda).</p>
+        </div>
+      )}
+    </section>
   );
 }
 

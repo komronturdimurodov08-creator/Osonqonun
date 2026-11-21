@@ -10,7 +10,7 @@ const LEVELS = {
 
 const SERIOUS = /(zo'ravon|kaltak|urdi|urish|tahdid|o'g'irla|hibs|qamoq|ushlab|o'ldir|jonimga|o'z joni|nomus|odam savdo|bolani ur)/i;
 
-function buildPrompt(text, level, mode) {
+function buildPrompt(text, level, mode, context) {
   const lv = LEVELS[level] || LEVELS.fuqaro;
   return `Sen "OsonQonun" platformasining ssenariy yozuvchisisan. Qonunlarni o'zbek milliy personajlari ishtirokidagi 1-3 daqiqalik multfilmga aylantirasan.
 
@@ -37,7 +37,10 @@ FAQAT JSON qaytar, boshqa hech narsa yozma:
  "lines":[{"speaker":"...","text":"...","emotion":"...","gesture":"..."}],
  "onScreenText":{"kind":"...","label":"...","text":"...","items":[]}}]}
 
-${mode === "savol" ? "FOYDALANUVCHI SAVOLI" : "HUJJAT MATNI"}:
+${context ? `HUQUQIY BAZA (lex.uz bilan solishtirilgan moddalar). FAQAT shu moddalarga tayan, boshqa modda raqami yoki faktni o'zingdan qo'shma. source.url uchun shu yerdagi manbani ishlat:
+${context}
+
+` : ""}${mode === "savol" ? "FOYDALANUVCHI SAVOLI" : "HUJJAT MATNI"}:
 """
 ${text.slice(0, 12000)}
 """`;
@@ -49,14 +52,14 @@ function extractJson(t) {
   return JSON.parse(t.slice(a, b + 1));
 }
 
-async function generateWithAI({ text, level, mode, image, onProgress, signal }) {
+async function generateWithAI({ text, level, mode, image, onProgress, signal, context }) {
   const sample = await Bridge.sample();
   if (!sample) throw Object.assign(new Error("AI ulanmagan"), { code: "unavailable" });
   const opts = { modelTier: "default", signal, onText: ({ text: t }) => onProgress && onProgress(t.length) };
   if (image) {
     try { const lim = await sample.limits(); if (lim && lim.images) opts.images = [image]; } catch (e) {}
   }
-  const res = await sample(buildPrompt(text || "(Matn rasmda berilgan - rasmni o'qib, mazmunini tushuntir.)", level, mode), opts);
+  const res = await sample(buildPrompt(text || "(Matn rasmda berilgan - rasmni o'qib, mazmunini tushuntir.)", level, mode, context), opts);
   const raw = extractJson(res.text);
   const s = normalizeScript({ ...raw, level, id: "ai-" + uid() });
   s.aiMade = true;

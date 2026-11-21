@@ -517,3 +517,18 @@ textarea:focus,input:focus{border-color:var(--lapis);outline:none;box-shadow:0 0
 :root[data-theme=dark] .welcome{background:linear-gradient(100deg,#0c3f9a 0%,#0b4fb0 45%,#0f8a82 100%)}
 :root[data-theme=dark] .side-nav a.on{background:#eef2f9;color:#0d3f99}
 :root[data-theme=dark] .law-ico{opacity:.1}
+
+/* ---------- Anonim savol: lex.uz asosidagi javob ---------- */
+.lex-answer{display:flex;flex-direction:column;gap:.8rem;border-top:4px solid var(--blue)}
+.lex-head{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}.lex-head h3{margin:0}
+.lex-badge{font-size:.78rem;font-weight:900;padding:.3rem .7rem;border-radius:999px;background:var(--blue);color:#fff}
+.lex-list{display:grid;gap:.8rem}
+.lex-card{border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;background:var(--card)}
+.lex-card.top{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)}
+.lex-ref{display:inline-block;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82rem;font-weight:700;color:var(--lapis);background:var(--soft);padding:.15rem .55rem;border-radius:6px;margin-bottom:.4rem}
+.lex-card h4{margin:.1rem 0 .35rem;font-size:1.05rem}
+.lex-card p{margin:0;line-height:1.7;max-width:72ch}
+.lex-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;margin-top:.7rem;padding-top:.6rem;border-top:1px dashed var(--line)}
+.lex-foot a{font-weight:800}
+.lex-none{background:var(--saf-soft);border-radius:12px;padding:1rem}
+.lex-none p{margin:.4rem 0}
