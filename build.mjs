@@ -1,6 +1,6 @@
 // OsonQonun build: JSX -> JS (esbuild), React'ni ichiga joylab, bitta oflayn ishlaydigan dist/index.html yasaydi.
 // Ishga tushirish: npm install && npm run build   (natija: dist/index.html — ikki marta bosib ochiladi)
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -50,6 +50,10 @@ ${mod("react-dom", "react-dom/cjs/react-dom.production.js")}
 ${mod("react-dom/client", "react-dom/cjs/react-dom-client.production.js")}
 window.React=req("react");window.ReactDOM=req("react-dom/client");})();`;
 
+// Studiya ovozi: dist/audio/*.mp3 (oson_ovoz.py ilova) — kalitlar ro'yxatini sahifaga yozamiz
+const audioDir = join(root, "dist", "audio");
+const audioKeys = existsSync(audioDir) ? readdirSync(audioDir).filter((f) => /^[0-9a-f]{8}\.mp3$/.test(f)).map((f) => f.slice(0, 8)).sort() : [];
+
 const css = readFileSync(join(root, "src/styles.css"), "utf8");
 const html = `<!DOCTYPE html>
 <html lang="uz">
@@ -68,6 +72,7 @@ ${css}
 <body>
 <div id="root"></div>
 <noscript>OsonQonun ishlashi uchun JavaScript yoqilgan bo'lishi kerak.</noscript>
+<script>window.OQ_AUDIO_KEYS=${JSON.stringify(audioKeys)};</script>
 <script>${vendor}</script>
 <script>
 (function(){"use strict";
@@ -80,4 +85,4 @@ ${app}
 </html>`;
 mkdirSync(join(root, "dist"), { recursive: true });
 writeFileSync(join(root, "dist/index.html"), html);
-console.log("dist/index.html", (html.length / 1024).toFixed(0) + " KB");
+console.log("dist/index.html", (html.length / 1024).toFixed(0) + " KB", "· studiya ovozi:", audioKeys.length, "ta replika");

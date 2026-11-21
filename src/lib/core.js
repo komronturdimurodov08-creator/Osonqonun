@@ -261,6 +261,46 @@ const Voice = (() => {
   };
 })();
 
+/* ---------- Studiya ovozi: oldindan ElevenLabs'da yozilgan mp3 (dist/audio/<kalit>.mp3) ----------
+   Kalitlar ro'yxatini build.mjs window.OQ_AUDIO_KEYS ga yozadi. Fayl bo'lmasa — Claude/brauzer ovoziga qaytamiz. */
+const ElevenAudio = (() => {
+  const keys = new Set((typeof window !== "undefined" && window.OQ_AUDIO_KEYS) || []);
+  const enc = typeof TextEncoder !== "undefined" ? new TextEncoder() : null;
+  // oson_ovoz.py dagi audio_kalit() bilan bir xil: FNV-1a 32-bit, UTF-8
+  const key = (who, text) => {
+    let h = 0x811c9dc5;
+    const bytes = enc ? enc.encode(who + "|" + text) : [];
+    for (let i = 0; i < bytes.length; i++) { h ^= bytes[i]; h = Math.imul(h, 0x01000193) >>> 0; }
+    return ("0000000" + h.toString(16)).slice(-8);
+  };
+  let a = null, token = 0;
+  const enabled = () => { const p = Store.get().settings.voiceEngine || "auto"; return keys.size > 0 && (p === "auto" || p === "studio"); };
+  const has = (who, text) => !!who && !!text && enabled() && keys.has(key(who, text));
+  function stop() {
+    token++;
+    if (a) { a.onended = a.onerror = null; try { a.pause(); } catch (e) {} a = null; }
+  }
+  function play(who, text, rate, onend, onfail) {
+    stop();
+    const my = token, k = key(who, text);
+    const el = new Audio("audio/" + k + ".mp3");
+    try { el.preservesPitch = true; el.playbackRate = rate || 1; } catch (e) {}
+    const fail = () => { if (my !== token) return; keys.delete(k); a = null; onfail && onfail(); };
+    el.onended = () => { if (my === token) { a = null; onend && onend(); } };
+    el.onerror = fail;
+    a = el;
+    const p = el.play();
+    if (p && p.catch) p.catch((e) => { if (!e || e.name !== "AbortError") fail(); });
+  }
+  return {
+    has, play, stop, key,
+    count: () => keys.size,
+    pause() { if (a) try { a.pause(); } catch (e) {} },
+    resume() { if (!a) return false; const p = a.play(); if (p && p.catch) p.catch(() => {}); return true; },
+    setRate(r) { if (a) try { a.playbackRate = r; } catch (e) {} }
+  };
+})();
+
 /* ---------- Claude imkoniyatlari (artifact ichida) ---------- */
 const Bridge = (() => {
   // window.claude sahifa ishga tushgandan keyinroq paydo bo'ladi — 4 soniyagacha kutamiz

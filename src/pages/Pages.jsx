@@ -231,11 +231,14 @@ function VoiceSettings() {
       <div className="field">
         <span>Ovoz manbai</span>
         <div className="seg">
-          {[["auto", "Avtomatik"], ["claude", "Claude ovozi"], ["browser", "Brauzer ovozi"]].map(([k, l]) => (
-            <button key={k} className={cx((s.voiceEngine || "auto") === k && "on")} disabled={k === "claude" && claudeOk === false}
+          {[["auto", "Avtomatik"], ["studio", "Studiya ovozi"], ["claude", "Claude ovozi"], ["browser", "Brauzer ovozi"]].map(([k, l]) => (
+            <button key={k} className={cx((s.voiceEngine || "auto") === k && "on")} disabled={(k === "claude" && claudeOk === false) || (k === "studio" && !ElevenAudio.count())}
               onClick={() => set("voiceEngine", k)}>{l}</button>
           ))}
         </div>
+        {ElevenAudio.count() > 0 && ["auto", "studio"].includes(s.voiceEngine || "auto") && (
+          <p className="sm muted voice-now"><b>Studiya ovozi (ElevenLabs)</b> — {ElevenAudio.count()} ta replika professional ovozda tayyor. Qolgan (masalan, AI yasagan) videolar uchun:</p>
+        )}
         <p className="sm muted voice-now">Hozir: <b>{engine === "claude" ? "Claude ovozi (yuqori sifatli, tabiiy)" + (Voice.lang() ? " · til: " + Voice.lang() : "") : "Brauzer — " + Speech.voiceName("afandi")}</b>
           {claudeOk === false && " · Claude ovozi bu ko'rinishda mavjud emas (Claude.ai ichida Chrome yoki Edge'da ochilganda ishlaydi)."}</p>
       </div>

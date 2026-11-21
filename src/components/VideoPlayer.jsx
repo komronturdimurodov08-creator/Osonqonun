@@ -54,7 +54,7 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
     const st = S.current;
     if (st.reading) { st.reading = null; st.token = (st.token || 0) + 1; if (tts.current) tts.current.stop().catch(() => {}); }
   };
-  const silenceAll = () => { Speech.cancel(); stopReading(); };
+  const silenceAll = () => { Speech.cancel(); ElevenAudio.stop(); stopReading(); };
   const pauseLocal = () => { const st = S.current; st.playing = false; cancelAnimationFrame(st.raf); render(); };
   const advance = (k) => (k < tl.items.length ? begin(k) : finish());
 
@@ -93,12 +93,20 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
 
   const begin = (i) => {
     const st = S.current, it = tl.items[i];
-    st.idx = i; st.elapsed = 0; st.speechDone = true;
+    st.idx = i; st.elapsed = 0; st.speechDone = true; st.studio = false;
     const sc = script.scenes[it.s];
     if (it.first && sc.stop && !st.unlocked[it.s]) {
       st.playing = false; silenceAll(); setStopOpen(true); render(); return;
     }
-    if (st.playing && st.voice && it.text) {
+    if (st.playing && st.voice && it.text && ElevenAudio.has(it.speaker, it.text)) {
+      // Studiya ovozi (ElevenLabs): tayyor mp3 — replika tugagach keyingisiga o'tamiz
+      stopReading(); Speech.cancel();
+      st.studio = true; st.speechDone = false;
+      ElevenAudio.play(it.speaker, it.text, st.speed,
+        () => { const s = S.current; if (s.idx === i) { s.speechDone = true; s.doneAt = performance.now(); } },
+        () => { const s = S.current; if (s.idx === i) { s.studio = false; if (s.playing) begin(i); } });
+    } else if (st.playing && st.voice && it.text) {
+      ElevenAudio.stop();
       if (st.engine === "claude" && tts.current) {
         if (!(st.reading && i >= st.reading.from && i <= st.reading.to)) { stopReading(); startReading(i); }
         else st.speechDone = false;
@@ -107,7 +115,7 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
         st.speechDone = false;
         Speech.speak(it.text, it.speaker, st.speed, () => { if (S.current.idx === i) S.current.speechDone = true; });
       }
-    } else if (!it.text) stopReading();
+    } else if (!it.text) { stopReading(); ElevenAudio.stop(); }
     render();
   };
   const finish = () => {
@@ -124,7 +132,10 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
     st.elapsed += dt * st.speed;
     const it = tl.items[st.idx];
     let done;
-    if (st.reading && it.text) {
+    if (st.studio && it.text) {
+      // audio tugagach qisqa pauza; fayl "osilib" qolsa — xavfsizlik chegarasi
+      done = (st.speechDone && performance.now() - (st.doneAt || 0) > 220) || st.elapsed >= it.dur * 4 + 4000;
+    } else if (st.reading && it.text) {
       done = false; // Claude ovozi o'zi keyingi replikaga o'tkazadi
       if (performance.now() - st.lastLineAt > it.dur * 3 + 6000) { stopReading(); st.engine = "browser"; begin(st.idx); }
     } else {
@@ -145,12 +156,14 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
     st.playing = true; st.last = 0;
     cancelAnimationFrame(st.raf);
     if (st.reading && tts.current) tts.current.resume().catch(() => { st.reading = null; begin(st.idx); });
+    else if (st.studio && !st.speechDone && ElevenAudio.resume()) { /* to'xtagan joyidan davom */ }
     else begin(st.idx);
     if (st.playing) st.raf = requestAnimationFrame(loop);
   };
   const pause = () => {
     const st = S.current; st.playing = false; cancelAnimationFrame(st.raf);
     if (st.reading && tts.current) tts.current.pause().catch(() => stopReading());
+    ElevenAudio.pause();
     Speech.cancel(); render();
   };
   const toggle = () => (S.current.playing ? pause() : play());
@@ -175,7 +188,7 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
     begin(nxt);
     st.raf = requestAnimationFrame(loop);
   };
-  const setSpeed = (v) => { const st = S.current; st.speed = v; if (tts.current && tts.current.setRate) tts.current.setRate(Voice.clampRate(v)).catch(() => {}); render(); };
+  const setSpeed = (v) => { const st = S.current; st.speed = v; ElevenAudio.setRate(v); if (tts.current && tts.current.setRate) tts.current.setRate(Voice.clampRate(v)).catch(() => {}); render(); };
 
   useEffect(() => () => { cancelAnimationFrame(S.current.raf); silenceAll(); }, []);
   useEffect(() => { S.current.voice = settings.voice; if (!settings.voice) { silenceAll(); S.current.speechDone = true; } }, [settings.voice]);
@@ -213,7 +226,7 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
   const sceneItems = tl.items.filter((x) => x.s === it.s);
   const sceneProgress = (sceneItems.indexOf(it) + frac) / sceneItems.length;
   const now = it.start + Math.min(st.elapsed, it.dur);
-  const talking = st.playing && !!line && (st.reading ? true : st.voice && Speech.ok ? !st.speechDone : frac < 0.9);
+  const talking = st.playing && !!line && (st.studio ? !st.speechDone : st.reading ? true : st.voice && Speech.ok ? !st.speechDone : frac < 0.9);
 
   return (
     <div ref={wrap} className={cx("player", vertical && "is-vertical", pseudoFs && "pseudo-fs", isFs && "is-fs")} tabIndex={0} onKeyDown={onKey}

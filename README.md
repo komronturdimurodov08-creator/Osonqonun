@@ -35,6 +35,10 @@ docs/script-schema.json    video-ssenariy JSON sxemasi
 build.mjs                  bitta oflayn HTML yig'uvchi
 ```
 
+## Studiya ovozi (ElevenLabs)
+
+Personajlar professional o'zbekcha ovozda gapiradi: `dist/audio/*.mp3` ni `oson_ovoz` moduli yaratadi, pleyer ularni avtomatik o'ynaydi (fayl bo'lmasa — Claude yoki brauzer ovozi). Batafsil: `oson_ovoz/README.md`, 9-bo'lim.
+
 ## Yangi video qo'shish
 
 Videoning o'zi — JSON ssenariy (`docs/script-schema.json`). `src/data/` ga yangi ob'ekt qo'shing yoki AI yozgan JSON'ni "Ssenariy JSON" blokidan nusxalab oling. Pleyer har qanday to'g'ri ssenariyni o'ynaydi.
@@ -57,7 +61,6 @@ Namuna moddalar lex.uz dagi amaldagi tahrirlar asosida tayyorlangan: Konstitutsi
 ## Keyingi bosqichlar
 
 - Supabase: ro'yxatdan o'tish, bir nechta qurilmada progress, o'qituvchi paneli (guruhlar)
-- O'zbekcha TTS xizmati (hozir: brauzerning Web Speech API'si)
 - PDF'dan matn ajratish (pdf.js), lex.uz havolasidan matnni server orqali olish
 - Ssenariydan haqiqiy MP4 multfilm (personaj etalon rasmi asosida AI video) va 9:16 eksport
 - Qolgan fanlar: Fuqarolik, Jinoyat, Ma'muriy, Oila, protsessual huquq; rus va ingliz tillari
