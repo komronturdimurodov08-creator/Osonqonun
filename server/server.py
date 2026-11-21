@@ -284,13 +284,18 @@ def tekshir():
         print(f"OK ({time.time() - t:.1f} s): {len(r)} ta hujjat, birinchisi: {r[0]['title'][:50] if r else '-'}; moddalar: {len(h['moddalar'])}")
     except Exception as e:  # noqa: BLE001
         print("XATO:", repr(e)[:300])
-    print("2) Gemini ...", end=" ", flush=True)
-    t = time.time()
-    try:
-        javob = ai._chaqir('FAQAT JSON qaytar: {"salom":"dunyo"}', kutish=60)
-        print(f"OK ({time.time() - t:.1f} s), model: {ai._ishlagan_model['nom']}, javob: {javob[:60]}")
-    except Exception as e:  # noqa: BLE001
-        print(f"XATO ({time.time() - t:.1f} s):", str(e)[:300])
+    print("2) Gemini (har bir model alohida, 25 soniyagacha):")
+    import requests as rq
+    key = os.getenv("GEMINI_API_KEY")
+    for m in ai.MODELLAR + ["gemini-2.5-flash-lite"]:
+        t = time.time()
+        try:
+            r = rq.post(ai.API.format(model=m), params={"key": key}, timeout=(10, 25),
+                        json={"contents": [{"role": "user", "parts": [{"text": "Faqat 'salom' deb javob ber."}]}]})
+            izoh = "OK" if r.status_code == 200 else f"{r.status_code}: {r.text[:120]}"
+        except Exception as e:  # noqa: BLE001
+            izoh = "javob yo'q: " + type(e).__name__
+        print(f"   {m:<26} {time.time() - t:5.1f} s  {izoh}")
     print("3) ElevenLabs ...", end=" ", flush=True)
     try:
         if not ovoz_bor():
