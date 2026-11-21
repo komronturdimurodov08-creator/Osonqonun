@@ -15,6 +15,7 @@ const ORDER = [
   "components/Character.jsx",
   "lib/director.js",
   "components/Backgrounds.jsx",
+  "components/LawBackground.jsx",
   "lib/scriptTools.js",
   "data/helpers.js",
   "components/SceneRenderer.jsx",
@@ -65,7 +66,7 @@ const html = `<!DOCTYPE html>
 <title>OsonQonun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 ${css}
 </style>

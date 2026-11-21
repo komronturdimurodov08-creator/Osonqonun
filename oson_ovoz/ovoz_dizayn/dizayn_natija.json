@@ -118,5 +118,45 @@
         "fayl": "ovoz_dizayn\\Bekzod_3.mp3"
       }
     ]
+  },
+  "Qoshni": {
+    "prompt": "Uzbek man in his early 50s, native Uzbek speaker, a friendly neighbour from the mahalla. Warm, simple, slightly husky mid-low voice, relaxed conversational pace, sincere and a bit worried tone. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "0aUYvF56a3cnwLPCwEbi",
+        "fayl": "ovoz_dizayn\\Qoshni_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "fc0ipyw51d98RWd8JgNy",
+        "fayl": "ovoz_dizayn\\Qoshni_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "9Q7ZfT1dMLG5200O0Nbt",
+        "fayl": "ovoz_dizayn\\Qoshni_3.mp3"
+      }
+    ]
+  },
+  "Ishberuvchi": {
+    "prompt": "Uzbek businessman in his mid 40s, native Uzbek speaker, a company director. Firm, confident, slightly deep voice, polished and businesslike, a bit hurried, authoritative but polite. Clean studio recording.",
+    "variantlar": [
+      {
+        "n": 1,
+        "generated_voice_id": "wvJc04ZcYoQRxxgUcHh6",
+        "fayl": "ovoz_dizayn\\Ishberuvchi_1.mp3"
+      },
+      {
+        "n": 2,
+        "generated_voice_id": "pcYNSOczOw0D5c2BLZH9",
+        "fayl": "ovoz_dizayn\\Ishberuvchi_2.mp3"
+      },
+      {
+        "n": 3,
+        "generated_voice_id": "2XQti4ZOLnqZMKkxvqCl",
+        "fayl": "ovoz_dizayn\\Ishberuvchi_3.mp3"
+      }
+    ]
   }
 }

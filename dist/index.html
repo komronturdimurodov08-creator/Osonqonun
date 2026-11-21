@@ -7,7 +7,7 @@
 <title>OsonQonun</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* VOICE: iliq, hazilkash, lekin aniq — mahalla choyxonasidagi ustoz ohangi
    IDEA: Samarqand koshinli peshtoq ostidagi kichik kinoteatr — har qonun bitta multfilm
@@ -17,11 +17,11 @@
 
 /* ================= Dizayn tokenlari ================= */
 :root{color-scheme:light dark;
-  --lapis:#1f4e9c;--lapis-d:#163a76;--tq:#14a3a8;--saf:#f2b134;--anor:#c8323c;
-  --bg:light-dark(#f4f7fb,#0b1322);--card:light-dark(#ffffff,#141f35);--card-2:light-dark(#fbfcfe,#18253f);
+  --lapis:#0b5fd9;--lapis-d:#084bb0;--blue:#0b5fd9;--navy:#0a2a66;--tq:#12b5a8;--saf:#f2b134;--anor:#c8323c;
+  --bg:light-dark(#f2f6fc,#0f1830);--card:light-dark(#ffffff,#18243f);--card-2:light-dark(#fbfcfe,#18253f);
   --ink:light-dark(#14213d,#eef2f9);--muted:light-dark(#55627a,#a3b1c8);
   --line:light-dark(#e1e7f0,#26375a);--line-2:light-dark(#cdd7e6,#34497a);--soft:light-dark(#edf3fc,#1a2a48);
-  --accent:light-dark(#1f4e9c,#93b6ff);--accent-soft:light-dark(#e6eefb,#1d2f55);
+  --accent:light-dark(#0b5fd9,#86adff);--accent-soft:light-dark(#e6eefb,#1d2f55);
   --tq-ink:light-dark(#0c7479,#5fd6da);--tq-soft:light-dark(#e3f6f6,#12343a);
   --saf-soft:light-dark(#fff4da,#3a2e10);--saf-ink:light-dark(#6b4700,#ffd98a);
   --anor-soft:light-dark(#fde9eb,#3d1820);--anor-ink:light-dark(#8a1624,#ffb3bb);
@@ -43,9 +43,9 @@
 
 /* ================= Asos ================= */
 *{box-sizing:border-box;min-width:0}
-html{font-size:var(--fs);scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+html{font-size:var(--fs);scroll-padding-top:24px;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.6 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-h1,h2,h3,h4{line-height:1.15;margin:0 0 .4em;text-wrap:balance;letter-spacing:-.012em}
+h1,h2,h3,h4{font-family:"Montserrat","Nunito",system-ui,sans-serif;line-height:1.15;margin:0 0 .4em;text-wrap:balance;letter-spacing:-.012em}
 h1{font-size:clamp(1.85rem,4.2vw,3rem);font-weight:900;letter-spacing:-.02em}
 h2{font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:900}
 h3{font-size:1.14rem;font-weight:800}h4{font-size:1rem;margin-top:1rem;font-weight:800}
@@ -61,33 +61,61 @@ button{-webkit-tap-highlight-color:transparent}
 .stack>*+*{margin-top:var(--s4)}.stack-lg>*+*{margin-top:var(--s5)}
 .eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--tq-ink)}
 
-/* ================= Ilova karkasi ================= */
-.app{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:var(--s4);padding:.55rem var(--gutter);min-height:62px;color:#fff;
-  background:color-mix(in srgb,var(--lapis) 94%,transparent);
-  -webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);transition:box-shadow var(--t) var(--ease),background var(--t)}
-/* koshin yo'li: pastki ingichka naqsh */
-.topbar::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;pointer-events:none;
-  background:repeating-linear-gradient(90deg,var(--saf) 0 26px,var(--tq) 26px 34px,var(--saf) 34px 60px,var(--anor) 60px 66px)}
-.topbar.scrolled{background:color-mix(in srgb,var(--lapis) 86%,transparent);box-shadow:0 10px 30px -12px rgba(11,18,32,.5)}
-.hc .topbar{background:#0b2a66;-webkit-backdrop-filter:none;backdrop-filter:none}
-.logo{display:flex;align-items:center;gap:.55rem;color:#fff;text-decoration:none;font-size:1.28rem;font-weight:800;letter-spacing:-.01em;flex:none;border-radius:12px}
-.logo svg{filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
-.logo b{color:var(--saf);font-weight:900}
-.top-nav{display:none;gap:.2rem;margin-left:var(--s4)}
-.top-nav a{position:relative;display:flex;align-items:center;gap:.45rem;min-height:42px;padding:0 .85rem;border-radius:12px;color:#dbe6fa;text-decoration:none;font-weight:800;font-size:.95rem;transition:background var(--t),color var(--t)}
-.top-nav a svg{width:19px;height:19px;opacity:.85}
-.top-nav a:hover{background:rgba(255,255,255,.1);color:#fff}
-.top-nav a.on{background:rgba(255,255,255,.16);color:#fff}
-.top-nav a.on::after{content:"";position:absolute;left:.85rem;right:.85rem;bottom:4px;height:3px;border-radius:3px;background:var(--saf)}
-.top-actions{display:flex;gap:.4rem;margin-left:auto}
-.chip{display:inline-flex;align-items:center;justify-content:center;min-height:40px;min-width:44px;padding:0 .8rem;border-radius:999px;border:1.5px solid rgba(255,255,255,.38);background:rgba(255,255,255,.06);color:#fff;font-weight:800;font-size:.88rem;cursor:pointer;transition:background var(--t),color var(--t),border-color var(--t),transform var(--t)}
-.chip:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.7)}
-.chip:active{transform:scale(.96)}
-.chip.on{background:#fff;color:var(--lapis);border-color:#fff}
-.main{flex:1;width:100%;max-width:1180px;margin:0 auto;padding:var(--s5) var(--gutter) 112px}
-.foot{margin-top:var(--s7);padding-top:var(--s4);border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);line-height:1.6}
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+/* ================= Ilova karkasi: portal uslubi ================= */
+/* Chapda ko'k yon menyu, yuqorida portal nomi + dumaloq tugmalar, breadcrumb va "Orqaga", to'q ko'k footer;
+   mobil'da yon menyu yashirinadi, pastda 4 tugma. Gerb/bayroq ishlatilmaydi — bu davlat sayti emas */
+.app{min-height:100vh;min-height:100dvh;position:relative;isolation:isolate;display:grid;grid-template-columns:300px minmax(0,1fr)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sidebar{position:sticky;top:16px;z-index:20;align-self:start;margin:16px 0 16px 16px;height:calc(100vh - 32px);overflow:auto;
+  background:var(--blue);color:#fff;border-radius:22px;padding:24px 20px;display:flex;flex-direction:column;gap:.3rem;box-shadow:0 10px 30px rgba(11,95,217,.25);scrollbar-width:none}
+.sidebar::-webkit-scrollbar{display:none}
+.logo{display:flex;align-items:center;gap:.7rem;color:#fff;text-decoration:none;font-family:"Montserrat","Nunito",sans-serif;font-size:1.45rem;font-weight:800;margin:0 0 clamp(.6rem,2.5vh,1.4rem) 6px}
+.logo b{color:#ffd36b;font-weight:800}
+.logo-mark{display:block;flex:none;border-radius:12px}
+.sidebar .logo-mark{width:48px;height:48px;box-shadow:0 0 0 2px rgba(255,255,255,.85),0 6px 16px rgba(4,30,90,.35)}
+.side-label{margin:.4rem 6px .2rem;font-family:"Montserrat",sans-serif;font-weight:800;font-size:1.05rem;color:#fff}
+.side-nav{display:flex;flex-direction:column}
+.side-nav a{display:flex;align-items:center;gap:.8rem;min-height:clamp(44px,6vh,54px);padding:.4rem 6px;color:#fff;text-decoration:none;font-weight:800;font-size:1rem;
+  border-bottom:1px solid rgba(255,255,255,.18);transition:background var(--t),padding var(--t)}
+.side-nav a svg{flex:none;width:24px;height:24px;color:#bff3ec}
+.side-nav a:hover{background:rgba(255,255,255,.1);padding-left:12px}
+.side-nav a.on{background:#fff;color:var(--blue);border-radius:12px;border-bottom-color:transparent;padding-left:12px}.side-nav a.on svg{color:var(--blue)}
+.side-help{margin-top:auto;flex:none;background:rgba(255,255,255,.12);border-radius:16px;padding:1rem;display:flex;flex-direction:column;gap:.3rem;font-size:.88rem}
+.side-help b{font-family:"Montserrat",sans-serif;font-size:1rem}
+.side-help a{align-self:flex-start;margin-top:.4rem;background:#fff;color:var(--blue);font-weight:800;text-decoration:none;padding:.45rem .9rem;border-radius:999px}
+.mob-logo{display:none;align-items:center;gap:.5rem;color:var(--ink);text-decoration:none;font-family:"Montserrat",sans-serif;font-weight:800;font-size:1.2rem}
+.mob-logo b{color:var(--blue)}.mob-logo .logo-mark{width:38px;height:38px;border-radius:10px}
+.content{min-width:0;display:flex;flex-direction:column;position:relative;z-index:1}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:30px clamp(16px,3vw,48px) 6px}
+.portal-title{font-family:"Montserrat",sans-serif;text-transform:uppercase;font-size:1.02rem;line-height:1.45;letter-spacing:.02em;color:var(--muted);font-weight:500}
+.top-actions{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap}
+.round-act{display:flex;align-items:center;gap:.6rem;border:0;background:transparent;cursor:pointer;padding:.2rem .4rem;border-radius:14px;color:var(--ink);text-align:left}
+.round-act:hover,.round-act.on{background:var(--soft)}
+.ra-ico{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-style:normal;font-weight:900;font-size:.95rem;color:#fff;background:var(--blue)}
+.ra-txt{display:flex;flex-direction:column;line-height:1.15}.ra-txt b{color:var(--accent);font-family:"Montserrat",sans-serif;font-size:1.05rem}.ra-txt small{color:var(--accent);font-size:.86rem;font-weight:600}
+.theme-switch{display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.theme-btn{display:grid;place-items:center;width:42px;height:42px;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer;transition:background var(--t),color var(--t),transform var(--t)}
+.theme-btn:hover{color:var(--ink);transform:rotate(-12deg)}
+.theme-btn.on{background:var(--soft);color:var(--accent)}
+.glow-btn{display:inline-flex;align-items:center;gap:.6rem;min-height:56px;padding:.4rem 1.5rem .4rem .45rem;border-radius:999px;background:var(--blue);color:#fff;font-family:"Montserrat",sans-serif;font-weight:800;font-size:1.02rem;text-decoration:none;
+  box-shadow:0 0 0 4px rgba(11,95,217,.18),0 10px 24px rgba(11,95,217,.35);transition:transform var(--t),box-shadow var(--t)}
+.glow-btn i{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2)}
+.glow-btn:hover{transform:translateY(-2px);box-shadow:0 0 0 6px rgba(11,95,217,.2),0 14px 30px rgba(11,95,217,.4);color:#fff}
+.main{position:relative;z-index:1;flex:1;width:100%;max-width:1480px;padding:1.4rem clamp(16px,3vw,48px) 3rem;min-height:60vh}
+.page-nav{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.back-btn{display:inline-flex;align-items:center;gap:.35rem;min-height:42px;padding:.3rem 1rem .3rem .7rem;border-radius:10px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--accent);font-weight:800;cursor:pointer;box-shadow:var(--sh-1);transition:transform var(--t),border-color var(--t)}
+.back-btn:hover{border-color:var(--accent);transform:translateX(-2px)}
+.crumbs{display:flex;flex-wrap:wrap;gap:.45rem;font-size:.9rem;font-weight:700;color:var(--muted)}
+.crumbs a{color:var(--accent);text-decoration:none}.crumbs a:hover{text-decoration:underline}
+.crumbs [aria-current]{color:var(--ink)}
+.site-foot{position:relative;z-index:1;background:var(--navy);color:#c9d6ee;padding:2.4rem clamp(16px,3vw,48px) 2rem;font-size:.9rem;margin:0 16px 16px clamp(0px,1vw,16px);border-radius:22px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:2rem}
+.site-foot h3{color:#fff;font-size:1rem;margin-bottom:.6rem}
+.site-foot a{display:block;color:#e4ecfb;text-decoration:none;padding:.2rem 0}.site-foot a:hover{color:#fff;text-decoration:underline}
+.foot-logo{font-family:"Montserrat",sans-serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:.4rem}.foot-logo b{color:var(--saf)}
+.foot-note{font-size:.8rem;color:#a9bbdc;margin-top:.6rem}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;grid-template-columns:repeat(4,minmax(0,1fr));
   background:color-mix(in srgb,var(--card) 92%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);
   border-top:1px solid var(--line);box-shadow:0 -8px 24px -10px var(--sh-c2);padding:.3rem .25rem calc(.3rem + env(safe-area-inset-bottom))}
 .bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;min-height:58px;text-decoration:none;color:var(--muted);font-size:.74rem;font-weight:800;text-align:center;line-height:1.15;padding:.15rem;border-radius:14px;transition:color var(--t)}
@@ -96,11 +124,40 @@ button{-webkit-tap-highlight-color:transparent}
 .bottom-nav a.on{color:var(--accent)}
 .bottom-nav a.on .ni{background:var(--accent-soft)}
 .hc .bottom-nav{background:#fff}.hc .bottom-nav a.on .ni{background:#ffe14d;color:#000}.hc .bottom-nav a.on{color:#000}
-@media (min-width:901px) and (max-width:1120px){.top-nav{margin-left:var(--s2)}.top-nav a{padding:0 .6rem;font-size:.9rem}.top-nav a svg{display:none}.top-nav a.on::after{left:.6rem;right:.6rem}}
-@media (min-width:901px){
-  .top-nav{display:flex}
-  .bottom-nav{display:none}
-  .main{padding-bottom:var(--s7)}
+.hc .sidebar,.hc .site-foot{background:#000}
+.hc .back-btn{background:#fff;color:#000;border:2px solid #000;box-shadow:none}
+:root[data-theme=dark] .sidebar{background:#0d3f99}
+:root[data-theme=dark] .side-nav a.on{background:#eef2f9;color:#0d3f99}
+
+/* Orqa fon: sekin suzuvchi huquqiy belgilar */
+.law-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.law-ico{position:absolute;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:.13;will-change:transform}
+.law-lapis{stroke:var(--lapis)}.law-tq{stroke:var(--tq)}.law-saf{stroke:#d99a10;opacity:.18}.law-anor{stroke:var(--anor);opacity:.11}
+.law-ico circle{fill:currentColor}
+.float-a{animation:floatA 14s ease-in-out infinite alternate}
+.float-b{animation:floatB 12s ease-in-out infinite alternate}
+.float-c{animation:floatC 17s ease-in-out infinite alternate}
+@keyframes floatA{from{transform:translate(0,0) rotate(-6deg)}to{transform:translate(18px,-28px) rotate(6deg)}}
+@keyframes floatB{from{transform:translate(0,0) rotate(5deg) scale(1)}to{transform:translate(-22px,20px) rotate(-7deg) scale(1.06)}}
+@keyframes floatC{from{transform:translate(0,0) rotate(0)}to{transform:translate(14px,24px) rotate(10deg)}}
+:root[data-theme=dark] .law-ico{opacity:.1}
+.hc .law-bg{display:none}
+@media (prefers-reduced-motion:reduce){.law-ico{animation:none!important}}
+
+@media (max-width:1100px){.app{grid-template-columns:250px minmax(0,1fr)}.ra-txt{display:none}.portal-title{font-size:.9rem}}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar,.portal-title,.glow-btn{display:none}
+  .mob-logo{display:flex}
+  .topbar{padding-top:16px;flex-wrap:nowrap}
+  .top-actions{gap:.3rem;flex-wrap:nowrap}
+  .round-act .ra-ico{width:40px;height:40px;font-size:.8rem}
+  .theme-btn{width:36px;height:36px}.theme-btn svg{width:20px;height:20px}
+  .bottom-nav{display:grid}
+  .main{padding-bottom:110px}
+  .site-foot{margin:0;border-radius:0;padding-bottom:110px}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .law-ico{opacity:.09}
 }
 
 /* ================= Tugmalar ================= */
@@ -198,6 +255,38 @@ textarea:focus,input:focus,select:focus{border-color:var(--accent);outline:none;
 /* Bo'sh holat */
 .empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.4rem;padding:var(--s5) var(--s4);border:1.5px dashed var(--line-2);border-radius:var(--r-lg);color:var(--muted)}
 .empty b{color:var(--ink)}
+
+/* ================= Bosh sahifa: xush kelibsiz banneri ================= */
+.welcome{position:relative;overflow:hidden;border-radius:24px;padding:clamp(20px,3vw,36px);color:#fff;
+  background:linear-gradient(100deg,#0b5fd9 0%,#0b6fd9 45%,#12b5a8 100%);box-shadow:0 14px 40px rgba(11,95,217,.25)}
+.welcome::before{content:"";position:absolute;right:-120px;top:-160px;width:420px;height:420px;border-radius:50%;border:2px solid rgba(255,255,255,.18)}
+.welcome::after{content:"";position:absolute;right:60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.07)}
+.welcome-top{position:relative;z-index:1;display:flex;align-items:center;gap:clamp(16px,3vw,48px);flex-wrap:wrap;margin-bottom:1.6rem}
+.welcome h1{margin:0;color:#fff;font-size:clamp(1.9rem,3.6vw,2.9rem);font-weight:800}
+.search{flex:1 1 420px;display:flex;align-items:center;gap:.6rem;background:#fff;color:var(--blue);border-radius:14px;padding:.35rem .35rem .35rem 1rem;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.search input{flex:1;min-width:0;border:0;background:transparent;font-size:1.02rem;color:#1b2540;padding:.6rem 0;outline:none}
+.search input::placeholder{color:#7c879c}
+.search-go{flex:none;min-height:46px;border:0;border-radius:10px;background:var(--blue);color:#fff;font-weight:800;padding:0 1.1rem;cursor:pointer}
+.search-go:hover{background:var(--lapis-d)}
+.search:focus-within{box-shadow:0 0 0 4px rgba(255,255,255,.45),0 6px 20px rgba(0,0,0,.12)}
+.topics{position:relative;z-index:1;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);gap:14px;overflow-x:auto;padding:4px 2px 8px;scroll-snap-type:x mandatory}
+.topic{scroll-snap-align:start;position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:190px;padding:14px;border-radius:18px;border:3px solid rgba(255,255,255,.85);cursor:pointer;
+  color:#fff;text-align:left;font-weight:800;font-size:.95rem;line-height:1.25;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.topic::after{content:"";position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(transparent,rgba(5,30,80,.55))}
+.topic span{position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.topic-ico{position:absolute;left:18%;top:14px;width:64%;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:.95;animation:floatA 6s ease-in-out infinite alternate}
+.topic:nth-child(2n) .topic-ico{animation-name:floatB;animation-duration:7s}
+.topic:nth-child(3n) .topic-ico{animation-name:floatC;animation-duration:8s}
+.topic-ico circle{fill:#fff}
+.topic:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(0,0,0,.2)}
+.t-a{background:#3d8bfd}.t-b{background:#20b7a9}.t-c{background:#f5a524}.t-d{background:#7b61ff}.t-g{background:#0e9bd8}.t-h{background:#ff8a3d}
+.weekly{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,36px);box-shadow:var(--sh-2)}
+.weekly .hero-player{max-width:960px;width:100%;margin:0 auto}
+:root[data-theme=dark] .search{background:#1b2a47;color:#cfe0ff}
+:root[data-theme=dark] .search input{color:#eef2f9}
+:root[data-theme=dark] .welcome{background:linear-gradient(100deg,#0c3f9a 0%,#0b4fb0 45%,#0f8a82 100%)}
+.hc .welcome,.hc .topic{background:#000!important}
+@media (prefers-reduced-motion:reduce){.topic-ico{animation:none!important}}
 
 /* ================= Bosh sahifa ================= */
 .hero{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);align-items:center;
@@ -523,8 +612,6 @@ textarea:focus,input:focus,select:focus{border-color:var(--accent);outline:none;
   .tl-age{font-size:.82rem;padding-right:.3rem}
   .tl-dot{width:16px;height:16px;margin-top:.9rem}
   .cmp-row{grid-template-columns:32px minmax(0,1fr)}.cmp-row .btn{grid-column:2;justify-self:start}
-  .logo{font-size:1.12rem}
-  .logo svg{width:30px;height:30px}
   .hero{border-radius:var(--r-lg);margin:0 calc(var(--gutter) * -.5)}
   .hero-ctas .btn{flex:1 1 auto}
   .feat{min-height:140px;padding:.9rem}
@@ -536,8 +623,7 @@ textarea:focus,input:focus,select:focus{border-color:var(--accent);outline:none;
   .main{padding-top:var(--s4)}
 }
 @media (max-width:380px){
-  .chip{padding:0 .6rem;font-size:.8rem}
-  .logo span{font-size:1rem}
+  .mob-logo span{font-size:1rem}
 }
 
 /* Harakatni kamaytirish */
@@ -941,7 +1027,7 @@ textarea:focus,input:focus,select:focus{border-color:var(--accent);outline:none;
 <body>
 <div id="root"></div>
 <noscript>OsonQonun ishlashi uchun JavaScript yoqilgan bo'lishi kerak.</noscript>
-<script>window.OQ_AUDIO_KEYS=["018d25c3","0a267325","259a44a8","36937120","44fb203a","4be5d1c9","575c31ee","5cc8e228","6ba796e5","85cf227b","8f8801dd","a1ca502a","b2658608","b3288e1d","beedf3cd","d9dd4438","e16b8d18","f49531a4"];</script>
+<script>window.OQ_AUDIO_KEYS=["018d25c3","046ba83d","05b64b2c","08dddf50","0a267325","0ef5807c","1005a01d","11788423","127233f6","149ad47b","1565c248","1836b8b5","1ad2682b","1d285a3b","1d3efaae","1e929738","1ec6ce2e","20db2f8a","23a082e4","259a44a8","2679d4cd","280262d9","2986afd8","2c35310e","3140d5e8","348cae6f","350e8bd2","36937120","38e4524b","3c3f31c2","3d601a0a","3d7531e5","3ee1a5f7","42ccf6a4","44fb203a","4901b931","4be5d1c9","4bfe5646","4db63e8b","4fcec94a","52149377","5273742e","528f812a","5447053e","574395ec","575c31ee","5c7e346f","5ca987b4","5cc8e228","5f6f47ed","600f13e0","6131c39d","61393f9a","61962b46","638a90a5","63c31fdb","660e4a47","662da0e8","6640e9b2","69c17a2f","6a2502a9","6a98b677","6b615552","6ba796e5","6bf6cb2d","6d0b841d","6db22cb9","6ded95df","6f509239","717bbd2a","719128bf","72cd3303","73f61fb7","76fc8f7c","79462dd9","79da15ea","7aa22ace","82bcaf4b","84703c95","8475132f","85cf227b","86318ddd","89ca83aa","8b1c89a1","8d0afb83","8f8801dd","925806fa","92c17ce6","93b6dbd9","99cf62a5","9a895f09","9d525825","a087e95b","a1ca502a","a266f70b","a3e212ad","a776f63d","a7d1b84c","a7f0b87f","a8496738","aaae098a","ab52f41f","ae9b90c8","aef276b4","b00cd90d","b1fec2aa","b2354129","b2658608","b3288e1d","b9c4a762","ba230776","ba6faf13","ba947a2e","bbbbcac1","bc145e42","bde7d385","be57d933","beedf3cd","c1dbaf35","c1e04515","c27d4758","c2b982e8","c3402333","c4180d24","c4cfb4e5","c570e720","ca189222","cc0dae48","cd0b678a","cf5c6dd0","d00cac75","d05c2d93","d1634f9a","d56bae2a","d68b967c","d8686ec1","d8c2085e","d9dd4438","db1afb10","dc20de01","dec413f3","df01ac1b","e010706b","e16b8d18","e42805d3","e68ee18f","e94ed31d","ea58ddd4","ebc41b67","ee80b5ab","f21c7887","f485dfe5","f49531a4","f4f2d091","fa2083b1","fd8fbd45","ff8884fd","fff4be58"];</script>
 <script>(function(){var process={env:{NODE_ENV:"production"}};var defs={},cache={};
 function req(n){if(cache[n])return cache[n].exports;var m={exports:{}};cache[n]=m;defs[n](m,m.exports,req);return m.exports;}
 defs["react"]=function(module,exports,require){
@@ -19497,6 +19583,49 @@ function Background({ name }) {
   return /* @__PURE__ */ React.createElement("svg", { className: "bg", viewBox: "0 0 1600 900", preserveAspectRatio: "xMidYMax slice", "aria-label": BG_NAMES[name] || "fon" }, /* @__PURE__ */ React.createElement(PatternDefs, null), /* @__PURE__ */ React.createElement(B, null));
 }
 
+/* ---- components/LawBackground.jsx ---- */
+const LAW_ICONS = {
+  scales: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M32 8v46M18 54h28M32 14 12 20M32 14l20 6" }), /* @__PURE__ */ React.createElement("path", { d: "M12 20 5 36h14zM52 20l-7 16h14z" }), /* @__PURE__ */ React.createElement("path", { d: "M5 36a7 4 0 0 0 14 0M45 36a7 4 0 0 0 14 0" }), /* @__PURE__ */ React.createElement("circle", { cx: "32", cy: "10", r: "2.5" })),
+  gavel: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "m24 10 16 16M18 16l16 16M21 13l6-6 16 16-6 6z" }), /* @__PURE__ */ React.createElement("path", { d: "m30 28-18 18a3 3 0 0 0 4 4l18-18" }), /* @__PURE__ */ React.createElement("path", { d: "M36 54h22M40 48h14v6H40z" })),
+  book: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M32 16c-6-5-16-6-24-4v38c8-2 18-1 24 4 6-5 16-6 24-4V12c-8-2-18-1-24 4z" }), /* @__PURE__ */ React.createElement("path", { d: "M32 16v38M14 22c4 0 8 1 12 3M14 30c4 0 8 1 12 3M38 25c4-2 8-3 12-3M38 33c4-2 8-3 12-3" })),
+  section: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M40 14c-2-4-6-6-10-6-6 0-10 3-10 8 0 10 22 8 22 20 0 5-4 8-10 8" }), /* @__PURE__ */ React.createElement("path", { d: "M24 50c2 4 6 6 10 6 6 0 10-3 10-8 0-10-22-8-22-20 0-5 4-8 10-8" })),
+  shield: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M32 6 10 14v16c0 14 10 23 22 28 12-5 22-14 22-28V14z" }), /* @__PURE__ */ React.createElement("path", { d: "m22 31 7 7 14-15" })),
+  court: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M6 22 32 8l26 14zM8 22h48M10 54h44M6 58h52" }), /* @__PURE__ */ React.createElement("path", { d: "M14 26v24M24 26v24M40 26v24M50 26v24" }), /* @__PURE__ */ React.createElement("circle", { cx: "32", cy: "16", r: "2" })),
+  scroll: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M16 8h28a6 6 0 0 1 6 6v36H20a6 6 0 0 1-6-6V10" }), /* @__PURE__ */ React.createElement("path", { d: "M14 10a4 4 0 0 1 8 0v34a6 6 0 0 1-6 6M26 18h16M26 26h16M26 34h10" }), /* @__PURE__ */ React.createElement("circle", { cx: "44", cy: "44", r: "6" }), /* @__PURE__ */ React.createElement("path", { d: "m41 49-2 8 5-3 5 3-2-8" })),
+  pen: /* @__PURE__ */ React.createElement("g", null, /* @__PURE__ */ React.createElement("path", { d: "M44 8 56 20 26 50l-14 4 4-14z" }), /* @__PURE__ */ React.createElement("path", { d: "m38 14 12 12M16 40l8 8M8 58h20" }))
+};
+const LAW_LAYOUT = [
+  ["scales", "lapis", 4, 10, 120, "a", 14, 0],
+  ["section", "anor", 88, 8, 90, "b", 11, -3],
+  ["book", "tq", 72, 30, 130, "c", 17, -6],
+  ["gavel", "saf", 12, 46, 110, "b", 13, -2],
+  ["shield", "tq", 46, 6, 80, "a", 12, -8],
+  ["court", "lapis", 82, 62, 140, "c", 19, -4],
+  ["scroll", "anor", 26, 78, 105, "a", 15, -10],
+  ["pen", "saf", 58, 84, 85, "b", 12, -5],
+  ["section", "lapis", 36, 42, 70, "c", 16, -12],
+  ["scales", "saf", 92, 38, 75, "a", 18, -7],
+  ["book", "anor", 2, 88, 80, "b", 14, -9],
+  ["shield", "lapis", 64, 56, 64, "a", 13, -1]
+];
+const LawBackground = React.memo(function LawBackground2() {
+  return /* @__PURE__ */ React.createElement("div", { className: "law-bg", "aria-hidden": "true" }, LAW_LAYOUT.map(([name, color, x, y, size, anim, dur, delay], i) => /* @__PURE__ */ React.createElement(
+    "svg",
+    {
+      key: i,
+      className: "law-ico law-" + color + " float-" + anim,
+      viewBox: "0 0 64 64",
+      width: size,
+      height: size,
+      style: { left: x + "%", top: y + "%", animationDuration: dur + "s", animationDelay: delay + "s" }
+    },
+    LAW_ICONS[name]
+  )));
+});
+function LogoMark({ size = 48 }) {
+  return /* @__PURE__ */ React.createElement("svg", { className: "logo-mark", viewBox: "0 0 48 48", width: size, height: size, "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("defs", null, /* @__PURE__ */ React.createElement("linearGradient", { id: "lm-g", x1: "0", y1: "0", x2: "1", y2: "1" }, /* @__PURE__ */ React.createElement("stop", { offset: "0", stopColor: "#1a6ff0" }), /* @__PURE__ */ React.createElement("stop", { offset: "1", stopColor: "#12b5a8" }))), /* @__PURE__ */ React.createElement("rect", { width: "48", height: "48", rx: "12", fill: "url(#lm-g)" }), /* @__PURE__ */ React.createElement("g", { fill: "none", stroke: "#fff", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ React.createElement("path", { d: "M24 9v20M15 13l9-2 9 2" }), /* @__PURE__ */ React.createElement("path", { d: "M15 13l-4 9h8zM33 13l-4 9h8z", fill: "rgba(255,255,255,.18)" }), /* @__PURE__ */ React.createElement("path", { d: "M24 33c-3-2.5-8-3-12-2v6c4-1 9-.5 12 2 3-2.5 8-3 12-2v-6c-4-1-9-.5-12 2z", fill: "#ffd36b", stroke: "#ffd36b" })), /* @__PURE__ */ React.createElement("circle", { cx: "24", cy: "9", r: "2", fill: "#ffd36b" }));
+}
+
 /* ---- lib/scriptTools.js ---- */
 const LEX = {
   konst: { title: "O'zbekiston Respublikasi Konstitutsiyasi", url: "https://lex.uz/docs/-6445145" },
@@ -21369,6 +21498,14 @@ function FeatIcon({ name }) {
   }[name];
   return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "24", height: "24", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("path", { d, fill: "currentColor" }));
 }
+const HOME_TOPICS = [
+  { label: "Mehnat huquqi", icon: "gavel", tone: "a", to: "lessons" },
+  { label: "Kazuslarni yechish", icon: "court", tone: "b", to: "learn" },
+  { label: "Yoshingizga mos huquqlar", icon: "scales", tone: "c", to: "roadmap" },
+  { label: "Hujjatni tushunish", icon: "scroll", tone: "d", to: "make" },
+  { label: "Anonim savol", icon: "section", tone: "g", to: "make", mode: "savol" },
+  { label: "Imtihonga takrorlash", icon: "pen", tone: "h", to: "recap" }
+];
 function HomePage({ go }) {
   const store = useStore();
   const feats = [
@@ -21377,7 +21514,16 @@ function HomePage({ go }) {
     ["c3", "cases", "Kazuslar", CASES.length + " ta kazus \xB7 5 bosqichli yechim", () => go("learn")],
     ["c4", "road", "Yo'l xaritasi", "Yoshingizga qarab qaysi huquqlar ochiladi", () => go("roadmap")]
   ];
-  return /* @__PURE__ */ React.createElement("div", { className: "stack-lg" }, /* @__PURE__ */ React.createElement("section", { className: "hero" }, /* @__PURE__ */ React.createElement("div", { className: "hero-text" }, /* @__PURE__ */ React.createElement("span", { className: "eyebrow" }, "Huquqiy ta'lim \xB7 multfilmda"), /* @__PURE__ */ React.createElement("h1", null, "Qonunni ", /* @__PURE__ */ React.createElement("em", null, "multfilm"), " tushuntiradi"), /* @__PURE__ */ React.createElement("p", null, "Afandi va Aqlvoy har qanday hujjat, modda yoki kazusni 1\u20133 daqiqalik multfilmga aylantiradi \u2014 subtitr, ovoz va lex.uz manbasi bilan."), /* @__PURE__ */ React.createElement("div", { className: "hero-ctas" }, /* @__PURE__ */ React.createElement("button", { className: "btn accent big", onClick: () => go("make") }, "Multfilm yasash"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-glass big", onClick: () => go("make", "savol") }, "Anonim savol")), /* @__PURE__ */ React.createElement("div", { className: "hero-facts" }, /* @__PURE__ */ React.createElement("span", null, "Bepul, ro'yxatsiz"), /* @__PURE__ */ React.createElement("span", null, "Lotin / \u041A\u0438\u0440\u0438\u043B\u043B"), /* @__PURE__ */ React.createElement("span", null, "lex.uz manbasi"))), /* @__PURE__ */ React.createElement("div", { className: "hero-player" }, /* @__PURE__ */ React.createElement("div", { className: "label-row" }, /* @__PURE__ */ React.createElement("span", { className: "pill hot" }, "Haftaning multfilmi"), /* @__PURE__ */ React.createElement("span", { className: "muted sm" }, "Mehnat huquqi")), /* @__PURE__ */ React.createElement(VideoPlayer, { key: WEEKLY.id, script: WEEKLY, onWatched: () => Store.set((s) => ({ ...s, watched: { ...s.watched, [WEEKLY.id]: true } })) }))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { className: "section-title" }, /* @__PURE__ */ React.createElement("h2", null, "Nimadan boshlaymiz?")), /* @__PURE__ */ React.createElement("div", { className: "features" }, feats.map(([c, ic, t, d, on]) => /* @__PURE__ */ React.createElement("button", { key: ic, className: cx("feat", c), onClick: on }, /* @__PURE__ */ React.createElement("span", { className: "feat-ic" }, /* @__PURE__ */ React.createElement(FeatIcon, { name: ic })), /* @__PURE__ */ React.createElement("b", null, t), /* @__PURE__ */ React.createElement("span", { className: "d" }, d), /* @__PURE__ */ React.createElement("span", { className: "go", "aria-hidden": "true" }, "Ochish ", /* @__PURE__ */ React.createElement("span", null, "\u2192")))))), /* @__PURE__ */ React.createElement(VideoMeta, { script: WEEKLY }), /* @__PURE__ */ React.createElement("section", { className: "panel ask-strip" }, /* @__PURE__ */ React.createElement("div", { className: "row gap", style: { flex: "1 1 260px", alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("span", { className: "ask-ic", "aria-hidden": "true" }, "?"), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, "Savolingiz bormi?"), /* @__PURE__ */ React.createElement("p", { className: "muted" }, "Ro'yxatdan o'tmasdan anonim savol bering \u2014 javob qisqa multfilm shaklida."))), /* @__PURE__ */ React.createElement("button", { className: "btn", onClick: () => go("make", "savol") }, "Anonim savol berish")), store.saved.length > 0 && /* @__PURE__ */ React.createElement(SavedList, null));
+  const [q, setQ] = useState("");
+  const ask = (e) => {
+    e.preventDefault();
+    try {
+      sessionStorage.setItem("oq-q", q);
+    } catch (err) {
+    }
+    go("make", "savol");
+  };
+  return /* @__PURE__ */ React.createElement("div", { className: "stack-lg" }, /* @__PURE__ */ React.createElement("section", { className: "welcome", "aria-labelledby": "xush" }, /* @__PURE__ */ React.createElement("div", { className: "welcome-top" }, /* @__PURE__ */ React.createElement("h1", { id: "xush" }, "Xush kelibsiz!"), /* @__PURE__ */ React.createElement("form", { className: "search", role: "search", onSubmit: ask }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "24", height: "24", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("circle", { cx: "11", cy: "11", r: "7", fill: "none", stroke: "currentColor", strokeWidth: "2.2" }), /* @__PURE__ */ React.createElement("path", { d: "m20 20-4-4", stroke: "currentColor", strokeWidth: "2.2", strokeLinecap: "round" })), /* @__PURE__ */ React.createElement("label", { htmlFor: "q", className: "sr" }, "Huquqiy savol"), /* @__PURE__ */ React.createElement("input", { id: "q", value: q, onChange: (e) => setQ(e.target.value), placeholder: "Savolingizni yozing, masalan \u2014 oylik kechiksa nima qilaman?" }), /* @__PURE__ */ React.createElement("button", { className: "search-go", type: "submit" }, "Multfilm olish"))), /* @__PURE__ */ React.createElement("div", { className: "topics" }, HOME_TOPICS.map((t) => /* @__PURE__ */ React.createElement("button", { key: t.label, className: "topic t-" + t.tone, onClick: () => go(t.to, t.mode) }, /* @__PURE__ */ React.createElement("svg", { className: "topic-ico", viewBox: "0 0 64 64", "aria-hidden": "true" }, LAW_ICONS[t.icon]), /* @__PURE__ */ React.createElement("span", null, t.label))))), /* @__PURE__ */ React.createElement("section", { className: "weekly" }, /* @__PURE__ */ React.createElement("div", { className: "hero-player" }, /* @__PURE__ */ React.createElement("div", { className: "label-row" }, /* @__PURE__ */ React.createElement("span", { className: "pill hot" }, "Haftaning multfilmi"), /* @__PURE__ */ React.createElement("span", { className: "muted sm" }, "Mehnat huquqi")), /* @__PURE__ */ React.createElement(VideoPlayer, { key: WEEKLY.id, script: WEEKLY, onWatched: () => Store.set((s) => ({ ...s, watched: { ...s.watched, [WEEKLY.id]: true } })) }))), /* @__PURE__ */ React.createElement("section", null, /* @__PURE__ */ React.createElement("div", { className: "section-title" }, /* @__PURE__ */ React.createElement("h2", null, "Nimadan boshlaymiz?")), /* @__PURE__ */ React.createElement("div", { className: "features" }, feats.map(([c, ic, t, d, on]) => /* @__PURE__ */ React.createElement("button", { key: ic, className: cx("feat", c), onClick: on }, /* @__PURE__ */ React.createElement("span", { className: "feat-ic" }, /* @__PURE__ */ React.createElement(FeatIcon, { name: ic })), /* @__PURE__ */ React.createElement("b", null, t), /* @__PURE__ */ React.createElement("span", { className: "d" }, d), /* @__PURE__ */ React.createElement("span", { className: "go", "aria-hidden": "true" }, "Ochish ", /* @__PURE__ */ React.createElement("span", null, "\u2192")))))), /* @__PURE__ */ React.createElement(VideoMeta, { script: WEEKLY }), /* @__PURE__ */ React.createElement("section", { className: "panel ask-strip" }, /* @__PURE__ */ React.createElement("div", { className: "row gap", style: { flex: "1 1 260px", alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("span", { className: "ask-ic", "aria-hidden": "true" }, "?"), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("b", null, "Savolingiz bormi?"), /* @__PURE__ */ React.createElement("p", { className: "muted" }, "Ro'yxatdan o'tmasdan anonim savol bering \u2014 javob qisqa multfilm shaklida."))), /* @__PURE__ */ React.createElement("button", { className: "btn", onClick: () => go("make", "savol") }, "Anonim savol berish")), store.saved.length > 0 && /* @__PURE__ */ React.createElement(SavedList, null));
 }
 function GenSkeleton({ label }) {
   return /* @__PURE__ */ React.createElement("div", { className: "sk-card", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("div", { className: "sk-cap" }, /* @__PURE__ */ React.createElement("span", { className: "spinner" }), label), /* @__PURE__ */ React.createElement("div", { className: "sk sk-stage" }), /* @__PURE__ */ React.createElement("div", { className: "sk sk-line w60" }), /* @__PURE__ */ React.createElement("div", { className: "sk sk-line w80" }), /* @__PURE__ */ React.createElement("div", { className: "sk sk-line w40" }));
@@ -21451,7 +21597,15 @@ function MakeEmpty({ onIdea }) {
 }
 function MakePage({ initialMode }) {
   const [mode, setMode] = useState(initialMode || "hujjat");
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => {
+    try {
+      const v = sessionStorage.getItem("oq-q") || "";
+      sessionStorage.removeItem("oq-q");
+      return v;
+    } catch (e) {
+      return "";
+    }
+  });
   const [url, setUrl] = useState("");
   const [level, setLevel] = useState("fuqaro");
   const [image, setImage] = useState(null);
@@ -21770,11 +21924,15 @@ function ProfilePage() {
 /* ---- App.jsx ---- */
 const ROUTES = ["home", "make", "savol", "learn", "lessons", "recap", "roadmap", "profile"];
 const TAB_OF = { home: "home", roadmap: "home", make: "make", savol: "make", learn: "learn", lessons: "learn", recap: "learn", profile: "profile" };
+const CRUMB = { make: "Multfilm yasash", savol: "Anonim savol", learn: "Darslar va kazuslar", lessons: "Video darslar", recap: "Takrorlash", roadmap: "Huquqlar yo'l xaritasi", profile: "Profil" };
 function NavIcon({ name }) {
   const d = {
     home: "M3 11 12 3l9 8v10h-6v-6H9v6H3z",
     make: "M4 5h12a2 2 0 0 1 2 2v1.5l3-2v11l-3-2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm4 3v8l6-4z",
     learn: "M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2V17l7 4 7-4v-3.8L12 17z",
+    lessons: "M4 4h16v12H4zm6 3v6l5-3zM8 19h8v2H8z",
+    roadmap: "M9 3 3 5v16l6-2 6 2 6-2V3l-6 2zm1 2.2 4 1.3v12.3l-4-1.3z",
+    savol: "M12 2a10 10 0 0 0-8.7 15l-1.3 5 5-1.3A10 10 0 1 0 12 2zm.1 15.5a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6zm1.4-5.3c-.6.4-.8.7-.8 1.3v.4h-2.2v-.5c0-1.3.5-2 1.5-2.6.8-.5 1.1-.8 1.1-1.4 0-.7-.6-1.1-1.3-1.1-.8 0-1.4.5-1.5 1.3H8.1c.1-2 1.7-3.3 3.9-3.3 2.2 0 3.6 1.2 3.6 3 0 1.3-.7 2.1-2.1 2.9z",
     profile: "M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5C21 16.5 17 14 12 14z"
   }[name];
   return /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "24", height: "24", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("path", { d, fill: "currentColor" }));
@@ -21786,8 +21944,10 @@ function App() {
   };
   const [route, setRoute] = useState(read);
   const store = useStore();
+  const steps = useRef(0);
   useEffect(() => {
     const f = () => {
+      steps.current += 1;
       setRoute(read());
       window.scrollTo(0, 0);
     };
@@ -21800,6 +21960,18 @@ function App() {
     root.classList.toggle("hc", !!store.settings.contrast);
     Translit.setMode(store.settings.alphabet, document.body);
   }, [store.settings.bigFont, store.settings.contrast, store.settings.alphabet]);
+  const sysDark = () => {
+    try {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch (e) {
+      return false;
+    }
+  };
+  const theme = store.settings.theme || (sysDark() ? "dark" : "light");
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+  const setSetting = (k, v) => Store.set((s) => ({ ...s, settings: { ...s.settings, [k]: v } }));
   const go = (r, mode) => {
     const target = mode === "savol" ? "savol" : r;
     if (location.hash.replace("#", "") === target) {
@@ -21807,24 +21979,17 @@ function App() {
       window.scrollTo(0, 0);
     } else location.hash = target;
   };
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const f = () => setScrolled(window.scrollY > 8);
-    f();
-    window.addEventListener("scroll", f, { passive: true });
-    return () => window.removeEventListener("scroll", f);
-  }, []);
+  const back = () => {
+    if (steps.current > 0) {
+      steps.current -= 2;
+      history.back();
+    } else go(route === "recap" || route === "lessons" ? "learn" : "home");
+  };
   const tab = TAB_OF[route];
   const nav = [["home", "Bosh sahifa", "Bosh sahifa"], ["make", "Multfilm yasash", "Yasash"], ["learn", "Darslar va kazuslar", "Darslar"], ["profile", "Profil", "Profil"]];
-  return /* @__PURE__ */ React.createElement("div", { className: "app" }, /* @__PURE__ */ React.createElement("header", { className: cx("topbar", scrolled && "scrolled") }, /* @__PURE__ */ React.createElement("a", { className: "logo", href: "#home", "aria-label": "OsonQonun bosh sahifa" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 40 40", width: "34", height: "34", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("rect", { width: "40", height: "40", rx: "10", fill: "#1f4e9c" }), /* @__PURE__ */ React.createElement("path", { d: "M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z", fill: "#f2b134" }), /* @__PURE__ */ React.createElement("circle", { cx: "20", cy: "20", r: "4", fill: "#fff" })), /* @__PURE__ */ React.createElement("span", { className: "notr" }, "Oson", /* @__PURE__ */ React.createElement("b", null, "Qonun"))), /* @__PURE__ */ React.createElement("nav", { className: "top-nav", "aria-label": "Asosiy menyu" }, nav.map(([k, label]) => /* @__PURE__ */ React.createElement("a", { key: k, href: "#" + k, className: cx(tab === k && "on"), "aria-current": tab === k ? "page" : void 0 }, /* @__PURE__ */ React.createElement(NavIcon, { name: k }), label))), /* @__PURE__ */ React.createElement("div", { className: "top-actions" }, /* @__PURE__ */ React.createElement(
-    "button",
-    {
-      className: "chip",
-      onClick: () => Store.set((s) => ({ ...s, settings: { ...s.settings, alphabet: s.settings.alphabet === "lat" ? "cyr" : "lat" } })),
-      "aria-label": "Alifboni almashtirish"
-    },
-    /* @__PURE__ */ React.createElement("span", { className: "notr" }, store.settings.alphabet === "lat" ? "Lot \u2192 \u041A\u0438\u0440" : "\u041A\u0438\u0440 \u2192 Lot")
-  ), /* @__PURE__ */ React.createElement("button", { className: cx("chip", store.settings.bigFont && "on"), onClick: () => Store.set((s) => ({ ...s, settings: { ...s.settings, bigFont: !s.settings.bigFont } })), "aria-pressed": !!store.settings.bigFont, "aria-label": "Katta shrift", title: "Katta shrift" }, "A+"))), /* @__PURE__ */ React.createElement("main", { className: "main" }, tab === "home" && route === "roadmap" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("button", { className: "link-back", onClick: () => go("home") }, /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "\u2190"), " Bosh sahifa"), /* @__PURE__ */ React.createElement(RightsRoadmap, null)), route === "home" && /* @__PURE__ */ React.createElement(HomePage, { go }), tab === "make" && /* @__PURE__ */ React.createElement(MakePage, { initialMode: route === "savol" ? "savol" : void 0 }), tab === "learn" && /* @__PURE__ */ React.createElement(LearnPage, { sub: route, go }), route === "profile" && /* @__PURE__ */ React.createElement(ProfilePage, null), /* @__PURE__ */ React.createElement("footer", { className: "foot" }, /* @__PURE__ */ React.createElement("span", { className: "notr" }, "OsonQonun"), " \xB7 Lex hackatoni, 2-yo'nalish: huquqiy ta'lim va targ'ibot \xB7 Videolar ta'limiy maqsadda, yuridik maslahat emas \xB7 Manba: ", /* @__PURE__ */ React.createElement("a", { href: "https://lex.uz", target: "_blank", rel: "noopener" }, "lex.uz"))), /* @__PURE__ */ React.createElement("nav", { className: "bottom-nav", "aria-label": "Asosiy menyu" }, nav.map(([k, label, short]) => /* @__PURE__ */ React.createElement("a", { key: k, href: "#" + k, className: cx(tab === k && "on"), "aria-current": tab === k ? "page" : void 0, "aria-label": label }, /* @__PURE__ */ React.createElement("span", { className: "ni" }, /* @__PURE__ */ React.createElement(NavIcon, { name: k })), /* @__PURE__ */ React.createElement("span", null, short)))));
+  const side = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Darslar va kazuslar"], ["lessons", "Video darslar"], ["roadmap", "Huquqlar yo'l xaritasi"], ["savol", "Anonim savol"], ["profile", "Profil"]];
+  const cyr = store.settings.alphabet === "cyr";
+  return /* @__PURE__ */ React.createElement("div", { className: "app" }, /* @__PURE__ */ React.createElement(LawBackground, null), /* @__PURE__ */ React.createElement("aside", { className: "sidebar", "aria-label": "Bo'limlar" }, /* @__PURE__ */ React.createElement("a", { className: "logo", href: "#home", "aria-label": "OsonQonun bosh sahifa" }, /* @__PURE__ */ React.createElement(LogoMark, null), /* @__PURE__ */ React.createElement("span", { className: "notr" }, "Oson", /* @__PURE__ */ React.createElement("b", null, "Qonun"))), /* @__PURE__ */ React.createElement("p", { className: "side-label" }, "Xizmatlar"), /* @__PURE__ */ React.createElement("nav", { className: "side-nav" }, side.map(([k, label]) => /* @__PURE__ */ React.createElement("a", { key: k, href: "#" + k, className: cx(route === k && "on"), "aria-current": route === k ? "page" : void 0 }, /* @__PURE__ */ React.createElement(NavIcon, { name: k }), /* @__PURE__ */ React.createElement("span", null, label)))), /* @__PURE__ */ React.createElement("div", { className: "side-help" }, /* @__PURE__ */ React.createElement("b", null, "Yordam kerakmi?"), /* @__PURE__ */ React.createElement("span", null, "Savolingizni anonim yozing \u2014 javob multfilm bo'lib keladi."), /* @__PURE__ */ React.createElement("a", { href: "#savol" }, "Savol berish"))), /* @__PURE__ */ React.createElement("div", { className: "content" }, /* @__PURE__ */ React.createElement("header", { className: "topbar" }, /* @__PURE__ */ React.createElement("a", { className: "mob-logo", href: "#home", "aria-label": "OsonQonun bosh sahifa" }, /* @__PURE__ */ React.createElement(LogoMark, { size: 38 }), /* @__PURE__ */ React.createElement("span", { className: "notr" }, "Oson", /* @__PURE__ */ React.createElement("b", null, "Qonun"))), /* @__PURE__ */ React.createElement("div", { className: "portal-title" }, "Huquqiy ta'lim va targ'ibot", /* @__PURE__ */ React.createElement("br", null), "interaktiv platformasi"), /* @__PURE__ */ React.createElement("div", { className: "top-actions" }, /* @__PURE__ */ React.createElement("button", { className: "round-act", onClick: () => setSetting("alphabet", cyr ? "lat" : "cyr"), "aria-label": "Alifboni almashtirish", title: "Alifboni almashtirish" }, /* @__PURE__ */ React.createElement("i", { className: "ra-ico notr", "aria-hidden": "true" }, cyr ? "\u041A\u0438\u0440" : "Lot"), /* @__PURE__ */ React.createElement("span", { className: "ra-txt" }, /* @__PURE__ */ React.createElement("b", null, "Alifbo"), /* @__PURE__ */ React.createElement("small", { className: "notr" }, cyr ? "\u041A\u0438\u0440\u0438\u043B\u043B \u2192 Lotin" : "Lotin \u2192 \u041A\u0438\u0440\u0438\u043B\u043B"))), /* @__PURE__ */ React.createElement("button", { className: cx("round-act", store.settings.bigFont && "on"), onClick: () => setSetting("bigFont", !store.settings.bigFont), "aria-pressed": !!store.settings.bigFont }, /* @__PURE__ */ React.createElement("i", { className: "ra-ico", "aria-hidden": "true" }, "A+"), /* @__PURE__ */ React.createElement("span", { className: "ra-txt" }, /* @__PURE__ */ React.createElement("b", null, "Shrift"), /* @__PURE__ */ React.createElement("small", null, "Kattaroq matn"))), /* @__PURE__ */ React.createElement("div", { className: "theme-switch", role: "group", "aria-label": "Rejim" }, /* @__PURE__ */ React.createElement("button", { className: cx("theme-btn", theme === "dark" && "on"), onClick: () => setSetting("theme", "dark"), "aria-pressed": theme === "dark", "aria-label": "Tungi rejim", title: "Tungi rejim" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "24", height: "24", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("path", { d: "M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinejoin: "round" }))), /* @__PURE__ */ React.createElement("button", { className: cx("theme-btn", theme === "light" && "on"), onClick: () => setSetting("theme", "light"), "aria-pressed": theme === "light", "aria-label": "Kunduzgi rejim", title: "Kunduzgi rejim" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "24", height: "24", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("circle", { cx: "12", cy: "12", r: "4.5", fill: "none", stroke: "currentColor", strokeWidth: "2" }), /* @__PURE__ */ React.createElement("path", { d: "M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round" })))), /* @__PURE__ */ React.createElement("a", { className: "glow-btn", href: "#make" }, /* @__PURE__ */ React.createElement("i", { "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "20", height: "20" }, /* @__PURE__ */ React.createElement("path", { d: "M8 5v14l11-7z", fill: "currentColor" }))), "Multfilm yasash"))), /* @__PURE__ */ React.createElement("main", { className: "main" }, route !== "home" && /* @__PURE__ */ React.createElement("div", { className: "page-nav" }, /* @__PURE__ */ React.createElement("button", { className: "back-btn", onClick: back }, /* @__PURE__ */ React.createElement("svg", { viewBox: "0 0 24 24", width: "20", height: "20", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("path", { d: "M15 5 8 12l7 7", fill: "none", stroke: "currentColor", strokeWidth: "2.4", strokeLinecap: "round", strokeLinejoin: "round" })), "Orqaga"), /* @__PURE__ */ React.createElement("nav", { className: "crumbs", "aria-label": "Siz shu yerdasiz" }, /* @__PURE__ */ React.createElement("a", { href: "#home" }, "Bosh sahifa"), /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "/"), (route === "recap" || route === "lessons") && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("a", { href: "#learn" }, "Darslar va kazuslar"), /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "/")), /* @__PURE__ */ React.createElement("span", { "aria-current": "page" }, CRUMB[route]))), route === "roadmap" && /* @__PURE__ */ React.createElement(RightsRoadmap, null), route === "home" && /* @__PURE__ */ React.createElement(HomePage, { go }), tab === "make" && /* @__PURE__ */ React.createElement(MakePage, { initialMode: route === "savol" ? "savol" : void 0 }), tab === "learn" && /* @__PURE__ */ React.createElement(LearnPage, { sub: route, go }), route === "profile" && /* @__PURE__ */ React.createElement(ProfilePage, null)), /* @__PURE__ */ React.createElement("footer", { className: "site-foot" }, /* @__PURE__ */ React.createElement("div", { className: "foot-grid" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "foot-logo notr" }, "Oson", /* @__PURE__ */ React.createElement("b", null, "Qonun")), /* @__PURE__ */ React.createElement("p", null, "Qonunlarni multfilm orqali tushuntiruvchi huquqiy ta'lim platformasi. Lex hackatoni, 2-yo'nalish: huquqiy ta'lim va targ'ibot.")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h3", null, "Bo'limlar"), /* @__PURE__ */ React.createElement("a", { href: "#make" }, "Multfilm yasash"), /* @__PURE__ */ React.createElement("a", { href: "#learn" }, "Darslar va kazuslar"), /* @__PURE__ */ React.createElement("a", { href: "#roadmap" }, "Huquqlar yo'l xaritasi")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h3", null, "Manbalar"), /* @__PURE__ */ React.createElement("a", { href: "https://lex.uz", target: "_blank", rel: "noopener" }, "lex.uz \u2014 qonun hujjatlari bazasi"), /* @__PURE__ */ React.createElement("p", { className: "foot-note" }, "Videolar ta'limiy maqsadda tayyorlangan va yuridik maslahat hisoblanmaydi. Bu platforma davlat organining rasmiy sayti emas."))))), /* @__PURE__ */ React.createElement("nav", { className: "bottom-nav", "aria-label": "Asosiy menyu" }, nav.map(([k, label, short]) => /* @__PURE__ */ React.createElement("a", { key: k, href: "#" + k, className: cx(tab === k && "on"), "aria-current": tab === k ? "page" : void 0, "aria-label": label }, /* @__PURE__ */ React.createElement("span", { className: "ni" }, /* @__PURE__ */ React.createElement(NavIcon, { name: k })), /* @__PURE__ */ React.createElement("span", null, short)))));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/* @__PURE__ */ React.createElement(App, null));
 

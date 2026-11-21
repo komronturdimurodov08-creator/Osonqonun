@@ -43,6 +43,13 @@ import subprocess
 import sys
 import tempfile
 import time
+
+# Windows'da antivirus HTTPS'ni tekshirsa, Python sertifikatlari mos kelmaydi -> Windows ombori ishlatiladi
+try:
+    import truststore  # pip install truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
 from pathlib import Path
 from typing import Any
 
@@ -242,7 +249,13 @@ class OsonOvoz:
 
     def _post(self, url: str, body: dict, urinish: int = 4) -> bytes:
         for i in range(urinish):
-            r = self.s.post(url, params={"output_format": self.format}, json=body, timeout=120)
+            try:
+                r = self.s.post(url, params={"output_format": self.format}, json=body, timeout=120)
+            except requests.exceptions.RequestException as e:  # timeout / uzilish -> qayta urinamiz
+                if i < urinish - 1:
+                    time.sleep(2 ** i * 3)
+                    continue
+                raise OvozXatosi(f"ElevenLabs bilan aloqa uzildi: {e}") from e
             if r.status_code == 200:
                 return r.content
             if r.status_code in (429, 500, 502, 503, 504) and i < urinish - 1:

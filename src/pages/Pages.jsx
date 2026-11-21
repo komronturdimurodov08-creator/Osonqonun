@@ -10,6 +10,15 @@ function FeatIcon({ name }) {
   return <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d={d} fill="currentColor" /></svg>;
 }
 
+const HOME_TOPICS = [
+  { label: "Mehnat huquqi", icon: "gavel", tone: "a", to: "lessons" },
+  { label: "Kazuslarni yechish", icon: "court", tone: "b", to: "learn" },
+  { label: "Yoshingizga mos huquqlar", icon: "scales", tone: "c", to: "roadmap" },
+  { label: "Hujjatni tushunish", icon: "scroll", tone: "d", to: "make" },
+  { label: "Anonim savol", icon: "section", tone: "g", to: "make", mode: "savol" },
+  { label: "Imtihonga takrorlash", icon: "pen", tone: "h", to: "recap" }
+];
+
 function HomePage({ go }) {
   const store = useStore();
   const feats = [
@@ -18,19 +27,34 @@ function HomePage({ go }) {
     ["c3", "cases", "Kazuslar", CASES.length + " ta kazus · 5 bosqichli yechim", () => go("learn")],
     ["c4", "road", "Yo'l xaritasi", "Yoshingizga qarab qaysi huquqlar ochiladi", () => go("roadmap")]
   ];
+  const [q, setQ] = useState("");
+  const ask = (e) => {
+    e.preventDefault();
+    try { sessionStorage.setItem("oq-q", q); } catch (err) { /* saqlash ixtiyoriy */ }
+    go("make", "savol");
+  };
   return (
     <div className="stack-lg">
-      <section className="hero">
-        <div className="hero-text">
-          <span className="eyebrow">Huquqiy ta'lim · multfilmda</span>
-          <h1>Qonunni <em>multfilm</em> tushuntiradi</h1>
-          <p>Afandi va Aqlvoy har qanday hujjat, modda yoki kazusni 1–3 daqiqalik multfilmga aylantiradi — subtitr, ovoz va lex.uz manbasi bilan.</p>
-          <div className="hero-ctas">
-            <button className="btn accent big" onClick={() => go("make")}>Multfilm yasash</button>
-            <button className="btn btn-glass big" onClick={() => go("make", "savol")}>Anonim savol</button>
-          </div>
-          <div className="hero-facts"><span>Bepul, ro'yxatsiz</span><span>Lotin / Кирилл</span><span>lex.uz manbasi</span></div>
+      <section className="welcome" aria-labelledby="xush">
+        <div className="welcome-top">
+          <h1 id="xush">Xush kelibsiz!</h1>
+          <form className="search" role="search" onSubmit={ask}>
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2.2" /><path d="m20 20-4-4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
+            <label htmlFor="q" className="sr">Huquqiy savol</label>
+            <input id="q" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Savolingizni yozing, masalan — oylik kechiksa nima qilaman?" />
+            <button className="search-go" type="submit">Multfilm olish</button>
+          </form>
         </div>
+        <div className="topics">
+          {HOME_TOPICS.map((t) => (
+            <button key={t.label} className={"topic t-" + t.tone} onClick={() => go(t.to, t.mode)}>
+              <svg className="topic-ico" viewBox="0 0 64 64" aria-hidden="true">{LAW_ICONS[t.icon]}</svg>
+              <span>{t.label}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+      <section className="weekly">
         <div className="hero-player">
           <div className="label-row"><span className="pill hot">Haftaning multfilmi</span><span className="muted sm">Mehnat huquqi</span></div>
           <VideoPlayer key={WEEKLY.id} script={WEEKLY} onWatched={() => Store.set((s) => ({ ...s, watched: { ...s.watched, [WEEKLY.id]: true } }))} />
@@ -250,7 +274,9 @@ function MakeEmpty({ onIdea }) {
 
 function MakePage({ initialMode }) {
   const [mode, setMode] = useState(initialMode || "hujjat");
-  const [text, setText] = useState("");
+  const [text, setText] = useState(() => {
+    try { const v = sessionStorage.getItem("oq-q") || ""; sessionStorage.removeItem("oq-q"); return v; } catch (e) { return ""; }
+  });
   const [url, setUrl] = useState("");
   const [level, setLevel] = useState("fuqaro");
   const [image, setImage] = useState(null);
