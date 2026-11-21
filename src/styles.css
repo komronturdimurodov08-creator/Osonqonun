@@ -533,3 +533,14 @@ textarea:focus,input:focus{border-color:var(--lapis);outline:none;box-shadow:0 0
 .lex-foot a{font-weight:800}
 .lex-none{background:var(--saf-soft);border-radius:12px;padding:1rem}
 .lex-none p{margin:.4rem 0}
+/* Raqamli tekshiruv natijasi (sinov oylari, ta'til kunlari va h.k.) */
+.lex-checks{display:grid;gap:10px;margin:12px 0}
+.lex-check{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;border:1px solid}
+.lex-check>b{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;color:#fff;font-size:15px}
+.lex-check p{margin:0 0 6px;font-weight:600;line-height:1.5}
+.lex-check.bad{background:light-dark(#fdecec,#3a1d22);border-color:light-dark(#f3b9b9,#7a3440)}
+.lex-check.bad>b{background:#d33b3b}
+.lex-check.ok{background:light-dark(#e8f7ee,#183326);border-color:light-dark(#a9dfbf,#2f6b4c)}
+.lex-check.ok>b{background:#1f9d57}
+.lex-check.soft.bad{background:light-dark(#fff6e0,#3a311a);border-color:light-dark(#f2d48a,#7a6430)}
+.lex-check.soft.bad>b{background:#d99a14}

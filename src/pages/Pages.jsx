@@ -80,21 +80,24 @@ function MakePage({ initialMode }) {
     setBusy(true); setNote(""); setProgress(0); setScript(null);
     ctrl.current = new AbortController();
     let s = null;
-    // Anonim savol: javob faqat LexBase moddalariga tayanadi. Mos modda bo'lmasa — taxmin qilmaymiz.
-    if (mode === "savol") {
-      const matches = LexSearch.search(t);
-      setLex({ q: t, matches });
-      if (!matches.length) { setBusy(false); setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50); return; }
+    // Javob faqat LexBase (lex.uz bilan solishtirilgan) moddalariga tayanadi. Mos modda bo'lmasa — taxmin qilmaymiz.
+    const checks = LexCheck.run(t);
+    const rank = (m) => { const c = checks.find((x) => x.id === m.entry.id); return c ? (c.ok ? 1 : 0) : 2; };
+    const matches = LexSearch.search(t).sort((a, b) => rank(a) - rank(b));
+    const scrollOut = () => setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    if (mode === "savol" || checks.length || matches.length) {
+      setLex({ q: t, matches, checks, mode });
+      if (!matches.length && !checks.length) { setBusy(false); scrollOut(); return; }
       try {
-        s = await generateWithAI({ text: t, level, mode, onProgress: setProgress, signal: ctrl.current.signal, context: LexSearch.context(matches) });
+        s = await generateWithAI({ text: t, level, mode, onProgress: setProgress, signal: ctrl.current.signal, context: LexSearch.context(matches, checks) });
         s.lexBased = true;
       } catch (e) {
-        s = lexTemplateScript(t, matches, level);
+        s = mode === "savol" ? lexTemplateScript(t, matches, level, checks) : docLexScript(t, checks, matches, level);
       }
-      setBusy(false); setScript(s);
-      setTimeout(() => out.current && out.current.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      setBusy(false); setScript(s); scrollOut();
       return;
     }
+    setLex(null);
     try {
       s = await generateWithAI({ text: t, level, mode, image, onProgress: setProgress, signal: ctrl.current.signal });
     } catch (e) {
@@ -137,7 +140,7 @@ function MakePage({ initialMode }) {
         </div>
         {note && <p className="note">{note}</p>}
       </section>
-      {mode === "savol" && lex && <LexAnswer data={lex} refEl={script ? null : out} />}
+      {lex && lex.mode === mode && <LexAnswer data={lex} refEl={script ? null : out} />}
       {script && (
         <div className="stack-lg" ref={out}>
           <div className="case-head"><span className="pill">{LEVELS[script.level] ? LEVELS[script.level].label : "Multfilm"}</span><h2>{script.title}</h2></div>
@@ -165,6 +168,16 @@ function LexAnswer({ data, refEl }) {
         <h3>Qonun nima deydi</h3>
       </div>
       <p className="sm muted">Javob faqat platformadagi huquqiy bazaga tayanadi: <span className="notr">{LEXBASE.length}</span> ta modda. lex.uz bilan solishtirilgan sana: <span className="notr">{d}</span></p>
+      {data.checks && data.checks.length > 0 && (
+        <div className="lex-checks">
+          {data.checks.map((c) => (
+            <div key={c.id} className={cx("lex-check", c.ok ? "ok" : "bad", c.soft && "soft")}>
+              <b className="notr">{c.ok ? "✓" : "✗"}</b>
+              <div><p>{P(c.msg)}</p><span className="lex-ref notr">{LexSearch.ref(LEXBASE.find((e) => e.id === c.id))}</span></div>
+            </div>
+          ))}
+        </div>
+      )}
       {data.matches.length ? (
         <div className="lex-list">
           {data.matches.map(({ entry: e }, i) => (
