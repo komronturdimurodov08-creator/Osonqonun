@@ -1,7 +1,7 @@
 /* App — navigatsiya (hash), sozlamalarni qo'llash, pastki 4 tugma, "Orqaga" tugmasi, huquqiy fon */
 
-const ROUTES = ["home", "make", "savol", "learn", "lessons", "recap", "roadmap", "profile"];
-const TAB_OF = { home: "home", roadmap: "home", make: "make", savol: "make", learn: "learn", lessons: "learn", recap: "learn", profile: "profile" };
+const ROUTES = ["home", "make", "savol", "lessons", "recap", "roadmap", "profile"];
+const TAB_OF = { home: "home", roadmap: "home", make: "make", savol: "make", lessons: "lessons", recap: "lessons", profile: "profile" };
 
 function NavIcon({ name }) {
   const d = {
@@ -51,18 +51,18 @@ function App() {
   };
   const back = () => {
     if (steps.current > 0) { steps.current -= 2; history.back(); }
-    else go(route === "lessons" || route === "recap" ? "learn" : "home");
+    else go(route === "recap" ? "lessons" : "home");
   };
   const tab = TAB_OF[route];
-  const nav = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Darslar va kazuslar"], ["profile", "Profil"]];
-  const CRUMB = { make: "Multfilm yasash", savol: "Anonim savol", learn: "Darslar va kazuslar", lessons: "Video darslar", recap: "Takrorlash", roadmap: "Huquqlar yo'l xaritasi", profile: "Profil" };
+  const nav = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["lessons", "Video darslar"], ["profile", "Profil"]];
+  const CRUMB = { make: "Multfilm yasash", savol: "Anonim savol", lessons: "Video darslar", recap: "Takrorlash", roadmap: "Huquqlar yo'l xaritasi", profile: "Profil" };
   const toggleBig = () => Store.set((s) => ({ ...s, settings: { ...s.settings, bigFont: !s.settings.bigFont } }));
   // Tungi rejim: saqlangan tanlov, bo'lmasa qurilma sozlamasi (prefers-color-scheme)
   const sysDark = () => { try { return window.matchMedia("(prefers-color-scheme: dark)").matches; } catch (e) { return false; } };
   const theme = store.settings.theme || (sysDark() ? "dark" : "light");
   useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
   const setTheme = (t) => Store.set((s) => ({ ...s, settings: { ...s.settings, theme: t } }));
-  const side = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Kazus-multfilmlar"], ["lessons", "Video darslar"], ["roadmap", "Huquqlar yo'l xaritasi"], ["savol", "Anonim savol"], ["profile", "Profil"]];
+  const side = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["lessons", "Video darslar"], ["roadmap", "Huquqlar yo'l xaritasi"], ["savol", "Anonim savol"], ["profile", "Profil"]];
   return (
     <div className="app">
       <LawBackground />
@@ -148,7 +148,7 @@ function App() {
               </button>
               <nav className="crumbs" aria-label="Siz shu yerdasiz">
                 <a href="#home">Bosh sahifa</a><span aria-hidden="true">/</span>
-                {(route === "lessons" || route === "recap") && <><a href="#learn">Darslar va kazuslar</a><span aria-hidden="true">/</span></>}
+                {route === "recap" && <><a href="#lessons">Video darslar</a><span aria-hidden="true">/</span></>}
                 <span aria-current="page">{CRUMB[route]}</span>
               </nav>
             </div>
@@ -156,7 +156,7 @@ function App() {
           {tab === "home" && route === "roadmap" && <RightsRoadmap />}
           {route === "home" && <HomePage go={go} />}
           {tab === "make" && <MakePage initialMode={route === "savol" ? "savol" : undefined} />}
-          {tab === "learn" && <LearnPage sub={route} go={go} />}
+          {tab === "lessons" && <LearnPage sub={route} />}
           {route === "profile" && <ProfilePage />}
         </main>
         <footer className="site-foot">
@@ -167,7 +167,7 @@ function App() {
             </div>
             <div>
               <h3>Bo'limlar</h3>
-              <a href="#make">Multfilm yasash</a><a href="#learn">Kazus-multfilmlar</a><a href="#lessons">Video darslar</a><a href="#roadmap">Huquqlar yo'l xaritasi</a>
+              <a href="#make">Multfilm yasash</a><a href="#lessons">Video darslar</a><a href="#roadmap">Huquqlar yo'l xaritasi</a>
             </div>
             <div>
               <h3>Manbalar</h3>

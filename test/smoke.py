@@ -24,16 +24,6 @@ with sync_playwright() as p:
     # vertical
     pg.click(".hero-player button[title='Vertikal 9:16']"); time.sleep(1.5)
     pg.locator(".hero-player .player").screenshot(path=out + "05-vertical.png")
-    # cases
-    pg.goto(url + "#learn"); time.sleep(0.6)
-    pg.screenshot(path=out + "06-cases.png")
-    pg.click(".case-card >> nth=0"); time.sleep(0.5)
-    pg.click(".poster"); time.sleep(1)
-    for i in range(3): pg.click("button[aria-label='Keyingi sahna']"); time.sleep(0.3)
-    time.sleep(1.5)
-    pg.screenshot(path=out + "07-case-stop.png")
-    pg.click(".stop-card >> text=Yechimni ko'rsat"); time.sleep(2)
-    pg.screenshot(path=out + "08-case-solution.png", full_page=True)
     # lessons
     pg.goto(url + "#lessons"); time.sleep(0.6)
     pg.click(".quiz-q >> nth=0 >> .opt >> nth=0"); time.sleep(0.3)

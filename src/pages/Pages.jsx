@@ -1,7 +1,7 @@
 /* Sahifalar: Bosh sahifa, Multfilm yasash, Darslar va kazuslar, Profil */
 
 const TOPICS = [
-  { label: "Mehnat huquqi", icon: "gavel", tone: "a", to: "learn" },
+  { label: "Mehnat huquqi", icon: "gavel", tone: "a", to: "lessons" },
   { label: "Konstitutsiya darslari", icon: "book", tone: "b", to: "lessons" },
   { label: "Yoshingizga mos huquqlar", icon: "scales", tone: "c", to: "roadmap" },
   { label: "Hujjatni tushunish", icon: "scroll", tone: "d", to: "make" },
@@ -290,26 +290,11 @@ function LexAnswer({ data, refEl }) {
   );
 }
 
-function LearnPage({ sub, go }) {
-  const [caseId, setCaseId] = useState(null);
-  const tab = sub === "lessons" || sub === "recap" ? "lessons" : "cases";
-  const cs = CASES.find((c) => c.id === caseId);
+function LearnPage({ sub }) {
   return (
     <div className="stack-lg">
-      <div className="page-head">
-        <h2>Darslar va kazuslar</h2>
-        <div className="seg" role="tablist">
-          <button role="tab" aria-selected={tab === "cases"} className={cx(tab === "cases" && "on")} onClick={() => { setCaseId(null); go("learn"); }}>Kazus-multfilmlar</button>
-          <button role="tab" aria-selected={tab === "lessons"} className={cx(tab === "lessons" && "on")} onClick={() => go("lessons")}>Video darslar</button>
-        </div>
-      </div>
-      {tab === "cases" ? (cs ? <CaseVideo cs={cs} onBack={() => setCaseId(null)} /> : (
-        <>
-          <p className="muted">Har bir kazus: voqea multfilmi → «Siz qanday hal qilardingiz?» → Afandi va Aqlvoy bilan 5 bosqichli yechim.</p>
-          <CaseList onOpen={setCaseId} />
-          <p className="sm muted">Fanlar: Konstitutsiyaviy va Mehnat huquqi (MVP). Keyingi bosqich: Fuqarolik, Jinoyat, Ma'muriy, Oila va protsessual huquq.</p>
-        </>
-      )) : <LessonPlaylist mode={sub} />}
+      <div className="page-head"><h2>Video darslar</h2></div>
+      <LessonPlaylist mode={sub} />
     </div>
   );
 }
@@ -416,7 +401,6 @@ function ProfilePage() {
   const set = (k, v) => Store.set((s) => ({ ...s, settings: { ...s.settings, [k]: v } }));
   const r = readiness(store);
   const watched = Object.keys(store.watched).length;
-  const solved = Object.values(store.cases).filter((c) => c.solved).length;
   const Toggle = ({ k, label, desc }) => (
     <label className="toggle">
       <input type="checkbox" checked={!!store.settings[k]} onChange={(e) => set(k, e.target.checked)} />
@@ -429,7 +413,6 @@ function ProfilePage() {
       <h2>Profil</h2>
       <div className="stats">
         <div className="stat"><b>{watched}</b><span>ko'rilgan video</span></div>
-        <div className="stat"><b>{solved}/{CASES.length}</b><span>yechilgan kazus</span></div>
         <div className="stat"><b>{r.pct}%</b><span>test natijasi</span></div>
         <div className="stat"><b>{r.weak.length}</b><span>takrorlash kerak</span></div>
       </div>
