@@ -35,6 +35,9 @@ const I18N_PAIRS = [
   ["Videolar ta'limiy maqsadda, yuridik maslahat emas.", "Видео носят образовательный характер и не являются юридической консультацией.", "Videos are educational, not legal advice."],
   ["OsonQonun ishlashi uchun JavaScript yoqilgan bo'lishi kerak.", "Для работы OsonQonun нужно включить JavaScript.", "OsonQonun needs JavaScript to be enabled."],
   ["Til", "Язык", "Language"],
+  ["Rejim", "Режим", "Mode"],
+  ["Tungi rejim", "Ночной режим", "Dark mode"],
+  ["Kunduzgi rejim", "Дневной режим", "Light mode"],
   ["Tilni tanlash", "Выбор языка", "Choose language"],
 
   // ---- Bosh sahifa ----

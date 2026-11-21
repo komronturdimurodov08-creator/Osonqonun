@@ -20,7 +20,7 @@ const defaultState = {
   threshold: 70,        // o'qituvchi belgilagan o'tish foizi
   saved: [],            // offline saqlangan ssenariylar
   externalVideos: {},   // scriptId -> { url, provider } — NotebookLM/YouTube batafsil videolari
-  settings: { lang: "", alphabet: "lat", bigFont: false, contrast: false, voice: true, voiceEngine: "auto", maleVoice: "", femaleVoice: "" }
+  settings: { theme: "", lang: "", alphabet: "lat", bigFont: false, contrast: false, voice: true, voiceEngine: "auto", maleVoice: "", femaleVoice: "" }
 };
 const Store = (() => {
   let state = defaultState;

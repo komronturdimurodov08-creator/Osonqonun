@@ -57,7 +57,11 @@ function App() {
   const nav = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Darslar va kazuslar"], ["profile", "Profil"]];
   const CRUMB = { make: "Multfilm yasash", savol: "Anonim savol", learn: "Darslar va kazuslar", lessons: "Video darslar", recap: "Takrorlash", roadmap: "Huquqlar yo'l xaritasi", profile: "Profil" };
   const toggleBig = () => Store.set((s) => ({ ...s, settings: { ...s.settings, bigFont: !s.settings.bigFont } }));
-  const toggleHc = () => Store.set((s) => ({ ...s, settings: { ...s.settings, contrast: !s.settings.contrast } }));
+  // Tungi rejim: saqlangan tanlov, bo'lmasa qurilma sozlamasi (prefers-color-scheme)
+  const sysDark = () => { try { return window.matchMedia("(prefers-color-scheme: dark)").matches; } catch (e) { return false; } };
+  const theme = store.settings.theme || (sysDark() ? "dark" : "light");
+  useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
+  const setTheme = (t) => Store.set((s) => ({ ...s, settings: { ...s.settings, theme: t } }));
   const side = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Kazus-multfilmlar"], ["lessons", "Video darslar"], ["roadmap", "Huquqlar yo'l xaritasi"], ["savol", "Anonim savol"], ["profile", "Profil"]];
   return (
     <div className="app">
@@ -121,9 +125,14 @@ function App() {
               <i className="ra-ico ra-blue" aria-hidden="true">A+</i>
               <span className="ra-txt"><b>Shrift</b><small>Kattaroq matn</small></span>
             </button>
-            <button className={cx("icon-act", store.settings.contrast && "on")} onClick={toggleHc} aria-pressed={!!store.settings.contrast} aria-label="Ko'zi ojizlar uchun (yuqori kontrast)" title="Ko'zi ojizlar uchun">
-              <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><circle cx="12" cy="4" r="2" fill="currentColor" /><path d="M4 8h16M12 8v6m0 0-3 7m3-7 3 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
-            </button>
+            <div className="theme-switch" role="group" aria-label="Rejim">
+              <button className={cx("theme-btn", theme === "dark" && "on")} onClick={() => setTheme("dark")} aria-pressed={theme === "dark"} aria-label="Tungi rejim" title="Tungi rejim">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>
+              </button>
+              <button className={cx("theme-btn", theme === "light" && "on")} onClick={() => setTheme("light")} aria-pressed={theme === "light"} aria-label="Kunduzgi rejim" title="Kunduzgi rejim">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+              </button>
+            </div>
             <a className="glow-btn" href="#make">
               <i aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M8 5v14l11-7z" fill="currentColor" /></svg></i>
               Multfilm yasash
