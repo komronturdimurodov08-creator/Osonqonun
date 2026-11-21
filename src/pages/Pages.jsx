@@ -5,8 +5,6 @@ const TOPICS = [
   { label: "Konstitutsiya darslari", icon: "book", tone: "b", to: "lessons" },
   { label: "Yoshingizga mos huquqlar", icon: "scales", tone: "c", to: "roadmap" },
   { label: "Hujjatni tushunish", icon: "scroll", tone: "d", to: "make" },
-  { label: "Huquqni himoya qilish", icon: "shield", tone: "e", to: "learn" },
-  { label: "Sud va nizolar", icon: "court", tone: "f", to: "learn" },
   { label: "Anonim savol", icon: "section", tone: "g", to: "make", mode: "savol" },
   { label: "Imtihonga takrorlash", icon: "pen", tone: "h", to: "recap" }
 ];
