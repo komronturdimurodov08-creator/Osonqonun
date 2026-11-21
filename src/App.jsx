@@ -155,7 +155,7 @@ function App() {
           )}
           {tab === "home" && route === "roadmap" && <RightsRoadmap />}
           {route === "home" && <HomePage go={go} />}
-          {tab === "make" && <MakePage initialMode={route === "savol" ? "savol" : "hujjat"} />}
+          {tab === "make" && <MakePage initialMode={route === "savol" ? "savol" : undefined} />}
           {tab === "learn" && <LearnPage sub={route} go={go} />}
           {route === "profile" && <ProfilePage />}
         </main>

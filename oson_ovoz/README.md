@@ -114,3 +114,27 @@ Personajning ruscha ovozi boshqacha bo'lsin desangiz: `"voice_id_ru": "..."` qo'
 - Bir xil gap qayta so'ralsa, `.ovoz_kesh/` dan olinadi va kredit sarflanmaydi.
 - Avval `test` buyrug'i bilan ovozlarni tanlab oling, keyin to'liq sahnalarga o'ting.
 - Gapni o'zgartirmasdan faqat videoni qayta yig'sangiz, kredit ketmaydi.
+
+## 9. EasyLaw ilovasiga ulash (studiya ovozi)
+
+Ilovadagi barcha multfilmlar (haftaning multfilmi, kazuslar, darslar, yo'l xaritasi) ElevenLabs ovozi bilan o'ynaydi.
+Pleyer har bir replika uchun `dist/audio/<kalit>.mp3` ni qidiradi; fayl bo'lmasa — avvalgidek Claude yoki brauzer ovozi.
+
+```bash
+# EasyLaw papkasida:
+node oson_ovoz/eksport_replikalar.mjs          # ilovadagi replikalar -> oson_ovoz/replikalar.json
+cd oson_ovoz
+python oson_ovoz.py ilova weekly-sinov         # avval bitta video (≈1 650 kredit) — sinab ko'ring
+python oson_ovoz.py ilova                      # keyin hammasi (≈15 000 kredit)
+cd ..
+npm run build                                  # dist/index.html studiya ovozini ko'radi
+```
+
+- Ilova personajlari qaysi ovoz bilan gapirishi `ovozlar.json` → `ilova_personajlar` da. Ro'yxatdagi birinchi ovozi bor personaj tanlanadi:
+  `afandi`→Afandi, `aqlvoy`→Aqlvoy, `bola`→Bekzod, `talabaqiz`/`xodima`→Nilufar, `qoshni`→Qoshni (yo'q bo'lsa Hikoyachi),
+  `ishberuvchi`/`hokim`→Ishberuvchi (yo'q bo'lsa Jasur), `inspektor`/`sudya`→Hikoyachi, `sotuvchi`→Jasur.
+- Ikki yangi ovoz (ixtiyoriy, tavsiya etiladi): `python oson_ovoz.py dizayn Qoshni`, `python oson_ovoz.py dizayn Ishberuvchi`, keyin `tanla`.
+  Ularni `ilova` dan OLDIN yarating — aks holda o'sha replikalar zaxira ovoz bilan yoziladi (qayta yozish uchun `dist/audio` dagi fayllarni o'chiring).
+- Hissiyot: replikaning `emotion` maydoni teg bo'ladi (`happy`→`[cheerfully]`, `worried`→`[worried]`, `surprised`→`[surprised]`) — `emotsiya_teglari`.
+- Matn yoki yangi video qo'shilsa: yana `eksport_replikalar.mjs` → `ilova` → `npm run build`. Faqat yangi/o'zgargan replikalar yoziladi.
+- Saytni joylashda `dist/index.html` bilan birga `dist/audio/` papkasini ham yuklang. Sozlamalar → Ovoz → "Studiya ovozi".

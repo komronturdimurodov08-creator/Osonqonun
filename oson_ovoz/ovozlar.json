@@ -143,11 +143,97 @@
       "namuna_ru": "[laughs] Эх, сынок, незнание закона не освобождает от ответственности!",
       "prompt": "Elderly Uzbek man in his 70s, native Uzbek speaker, a wise and humorous village storyteller. Warm, deep, slightly raspy voice, slow relaxed pace, mischievous chuckling tone. Clean studio recording.",
       "dizayn_matn": "Ey bolam, bolam... Qonunni bilmaslik javobgarlikdan ozod qilmaydi-da! Eshak ham yukini bilib ko'taradi, sen bo'lsang bilmay imzolabsan. Kel, o'tir, bir gap aytib beray."
+    },
+    "Qoshni": {
+      "aliases": [
+        "qo'shni",
+        "neighbor"
+      ],
+      "tavsif": "Mahalladagi qo'shni — 50 yoshlardagi samimiy, sodda erkak",
+      "voice_id": "SHU_YERGA_VOICE_ID",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.8,
+        "style": 0.35,
+        "speed": 0.97
+      },
+      "tillar": [
+        "uz"
+      ],
+      "namuna": "Assalomu alaykum, qo'shni! Bir maslahat kerak edi-da, sizdan so'ray deb keldim.",
+      "prompt": "Uzbek man in his early 50s, native Uzbek speaker, a friendly neighbour from the mahalla. Warm, simple, slightly husky mid-low voice, relaxed conversational pace, sincere and a bit worried tone. Clean studio recording.",
+      "dizayn_matn": "Assalomu alaykum, qo'shni! Bir maslahat kerak edi-da. Kecha uyimga bir odam kelib, hujjatlarni ko'rsating dedi. Endi nima qilishimni bilmay turibman, siz nima deysiz?"
+    },
+    "Ishberuvchi": {
+      "aliases": [
+        "ish beruvchi",
+        "employer",
+        "hokim"
+      ],
+      "tavsif": "Ish beruvchi / rahbar — 45 yoshlardagi qat'iyatli, ishbilarmon erkak",
+      "voice_id": "SHU_YERGA_VOICE_ID",
+      "settings": {
+        "stability": 0.55,
+        "similarity_boost": 0.8,
+        "style": 0.3,
+        "speed": 1.0
+      },
+      "tillar": [
+        "uz"
+      ],
+      "namuna": "Xush kelibsiz! Sizni ishga olamiz, faqat sinov muddati bilan.",
+      "prompt": "Uzbek businessman in his mid 40s, native Uzbek speaker, a company director. Firm, confident, slightly deep voice, polished and businesslike, a bit hurried, authoritative but polite. Clean studio recording.",
+      "dizayn_matn": "Xush kelibsiz! Kompaniyamizga sizni ishga olamiz. Faqat bir shart bor: avval sinov muddatidan o'tasiz. Shartnomani bugun imzolasak, ertadan ishni boshlaysiz."
     }
   },
   "qisqartmalar": {
     "LexCartoon": "Leks Kartun",
     "OsonQonun": "Oson Qonun"
   },
-  "dizayn_model": "eleven_ttv_v3"
+  "dizayn_model": "eleven_ttv_v3",
+  "ilova_personajlar": {
+    "afandi": [
+      "Afandi"
+    ],
+    "aqlvoy": [
+      "Aqlvoy"
+    ],
+    "bola": [
+      "Bekzod"
+    ],
+    "talabaqiz": [
+      "Nilufar"
+    ],
+    "xodima": [
+      "Nilufar"
+    ],
+    "qoshni": [
+      "Qoshni",
+      "Hikoyachi"
+    ],
+    "ishberuvchi": [
+      "Ishberuvchi",
+      "Jasur"
+    ],
+    "hokim": [
+      "Ishberuvchi",
+      "Jasur"
+    ],
+    "inspektor": [
+      "Hikoyachi"
+    ],
+    "sudya": [
+      "Hikoyachi"
+    ],
+    "sotuvchi": [
+      "Jasur"
+    ]
+  },
+  "emotsiya_teglari": {
+    "happy": "[cheerfully]",
+    "worried": "[worried]",
+    "surprised": "[surprised]",
+    "serious": "",
+    "neutral": ""
+  }
 }

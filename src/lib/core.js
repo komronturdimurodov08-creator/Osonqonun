@@ -266,6 +266,74 @@ const Voice = (() => {
   };
 })();
 
+/* ---------- OsonQonun server (lex.uz qidiruvi, Gemini ssenariy, ElevenLabs ovoz) ----------
+   Ilova server orqali ochilganda (http/https) ishlaydi; fayl sifatida ochilganda — yo'q. */
+const Api = (() => {
+  const base = typeof location !== "undefined" && /^https?:$/.test(location.protocol) ? "" : null;
+  let holat = null;
+  const req = async (path, opts) => {
+    if (base === null) throw Object.assign(new Error("Server ulanmagan"), { code: "no_server" });
+    const r = await fetch(base + path, opts);
+    let d = null;
+    try { d = await r.json(); } catch (e) {}
+    if (!r.ok) throw Object.assign(new Error((d && d.xato) || "Server xatosi " + r.status), { code: r.status === 429 ? "rate_limited" : "server" });
+    return d;
+  };
+  return {
+    base: () => base,
+    holat() {
+      if (!holat) holat = base === null ? Promise.resolve(null) : req("/api/holat").catch(() => null);
+      return holat;
+    },
+    qidir: (q) => req("/api/qidir?q=" + encodeURIComponent(q)),
+    multfilm: (body, signal) => req("/api/multfilm", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal }),
+    ovozUrl: (t) => (base === null ? null : base + "/api/ovoz/" + encodeURIComponent(t))
+  };
+})();
+
+/* ---------- Studiya ovozi: oldindan ElevenLabs'da yozilgan mp3 (dist/audio/<kalit>.mp3) ----------
+   Kalitlar ro'yxatini build.mjs window.OQ_AUDIO_KEYS ga yozadi. Fayl bo'lmasa — Claude/brauzer ovoziga qaytamiz. */
+const ElevenAudio = (() => {
+  const keys = new Set((typeof window !== "undefined" && window.OQ_AUDIO_KEYS) || []);
+  const enc = typeof TextEncoder !== "undefined" ? new TextEncoder() : null;
+  // oson_ovoz.py dagi audio_kalit() bilan bir xil: FNV-1a 32-bit, UTF-8
+  const key = (who, text) => {
+    let h = 0x811c9dc5;
+    const bytes = enc ? enc.encode(who + "|" + text) : [];
+    for (let i = 0; i < bytes.length; i++) { h ^= bytes[i]; h = Math.imul(h, 0x01000193) >>> 0; }
+    return ("0000000" + h.toString(16)).slice(-8);
+  };
+  let a = null, token = 0;
+  const bad = new Set();
+  const pref = () => { const p = Store.get().settings.voiceEngine || "auto"; return p === "auto" || p === "studio"; };
+  // au — server bergan ovoz kaliti (lex.uz multfilmlari), yo'q bo'lsa — dist/audio dagi tayyor fayl
+  const has = (who, text, au) => !!who && !!text && pref() && (au ? !!Api.ovozUrl(au) && !bad.has(au) : keys.has(key(who, text)));
+  function stop() {
+    token++;
+    if (a) { a.onended = a.onerror = null; try { a.pause(); } catch (e) {} a = null; }
+  }
+  function play(who, text, rate, onend, onfail, au) {
+    stop();
+    const my = token, k = key(who, text);
+    const el = new Audio(au ? Api.ovozUrl(au) : "audio/" + k + ".mp3");
+    try { el.preservesPitch = true; el.playbackRate = rate || 1; } catch (e) {}
+    const fail = () => { if (my !== token) return; if (au) bad.add(au); else keys.delete(k); a = null; onfail && onfail(); };
+    el.onended = () => { if (my === token) { a = null; onend && onend(); } };
+    el.onerror = fail;
+    a = el;
+    const p = el.play();
+    if (p && p.catch) p.catch((e) => { if (!e || e.name !== "AbortError") fail(); });
+  }
+  return {
+    has, play, stop, key,
+    prefetch(au) { const u = au && Api.ovozUrl(au); if (u && !bad.has(au)) fetch(u).catch(() => {}); },
+    count: () => keys.size,
+    pause() { if (a) try { a.pause(); } catch (e) {} },
+    resume() { if (!a) return false; const p = a.play(); if (p && p.catch) p.catch(() => {}); return true; },
+    setRate(r) { if (a) try { a.playbackRate = r; } catch (e) {} }
+  };
+})();
+
 /* ---------- Claude imkoniyatlari (artifact ichida) ---------- */
 const Bridge = (() => {
   // window.claude sahifa ishga tushgandan keyinroq paydo bo'ladi — 4 soniyagacha kutamiz

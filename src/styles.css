@@ -544,3 +544,6 @@ textarea:focus,input:focus{border-color:var(--lapis);outline:none;box-shadow:0 0
 .lex-check.ok>b{background:#1f9d57}
 .lex-check.soft.bad{background:light-dark(#fff6e0,#3a311a);border-color:light-dark(#f2d48a,#7a6430)}
 .lex-check.soft.bad>b{background:#d99a14}
+/* lex.uz qidiruvi */
+.lex-item{padding:.8rem 1rem;align-items:center}
+.lex-item b{display:block;margin-bottom:.2rem;line-height:1.3}
