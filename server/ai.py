@@ -9,7 +9,9 @@ import requests
 
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 # Birinchisi ishlamasa (model nomi eskirgan bo'lsa) keyingisiga o'tamiz
-MODELLAR = [m for m in [os.getenv("GEMINI_MODEL"), "gemini-flash-latest", "gemini-3.5-flash", "gemini-2.5-flash"] if m]
+# Lite modellar tez javob beradi (ssenariy uchun yetarli); ular bo'lmasa — kattaroq modellar
+MODELLAR = [m for m in [os.getenv("GEMINI_MODEL"), "gemini-flash-lite-latest", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite",
+                        "gemini-flash-latest", "gemini-3.5-flash"] if m]
 
 PERSONAJLAR = ["afandi", "aqlvoy", "qoshni", "ishberuvchi", "sotuvchi", "hokim", "sudya", "talabaqiz", "xodima", "inspektor", "bola"]
 FONLAR = ["mahalla", "bozor", "idora", "sud", "universitet"]
@@ -34,7 +36,7 @@ def bor() -> bool:
 _ishlagan_model = {"nom": None}
 
 
-def _chaqir(prompt: str, json_javob: bool = True, harorat: float = 0.6, kutish: int = 90) -> str:
+def _chaqir(prompt: str, json_javob: bool = True, harorat: float = 0.6, kutish: int = 120) -> str:
     key = os.getenv("GEMINI_API_KEY")
     if not key:
         raise AIXato("GEMINI_API_KEY o'rnatilmagan")

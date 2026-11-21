@@ -287,7 +287,7 @@ def tekshir():
     print("2) Gemini (har bir model alohida, 25 soniyagacha):")
     import requests as rq
     key = os.getenv("GEMINI_API_KEY")
-    for m in ai.MODELLAR + ["gemini-2.5-flash-lite"]:
+    for m in ai.MODELLAR:
         t = time.time()
         try:
             r = rq.post(ai.API.format(model=m), params={"key": key}, timeout=(10, 25),
