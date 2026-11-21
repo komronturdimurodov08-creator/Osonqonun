@@ -31,20 +31,33 @@ def bor() -> bool:
     return bool(os.getenv("GEMINI_API_KEY"))
 
 
-def _chaqir(prompt: str, json_javob: bool = True, harorat: float = 0.6) -> str:
+_ishlagan_model = {"nom": None}
+
+
+def _chaqir(prompt: str, json_javob: bool = True, harorat: float = 0.6, kutish: int = 90) -> str:
     key = os.getenv("GEMINI_API_KEY")
     if not key:
         raise AIXato("GEMINI_API_KEY o'rnatilmagan")
-    body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": harorat}}
+    gc = {"temperature": harorat, "thinkingConfig": {"thinkingLevel": "low"}}  # tezroq javob
     if json_javob:
-        body["generationConfig"]["responseMimeType"] = "application/json"
+        gc["responseMimeType"] = "application/json"
+    body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}], "generationConfig": gc}
     oxirgi = ""
-    for model in MODELLAR:
-        r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=120)
+    modellar = ([_ishlagan_model["nom"]] if _ishlagan_model["nom"] else []) + [m for m in MODELLAR if m != _ishlagan_model["nom"]]
+    for model in modellar:
+        try:
+            r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=(10, kutish))
+            if r.status_code == 400 and "thinking" in r.text.lower():
+                gc.pop("thinkingConfig", None)  # eski modellar bu sozlamani bilmaydi
+                r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=(10, kutish))
+        except requests.Timeout:
+            raise AIXato(f"Gemini {kutish} soniyada javob bermadi ({model})")
+        except requests.RequestException as e:
+            raise AIXato("Gemini bilan bog'lanib bo'lmadi: " + repr(e)[:150])
         if r.status_code == 404:
             oxirgi = f"{model}: topilmadi"
             continue
+        _ishlagan_model["nom"] = model
         if r.status_code == 429:
             raise AIXato("Gemini limiti tugadi, birozdan keyin urinib ko'ring")
         if r.status_code != 200:
@@ -72,7 +85,7 @@ Shu so'rovga javob beradigan, hozir amalda bo'lgan 1-3 ta asosiy normativ hujjat
 Har biri uchun: rasmiy nomi, lex.uz qidiruvi uchun qisqa nomi va eng tegishli modda raqamlari (faqat aniq bilsang, aks holda bo'sh ro'yxat).
 FAQAT JSON: {{"hujjatlar":[{{"nomi":"O'zbekiston Respublikasining Mehnat kodeksi","qidiruv":"Mehnat kodeksi","moddalar":[129,130]}}]}}"""
     try:
-        d = _json(_chaqir(prompt, harorat=0.2))
+        d = _json(_chaqir(prompt, harorat=0.2, kutish=20))
         out = []
         for h in d.get("hujjatlar", [])[:3]:
             nom = str(h.get("qidiruv") or h.get("nomi") or "").strip()

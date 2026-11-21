@@ -150,7 +150,15 @@ def api_qidir(q: str) -> dict:
     q = q.strip()[:300]
     if len(q) < 3:
         return {"natijalar": []}
-    takliflar = ai.yonaltir(q) if ai.bor() else []
+    # Gemini tavsiyasi va lex.uz qidiruvi parallel: Gemini sekin bo'lsa ham qidiruv kutib qolmaydi
+    tk: list = []
+    th = threading.Thread(target=lambda: tk.extend(ai.yonaltir(q)), daemon=True) if ai.bor() else None
+    if th:
+        th.start()
+    lex_natija = lex.topish(q)
+    if th:
+        th.join(timeout=25)
+    takliflar = list(tk)
     natija, seen = [], set()
     for t in takliflar:
         for d in lex.topish(t["qidiruv"], limit=3)[:1]:
@@ -158,7 +166,7 @@ def api_qidir(q: str) -> dict:
                 seen.add(d["id"])
                 natija.append({"id": d["id"], "title": d["title"], "url": lex.doc_url(d["id"]),
                                "moddalar": t["moddalar"], "sabab": "AI tavsiyasi"})
-    for d in lex.topish(q):
+    for d in lex_natija:
         if d["id"] not in seen:
             seen.add(d["id"])
             natija.append({"id": d["id"], "title": d["title"], "url": lex.doc_url(d["id"]), "moddalar": [], "sabab": "lex.uz qidiruvi"})
@@ -197,12 +205,15 @@ class H(BaseHTTPRequestHandler):
 
     def _json(self, code: int, data):
         b = json.dumps(data, ensure_ascii=False).encode()
-        self.send_response(code)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(b)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(b)
+        try:
+            self.send_response(code)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(b)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(b)
+        except (ConnectionError, OSError):
+            pass  # brauzer kutmasdan chiqib ketgan — muammo emas
 
     def _fayl(self, f: Path, cache="public, max-age=86400"):
         data = f.read_bytes()
@@ -263,7 +274,37 @@ class H(BaseHTTPRequestHandler):
             return self._json(502, {"xato": "lex.uz yoki AI bilan bog'lanib bo'lmadi: " + str(e)[:200]})
 
 
+def tekshir():
+    """python server/server.py --tekshir : lex.uz, Gemini va ElevenLabs ishlayotganini tekshiradi."""
+    print("1) lex.uz ...", end=" ", flush=True)
+    t = time.time()
+    try:
+        r = lex.topish("Konstitutsiya")
+        h = lex.hujjat(r[0]["id"]) if r else {"moddalar": []}
+        print(f"OK ({time.time() - t:.1f} s): {len(r)} ta hujjat, birinchisi: {r[0]['title'][:50] if r else '-'}; moddalar: {len(h['moddalar'])}")
+    except Exception as e:  # noqa: BLE001
+        print("XATO:", repr(e)[:300])
+    print("2) Gemini ...", end=" ", flush=True)
+    t = time.time()
+    try:
+        javob = ai._chaqir('FAQAT JSON qaytar: {"salom":"dunyo"}', kutish=60)
+        print(f"OK ({time.time() - t:.1f} s), model: {ai._ishlagan_model['nom']}, javob: {javob[:60]}")
+    except Exception as e:  # noqa: BLE001
+        print(f"XATO ({time.time() - t:.1f} s):", str(e)[:300])
+    print("3) ElevenLabs ...", end=" ", flush=True)
+    try:
+        if not ovoz_bor():
+            print("XATO: ELEVENLABS_API_KEY yo'q")
+        else:
+            o = _ovoz_obj()
+            print("OK, personajlar:", ", ".join(k for k, v in o.personajlar.items() if (v.get("voice_id") or "").strip() and not v["voice_id"].startswith("SHU_YERGA")))
+    except Exception as e:  # noqa: BLE001
+        print("XATO:", repr(e)[:300])
+
+
 def main():
+    if "--tekshir" in sys.argv:
+        return tekshir()
     port = int(os.getenv("PORT", "8000"))
     print(f"OsonQonun server: http://localhost:{port}  (AI: {'ha' if ai.bor() else 'yoq'}, ovoz: {'ha' if ovoz_bor() else 'yoq'})")
     ThreadingHTTPServer(("0.0.0.0", port), H).serve_forever()
