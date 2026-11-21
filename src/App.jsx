@@ -78,8 +78,18 @@ function App() {
           </a>
           <div className="portal-title">Huquqiy ta'lim va targ'ibot<br />interaktiv platformasi</div>
           <div className="top-actions">
-            <button className="round-act" onClick={toggleAlphabet} aria-label="Alifboni almashtirish">
-              <i className="ra-ico ra-tq" aria-hidden="true"><span className="notr">{store.settings.alphabet === "lat" ? "Кир" : "Lot"}</span></i>
+            <button className="round-act" onClick={toggleAlphabet} aria-label="Alifboni almashtirish" title="Alifboni almashtirish: lotin / kirill">
+              <i className="ra-ico ra-emblem" aria-hidden="true">
+                <svg viewBox="0 0 100 100" width="52" height="52">
+                  <circle cx="47" cy="47" r="42" fill="currentColor" />
+                  <path d="M64 80 84 88a2.5 2.5 0 0 0 3.2-3.4L78 65z" fill="currentColor" />
+                  <g fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round">
+                    <circle cx="47" cy="47" r="25" />
+                    <ellipse cx="47" cy="47" rx="10" ry="25" />
+                    <path d="M22 47h50M27 33q20 9 40 0M27 61q20-9 40 0" />
+                  </g>
+                </svg>
+              </i>
               <span className="ra-txt"><b>Alifbo</b><small className="notr">{store.settings.alphabet === "lat" ? "Lotin → Кирилл" : "Кирилл → Lotin"}</small></span>
             </button>
             <button className={cx("round-act", store.settings.bigFont && "on")} onClick={toggleBig} aria-pressed={!!store.settings.bigFont}>
