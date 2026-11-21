@@ -28,7 +28,8 @@ function Quiz({ lesson, tl, onSeek }) {
   }, [finished]);
   return (
     <section className="panel">
-      <h3>Tekshiruv savollari</h3>
+      <div className="panel-head"><h3>Tekshiruv savollari</h3><span className="muted sm">{Object.keys(ans).length}/{lesson.quiz.length}</span></div>
+      <div className="quiz-progress" aria-hidden="true"><div className="meter"><i style={{ width: (Object.keys(ans).length / lesson.quiz.length) * 100 + "%" }} /></div></div>
       {lesson.quiz.map((q, qi) => {
         const order = shuffled(q.options, qi + lesson.id.length * 7);
         const picked = ans[qi];
@@ -51,8 +52,12 @@ function Quiz({ lesson, tl, onSeek }) {
           </div>
         );
       })}
-      {finished && <p className="overall">Natija: {lesson.quiz.filter((q, i) => ans[i] === q.answer).length} / {lesson.quiz.length}</p>}
-      {finished && <button className="btn ghost sm" onClick={() => setAns({})}>Qayta yechish</button>}
+      {finished && (
+        <div className="quiz-result">
+          <p className="overall">Natija: {lesson.quiz.filter((q, i) => ans[i] === q.answer).length} / {lesson.quiz.length}</p>
+          <button className="btn ghost sm" onClick={() => setAns({})}>Qayta yechish</button>
+        </div>
+      )}
     </section>
   );
 }
@@ -74,7 +79,7 @@ function LessonPlaylist({ mode }) {
       <div className="lesson-main stack-lg" ref={topRef}>
         {recap ? (
           <>
-            <div className="case-head"><span className="pill">Takrorlash rejimi</span><h2>{RECAP.title}</h2><p className="muted">Har mavzu bo'yicha qisqa xulosa — ketma-ket, taxminan bir daqiqada.</p></div>
+            <div className="case-head"><span className="pill tq">Takrorlash rejimi</span><h2>{RECAP.title}</h2><p className="muted">Har mavzu bo'yicha qisqa xulosa — ketma-ket, taxminan bir daqiqada.</p></div>
             <VideoPlayer key="recap" script={RECAP} />
             <VideoMeta script={RECAP} />
           </>
@@ -91,7 +96,7 @@ function LessonPlaylist({ mode }) {
       <aside className="lesson-side stack">
         <section className={cx("panel", "ready-card", r.ready && "is-ready")}>
           <div className="ready-top">
-            <div className="ready-pct">{r.pct}%</div>
+            <div className="ring" style={{ "--p": Math.min(100, r.pct) }}><span className="ready-pct">{r.pct}%</span></div>
             <div>
               <b>{r.ready ? "Nazoratga tayyor ✓" : "Oraliq nazoratga tayyorlik"}</b>
               <div className="muted sm">O'tish chegarasi: {store.threshold}% · darslar {r.watched}/{LESSONS.length} · testlar {r.quizzes}/{LESSONS.length}</div>
@@ -107,14 +112,14 @@ function LessonPlaylist({ mode }) {
           </details>
         </section>
         <section className="panel">
-          <h3>Pleylist</h3>
+          <div className="panel-head"><h3>Pleylist</h3><span className="muted sm">{r.watched}/{LESSONS.length} ko'rildi</span></div>
           <ol className="playlist">
             {LESSONS.map((l, i) => {
               const q = store.quiz[l.id];
               return (
                 <li key={l.id}>
-                  <button className={cx("pl-item", !recap && i === cur && "active")} onClick={() => pick(i)}>
-                    <span className="pl-n">{i + 1}</span>
+                  <button className={cx("pl-item", !recap && i === cur && "active", store.watched[l.id] && "seen")} onClick={() => pick(i)} aria-current={!recap && i === cur ? "true" : undefined}>
+                    <span className="pl-n">{store.watched[l.id] && (recap || i !== cur) ? "✓" : i + 1}</span>
                     <span className="pl-t">{l.title}<small>{fmtTime(buildTimeline(l.script).total)}{store.watched[l.id] ? " · ko'rildi" : ""}{q ? " · test " + q.correct + "/" + q.total : ""}</small></span>
                   </button>
                 </li>

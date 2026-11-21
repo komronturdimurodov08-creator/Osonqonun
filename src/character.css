@@ -1,0 +1,96 @@
+/* Personaj ichki animatsiyalari (Character.jsx).
+   Tuzilma: .body-sway > .breath > (.arm > .arm-sway > .fore > .fore-loop) + (.head-pose > .head-idle).
+   Poza (transform inline) transition bilan silliq o'tadi; ichki guruhlar kichik takrorlanuvchi harakat qiladi.
+   Ritm o'zgaruvchilari (--br-dur, --sw-del ...) har nusxa uchun JS da beriladi. */
+
+/* --- Tana: vazn o'tkazish, nafas, bosh --- */
+.char .body-sway{animation:sway var(--sw-dur,7s) ease-in-out var(--sw-del,0s) infinite alternate}
+.char .breath{animation:breath var(--br-dur,4s) ease-in-out var(--br-del,0s) infinite alternate}
+.char .head-pose{transition:transform .55s cubic-bezier(.35,.1,.25,1)}
+.char .head-idle{animation:headIdle var(--hd-dur,5.5s) ease-in-out var(--hd-del,0s) infinite alternate}
+.char.talking .head-idle{animation:headTalk calc(var(--hd-dur,5.5s) * .38) ease-in-out var(--hd-del,0s) infinite alternate}
+.char .head-idle.nodding{animation:nod .76s cubic-bezier(.4,0,.3,1) 1}
+.char .shadow{animation:shadow var(--sw-dur,7s) ease-in-out var(--sw-del,0s) infinite alternate}
+
+/* --- Yuz --- */
+.char .eyes{transition:transform 55ms ease-in}
+.char .eyes.blinking{transform:scaleY(.08)}
+.char .pupils{transition:transform .14s cubic-bezier(.3,.7,.3,1)}
+.char .eye-whites{transition:transform .3s ease}
+.char .lid,.char .blush{transition:opacity .35s ease}
+.char .brow{transition:transform .32s cubic-bezier(.35,.1,.25,1.2)}
+.char .mouth-shape{transition:d 60ms linear}
+
+/* --- Qo'llar: poza o'tishi + yumshoq tsikllar --- */
+.char .arm{transition:transform .42s cubic-bezier(.45,.05,.25,1)}
+.char .fore{transition:transform .38s cubic-bezier(.45,.05,.25,1) 40ms}
+.char .g-none .arm-sway{animation:armIdleL var(--ar-dur,3.4s) ease-in-out var(--ar-del,0s) infinite alternate}
+.char .g-none.arm-r .arm-sway{animation-name:armIdleR;animation-duration:calc(var(--ar-dur,3.4s) * 1.13)}
+.char .g-none .fore-loop{animation:foreIdle calc(var(--ar-dur,3.4s) * 1.3) ease-in-out var(--ar-del,0s) infinite alternate}
+.char .g-point.arm-r .arm-sway{animation:pointS 2.6s ease-in-out infinite alternate}
+.char .g-point.arm-r .fore-loop{animation:pointF 1.9s ease-in-out -.7s infinite alternate}
+.char .g-wave.arm-r .arm-sway{animation:waveS 1.7s ease-in-out infinite alternate}
+.char .g-wave.arm-r .fore-loop{animation:waveF .46s cubic-bezier(.45,0,.55,1) infinite alternate}
+.char .g-explain.arm-l .fore-loop{animation:explFL var(--gx-dur,1.3s) ease-in-out infinite alternate}
+.char .g-explain.arm-r .fore-loop{animation:explFR calc(var(--gx-dur,1.3s) * 1.21) ease-in-out calc(var(--gx-dur,1.3s) * -.6) infinite alternate}
+.char .g-explain .arm-sway{animation:explS calc(var(--gx-dur,1.3s) * 2.3) ease-in-out var(--ar-del,0s) infinite alternate}
+.char .g-explain.arm-r .arm-sway{animation-name:explSR}
+.char .g-think.arm-r .fore-loop{animation:thinkF 2.9s ease-in-out infinite alternate}
+.char .g-think.arm-l .arm-sway,.char .g-warn.arm-l .arm-sway,.char .g-point.arm-l .arm-sway,.char .g-wave.arm-l .arm-sway{animation:armIdleL var(--ar-dur,3.4s) ease-in-out var(--ar-del,0s) infinite alternate}
+.char .g-warn.arm-r .fore-loop{animation:warnF .42s ease-in-out infinite alternate}
+.char .g-warn.arm-r .arm-sway{animation:warnS 1.6s ease-in-out infinite alternate}
+.char .g-shrug .fore-loop{animation:shrugFL 1.4s ease-in-out infinite alternate}
+.char .g-shrug.arm-r .fore-loop{animation-name:shrugFR;animation-duration:1.55s}
+
+/* Pauza: barcha animatsiyalar to'xtaydi */
+.char.is-paused *,.char.is-paused{animation-play-state:paused!important}
+
+@keyframes sway{
+  0%{transform:translateX(-1.2px) rotate(-.55deg)}
+  55%{transform:translateX(.4px) rotate(.15deg)}
+  100%{transform:translateX(1.3px) rotate(.6deg)}
+}
+@keyframes shadow{from{transform:translateX(-1.5px) scaleX(.985)}to{transform:translateX(1.5px) scaleX(1.015)}}
+@keyframes breath{from{transform:scale(1,1)}to{transform:scale(1.009,1.016)}}
+@keyframes headIdle{
+  0%{transform:rotate(-1.4deg) translateY(0)}
+  40%{transform:rotate(.4deg) translateY(.6px)}
+  70%{transform:rotate(1deg) translateY(-.3px)}
+  100%{transform:rotate(1.6deg) translateY(.4px)}
+}
+@keyframes headTalk{
+  0%{transform:rotate(-1.8deg) translateY(.5px)}
+  45%{transform:rotate(1.2deg) translateY(-1px)}
+  100%{transform:rotate(2deg) translateY(.8px)}
+}
+@keyframes nod{
+  0%{transform:rotate(0) translateY(0)}
+  30%{transform:rotate(1.5deg) translateY(4.5px)}
+  55%{transform:rotate(.5deg) translateY(-.8px)}
+  78%{transform:rotate(1deg) translateY(2.4px)}
+  100%{transform:rotate(0) translateY(0)}
+}
+@keyframes armIdleL{from{transform:rotate(1.8deg)}to{transform:rotate(-1.4deg)}}
+@keyframes armIdleR{from{transform:rotate(-1.8deg)}to{transform:rotate(1.5deg)}}
+@keyframes foreIdle{from{transform:rotate(-2deg)}to{transform:rotate(2.5deg)}}
+@keyframes pointS{from{transform:rotate(-1.5deg)}to{transform:rotate(1.8deg)}}
+@keyframes pointF{from{transform:rotate(-2deg)}to{transform:rotate(3deg)}}
+@keyframes waveS{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+@keyframes waveF{from{transform:rotate(-20deg)}to{transform:rotate(24deg)}}
+@keyframes explFL{0%{transform:rotate(-10deg)}60%{transform:rotate(8deg)}100%{transform:rotate(14deg)}}
+@keyframes explFR{0%{transform:rotate(9deg)}55%{transform:rotate(-9deg)}100%{transform:rotate(-15deg)}}
+@keyframes explS{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+@keyframes explSR{from{transform:rotate(3deg)}to{transform:rotate(-4deg)}}
+@keyframes thinkF{0%,60%{transform:rotate(0)}80%{transform:rotate(-4deg)}100%{transform:rotate(2deg)}}
+@keyframes warnF{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+@keyframes warnS{from{transform:rotate(-1.5deg)}to{transform:rotate(1.5deg)}}
+@keyframes shrugFL{from{transform:rotate(-4deg)}to{transform:rotate(6deg)}}
+@keyframes shrugFR{from{transform:rotate(4deg)}to{transform:rotate(-6deg)}}
+/* scene.css dagi .char-slot.speaking ishlatadi */
+@keyframes bob{to{translate:0 -1.6%}}
+
+@media (prefers-reduced-motion: reduce){
+  .char .body-sway,.char .breath,.char .head-idle,.char .shadow,.char .arm-sway,.char .fore-loop,
+  .char.talking .head-idle,.char .head-idle.nodding{animation:none!important}
+  .char .arm,.char .fore,.char .head-pose,.char .brow{transition-duration:.01s}
+}

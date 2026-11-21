@@ -49,15 +49,49 @@ const CHARACTERS = {
 };
 const charName = (id) => (CHARACTERS[id] ? CHARACTERS[id].name : id);
 
-function Mouth({ emotion, talking }) {
-  if (talking) {
-    return (
-      <g className="mouth-talk" style={{ transformOrigin: "100px 117px", transformBox: "view-box" }}>
-        <ellipse cx="100" cy="117" rx="9" ry="6.5" fill="#5a1f1f" />
-        <ellipse cx="100" cy="120.5" rx="5" ry="2.4" fill="#e66b6b" />
-      </g>
-    );
-  }
+/* --- yordamchi: id dan barqaror "tasodifiy" son (har personaj o'z ritmida) --- */
+function charSeed(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return (h >>> 0) / 4294967295;
+}
+const rnd = (a, b) => a + Math.random() * (b - a);
+const VB = { transformBox: "view-box" };
+
+/* Og'iz shakllari (visemalar): [yarim kenglik, ochiqlik] */
+const VISEMES = [
+  [7, 0.6],   // yopiq
+  [6, 2.6],   // kichik
+  [7.6, 4.6], // o'rta
+  [8.6, 6.6], // keng ochiq "a"
+  [10, 3.2],  // keng "e/i"
+  [5, 5.6]    // "o/u"
+];
+const MOUTH_EMO = {
+  happy: { w: 2, h: 0, smile: 3.2 },
+  worried: { w: -1, h: -0.4, smile: -1.8 },
+  surprised: { w: -1, h: 1.2, smile: 0 },
+  serious: { w: -1, h: -0.8, smile: -0.4 },
+  neutral: { w: 0, h: 0, smile: 0.8 }
+};
+
+function TalkMouth({ emotion, viseme }) {
+  const e = MOUTH_EMO[emotion] || MOUTH_EMO.neutral;
+  const [bw, bh] = VISEMES[viseme] || VISEMES[0];
+  const w = Math.max(4, bw + e.w), h = Math.max(0.5, bh + e.h);
+  const yc = 116 - e.smile;
+  const d = `M${100 - w} ${yc} Q100 ${116 - h * 0.45 - e.smile * 0.2} ${100 + w} ${yc} Q100 ${116 + h * 1.6 + e.smile * 0.6} ${100 - w} ${yc} Z`;
+  return (
+    <g>
+      <path className="mouth-shape" d={d} fill="#5a1f1f" stroke="#5a1f1f" strokeWidth="1.6" strokeLinejoin="round" />
+      {h > 3.5 && <ellipse cx="100" cy={116 + h * 1.05} rx={w * 0.42} ry={h * 0.28} fill="#e66b6b" />}
+      {h > 3 && e.smile > 2 && <path d={`M${100 - w * 0.7} ${yc + 1.2} Q100 ${yc + 2.4} ${100 + w * 0.7} ${yc + 1.2}`} stroke="#fff" strokeWidth="1.6" fill="none" opacity=".85" />}
+    </g>
+  );
+}
+
+function Mouth({ emotion, talking, viseme }) {
+  if (talking) return <TalkMouth emotion={emotion || "neutral"} viseme={viseme} />;
   const d = {
     happy: "M88 112 Q100 126 112 112",
     worried: "M90 120 Q100 112 110 120",
@@ -69,12 +103,53 @@ function Mouth({ emotion, talking }) {
   return <path d={d} fill="none" stroke="#5a1f1f" strokeWidth="3.4" strokeLinecap="round" />;
 }
 
-function Brows({ emotion, color }) {
-  const tilt = { worried: [6, -6], serious: [-5, 5], surprised: [-3, -3], happy: [-1, -1] }[emotion] || [0, 0];
+/* Qoshlar: CSS transform orqali silliq o'tadi. raise = tinglovchining qisqa reaksiyasi */
+const BROW_POSE = {
+  neutral: { y: 0, r: 0 },
+  happy: { y: -2.5, r: -3 },
+  worried: { y: -1.5, r: -17 },
+  serious: { y: 1.8, r: 14 },
+  surprised: { y: -7, r: -4 }
+};
+function Brows({ emotion, color, raise }) {
+  const p = BROW_POSE[emotion] || BROW_POSE.neutral;
+  const ty = p.y - (raise ? 3.2 : 0);
   return (
-    <g stroke={color} strokeWidth="3.6" strokeLinecap="round">
-      <line x1="76" y1={78 + tilt[0]} x2="92" y2={78 - tilt[0] * 0.3} />
-      <line x1="108" y1={78 - tilt[1] * 0.3} x2="124" y2={78 + tilt[1]} />
+    <g stroke={color} strokeWidth="3.6" strokeLinecap="round" fill="none">
+      <path className="brow" d="M76 78 Q84 75.5 92 78" style={{ ...VB, transformOrigin: "84px 78px", transform: `translate(0px, ${ty}px) rotate(${p.r}deg)` }} />
+      <path className="brow" d="M108 78 Q116 75.5 124 78" style={{ ...VB, transformOrigin: "116px 78px", transform: `translate(0px, ${ty}px) rotate(${-p.r}deg)` }} />
+    </g>
+  );
+}
+
+/* Ko'zlar: oq qism, qorachiq (nigoh), qovoqlar (emotsiya), pirpirash */
+function Eyes({ c, emotion, blink, gaze }) {
+  const skin = c.skin;
+  const sur = emotion === "surprised";
+  const lid = (name) => ({ opacity: emotion === name ? 1 : 0 });
+  return (
+    <g className={cx("eyes", blink && "blinking")} style={{ ...VB, transformOrigin: "100px 91px" }}>
+      <g className="eye-whites" style={{ ...VB, transformOrigin: "100px 91px", transform: sur ? "scale(1.14)" : "scale(1)" }}>
+        <ellipse cx="84" cy="91" rx="7" ry="8" fill="#fff" />
+        <ellipse cx="116" cy="91" rx="7" ry="8" fill="#fff" />
+        <g className="pupils" style={{ transform: `translate(${gaze.x}px, ${gaze.y}px)` }}>
+          <circle cx="84" cy="92" r={sur ? 3.3 : 4} fill="#1d1d1d" />
+          <circle cx="116" cy="92" r={sur ? 3.3 : 4} fill="#1d1d1d" />
+          <circle cx="85.4" cy="90.4" r="1.2" fill="#fff" opacity=".9" />
+          <circle cx="117.4" cy="90.4" r="1.2" fill="#fff" opacity=".9" />
+        </g>
+      </g>
+      <g fill={skin}>
+        <g className="lid" style={lid("worried")}>
+          <path d="M74 80 L94 80 L94 84 Q84 84.5 74 90 Z" /><path d="M106 80 L126 80 L126 90 Q116 84.5 106 84 Z" />
+        </g>
+        <g className="lid" style={lid("serious")}>
+          <path d="M74 80 L94 80 L94 89.5 L74 86.5 Z" /><path d="M106 80 L126 80 L126 86.5 L106 89.5 Z" />
+        </g>
+        <g className="lid" style={lid("happy")}>
+          <path d="M74 102 L94 102 L94 97 Q84 91 74 97 Z" /><path d="M106 102 L126 102 L126 97 Q116 91 106 97 Z" />
+        </g>
+      </g>
     </g>
   );
 }
@@ -149,18 +224,59 @@ function Prop({ type }) {
   return null;
 }
 
+/* Qo'l pozalari. u = yelka burchagi, f = tirsak burchagi (gradus), y = yelka ko'tarilishi (px).
+   Chap qo'l: + tashqariga; o'ng qo'l (oldingi, suhbatdosh tomon): − tashqariga/oldinga. */
+const ARM_REST = { l: { u: 4, f: -5, y: 0 }, r: { u: -4, f: 6, y: 0 } };
+const ARM_POSES = {
+  none: ARM_REST,
+  point: { l: { u: 3, f: -4, y: 0 }, r: { u: -80, f: -6, y: -1 } },
+  wave: { l: ARM_REST.l, r: { u: -118, f: -34, y: -2 } },
+  explain: { l: { u: 18, f: 62, y: 0 }, r: { u: -18, f: -62, y: 0 } },
+  think: { l: { u: 2, f: -3, y: 0 }, r: { u: 10, f: 152, y: 0 } },
+  warn: { l: ARM_REST.l, r: { u: -26, f: -150, y: -2 } },
+  shrug: { l: { u: 14, f: 74, y: -8 }, r: { u: -14, f: -74, y: -8 } }
+};
+
+function Hand({ sx, side, skin, finger }) {
+  const t = side === "l" ? 1 : -1; // bosh barmoq tana tomonda
+  return (
+    <g fill={skin}>
+      <ellipse cx={sx + t * 8} cy="265" rx="4" ry="7.5" transform={`rotate(${t * -28} ${sx + t * 8} 265)`} />
+      <path d={`M${sx - 9.5} 262 Q${sx - 11} 276 ${sx - 6} 281 Q${sx} 285 ${sx + 6} 281 Q${sx + 11} 276 ${sx + 9.5} 262 Z`} />
+      {finger
+        ? <rect x={sx - 2.7} y="276" width="5.4" height="17" rx="2.7" />
+        : <path d={`M${sx - 5} 279 L${sx - 5} 284 M${sx} 280 L${sx} 286 M${sx + 5} 279 L${sx + 5} 284`} stroke={skin} strokeWidth="4.4" strokeLinecap="round" />}
+    </g>
+  );
+}
+
 function Arm({ side, c, gesture }) {
+  const g = ARM_POSES[gesture] ? gesture : "none";
+  const pose = ARM_POSES[g][side];
   const sx = side === "l" ? 60 : 140;
   const sleeve = c.top.type === "chopon" ? c.top.c1 : c.top.type === "apron" || c.top.type === "shirt" ? c.top.c2 : c.top.c1;
   const wide = c.top.type === "chopon" || c.top.type === "mantle";
+  const hw = wide ? 15 : 11;
+  const finger = side === "r" && (g === "point" || g === "warn");
+  const showProp = c.prop && side === "r" && !finger && g !== "think";
+  const shoulder = { ...VB, transformOrigin: `${sx}px 160px` };
+  const elbow = { ...VB, transformOrigin: `${sx}px 210px` };
   return (
-    <g className={`arm arm-${side} g-${gesture || "none"}`} style={{ transformOrigin: `${sx}px 160px`, transformBox: "view-box" }}>
-      <path d={wide
-        ? `M${sx - 15} 152 L${sx + 15} 152 L${sx + 17} 262 L${sx - 17} 262 Z`
-        : `M${sx - 11} 152 L${sx + 11} 152 L${sx + 10} 260 L${sx - 10} 260 Z`} fill={sleeve} />
-      {c.top.type === "chopon" && <path d={`M${sx - 16} 240 L${sx + 16} 240`} stroke={c.top.c3} strokeWidth="6" />}
-      <circle cx={sx} cy="270" r="12" fill={c.skin} />
-      {c.prop && side === "r" && <g transform={`translate(${sx} 276)`}><Prop type={c.prop} /></g>}
+    <g className={`arm arm-${side} g-${g}`} style={{ ...shoulder, transform: `translate(0px, ${pose.y}px) rotate(${pose.u}deg)` }}>
+      <g className="arm-sway" style={shoulder}>
+        <path d={`M${sx - hw} 154 Q${sx} 146 ${sx + hw} 154 L${sx + hw} 212 L${sx - hw} 212 Z`} fill={sleeve} />
+        <circle cx={sx} cy="210" r={hw} fill={sleeve} />
+        <g className="fore" style={{ ...elbow, transform: `rotate(${pose.f}deg)` }}>
+          <g className="fore-loop" style={elbow}>
+            <path d={wide
+              ? `M${sx - 15} 208 L${sx + 15} 208 L${sx + 17} 262 L${sx - 17} 262 Z`
+              : `M${sx - 10.5} 208 L${sx + 10.5} 208 L${sx + 9.5} 260 L${sx - 9.5} 260 Z`} fill={sleeve} />
+            {c.top.type === "chopon" && <path d={`M${sx - 16} 246 L${sx + 16} 246`} stroke={c.top.c3} strokeWidth="6" />}
+            <Hand sx={sx} side={side} skin={c.skin} finger={finger} />
+            {showProp && <g transform={`translate(${sx} 278)`}><Prop type={c.prop} /></g>}
+          </g>
+        </g>
+      </g>
     </g>
   );
 }
@@ -219,45 +335,166 @@ function Torso({ c, id }) {
   );
 }
 
-function Character({ id, talking, emotion, gesture, facing, playing }) {
+/* Kichik taymer yordamchisi: effekt tozalanganda barcha setTimeout lar bekor qilinadi */
+function useTimers() {
+  const ref = useRef([]);
+  const later = (fn, ms) => { const t = setTimeout(fn, ms); ref.current.push(t); return t; };
+  const clear = () => { ref.current.forEach(clearTimeout); ref.current = []; };
+  return { later, clear };
+}
+
+function Character({ id, talking, emotion, gesture, facing, playing, listening, lookAt }) {
   const c = CHARACTERS[id] || CHARACTERS.qoshni;
   const brow = c.hairColor || (c.beardColor === "#f4f1ea" ? "#cfcac0" : "#2b1d16");
+  const mirrored = facing === "left";
+  const active = !!playing;
+  const isTalking = !!talking;
+  const isListening = !!listening && !isTalking;
+
+  /* Har nusxa uchun o'z ritmi: id dan barqaror qism + tasodifiy qism */
+  const rhythm = useMemo(() => {
+    const s = charSeed(String(id || "x"));
+    const r = () => (s + Math.random()) % 1;
+    return {
+      "--br-dur": (3.4 + r() * 1.6).toFixed(2) + "s",
+      "--br-del": (-r() * 5).toFixed(2) + "s",
+      "--sw-dur": (5.5 + r() * 3.5).toFixed(2) + "s",
+      "--sw-del": (-r() * 9).toFixed(2) + "s",
+      "--hd-dur": (4.2 + r() * 3).toFixed(2) + "s",
+      "--hd-del": (-r() * 7).toFixed(2) + "s",
+      "--ar-dur": (2.8 + r() * 1.8).toFixed(2) + "s",
+      "--ar-del": (-r() * 4).toFixed(2) + "s",
+      "--gx-dur": (1.15 + r() * 0.5).toFixed(2) + "s"
+    };
+  }, [id]);
+
+  /* 1) Pirpirash: 2.5–6 s tasodifiy oraliq, ba'zan ikki marta */
+  const [blink, setBlink] = useState(false);
+  const blinkT = useTimers();
+  useEffect(() => {
+    if (!active) { setBlink(false); return; }
+    let alive = true;
+    const once = (after) => { setBlink(true); blinkT.later(() => { if (!alive) return; setBlink(false); after && after(); }, rnd(90, 140)); };
+    const loop = () => blinkT.later(() => {
+      if (!alive) return;
+      if (Math.random() < 0.22) once(() => blinkT.later(() => alive && once(loop), rnd(110, 180)));
+      else once(loop);
+    }, rnd(2500, 6000));
+    loop();
+    return () => { alive = false; blinkT.clear(); };
+  }, [active]);
+
+  /* 2) Nigoh: lookAt (ekran) -> lokal yo'nalish (svg ko'zgu aks etganda teskari) */
+  const screenDir = lookAt === "left" ? -1 : lookAt === "right" ? 1 : 0;
+  const localDir = mirrored ? -screenDir : screenDir;
+  const [sacc, setSacc] = useState({ x: 0, y: 0, away: false });
+  const saccT = useTimers();
+  useEffect(() => {
+    if (!active) { setSacc({ x: 0, y: 0, away: false }); return; }
+    let alive = true;
+    const step = () => saccT.later(() => {
+      if (!alive) return;
+      const away = isTalking && Math.random() < 0.3; // gapiruvchi ba'zan tomoshabinga qaraydi
+      setSacc({ x: rnd(-1.1, 1.1), y: rnd(-0.9, 0.9), away });
+      step();
+    }, isTalking ? rnd(500, 1600) : rnd(900, 2800));
+    step();
+    return () => { alive = false; saccT.clear(); };
+  }, [active, isTalking]);
+  const dir = sacc.away ? 0 : localDir;
+  const gaze = { x: (dir !== 0 ? dir * 2.8 : 1.4) + sacc.x, y: sacc.y + (emotion === "worried" ? 0.6 : 0) };
+
+  /* 3) Lab harakati: notekis visemalar 70–130 ms, vaqti-vaqti bilan pauza */
+  const [viseme, setViseme] = useState(0);
+  const lipT = useTimers();
+  useEffect(() => {
+    if (!(active && isTalking)) { setViseme(0); return; }
+    let alive = true, last = 0, n = 0, nextPause = Math.round(rnd(7, 14));
+    const tick = () => {
+      if (!alive) return;
+      n++;
+      if (n >= nextPause) {
+        n = 0; nextPause = Math.round(rnd(7, 15)); last = 0; setViseme(0);
+        lipT.later(tick, rnd(140, 320));
+        return;
+      }
+      let v;
+      do { v = 1 + Math.floor(Math.random() * (VISEMES.length - 1)); } while (v === last);
+      if (Math.random() < 0.12) v = 0;
+      last = v; setViseme(v);
+      lipT.later(tick, rnd(70, 130));
+    };
+    tick();
+    return () => { alive = false; lipT.clear(); };
+  }, [active, isTalking]);
+
+  /* 4) Tinglovchi reaksiyalari: bosh irg'ash, qosh ko'tarish */
+  const [react, setReact] = useState(null); // "nod" | "brow" | null
+  const reactT = useTimers();
+  useEffect(() => {
+    if (!(active && (isListening || isTalking))) { setReact(null); return; }
+    let alive = true;
+    const step = () => reactT.later(() => {
+      if (!alive) return;
+      const p = Math.random();
+      const kind = isTalking ? (p < 0.35 ? "nod" : p < 0.55 ? "brow" : null) : (p < 0.45 ? "nod" : p < 0.7 ? "brow" : null);
+      if (kind) { setReact(kind); reactT.later(() => alive && setReact(null), kind === "nod" ? 760 : 650); }
+      step();
+    }, isTalking ? rnd(1800, 4200) : rnd(2400, 6000));
+    step();
+    return () => { alive = false; reactT.clear(); };
+  }, [active, isListening, isTalking]);
+
+  const g = ARM_POSES[gesture] ? gesture : "none";
+  const headStyle = {
+    ...VB, transformOrigin: "100px 140px",
+    transform: `translate(${localDir * 1.6}px, ${g === "shrug" ? 4 : 0}px) rotate(${localDir * 2.4 + (g === "think" ? 4 : 0)}deg)`
+  };
+
   return (
-    <svg className={cx("char", playing ? "is-playing" : "is-paused")} viewBox="0 0 200 400" aria-label={c.name}
-      style={{ transform: facing === "left" ? "scaleX(-1)" : "none" }}>
-      <ellipse cx="100" cy="394" rx="62" ry="8" fill="#000" opacity=".18" />
-      {/* oyoqlar */}
-      <rect x="72" y="290" width="22" height="98" rx="6" fill={c.legs} />
-      <rect x="106" y="290" width="22" height="98" rx="6" fill={c.legs} />
-      <ellipse cx="80" cy="390" rx="20" ry="8" fill={c.shoes} />
-      <ellipse cx="120" cy="390" rx="20" ry="8" fill={c.shoes} />
-      <Arm side="l" c={c} gesture={gesture} />
-      <Torso c={c} id={id} />
-      {/* bo'yin va bosh */}
-      <rect x="90" y="128" width="20" height="22" fill={c.skin} />
-      {c.hair === "braids" && <Hair c={c} />}
-      <circle cx="58" cy="100" r="9" fill={c.skin} />
-      <circle cx="142" cy="100" r="9" fill={c.skin} />
-      <ellipse cx="100" cy="96" rx="42" ry="46" fill={c.skin} />
-      {c.hair !== "braids" && <Hair c={c} />}
-      <Beard c={c} />
-      <g className="eyes" style={{ transformOrigin: "100px 90px", transformBox: "view-box" }}>
-        <ellipse cx="84" cy="91" rx="7" ry="8" fill="#fff" />
-        <ellipse cx="116" cy="91" rx="7" ry="8" fill="#fff" />
-        <circle cx="86" cy="92" r="4" fill="#1d1d1d" />
-        <circle cx="118" cy="92" r="4" fill="#1d1d1d" />
-      </g>
-      <Brows emotion={emotion} color={brow} />
-      <path d="M100 96 Q96 106 100 108" stroke="#a8673f" strokeWidth="2.6" fill="none" strokeLinecap="round" />
-      {c.beard === "long" && <path d="M84 110 Q100 102 116 110" stroke={c.beardColor} strokeWidth="6" fill="none" strokeLinecap="round" />}
-      <Mouth emotion={emotion} talking={talking} />
-      {c.glasses && (
-        <g fill="none" stroke="#1d1d1d" strokeWidth="3">
-          <circle cx="84" cy="91" r="12" /><circle cx="116" cy="91" r="12" /><line x1="96" y1="91" x2="104" y2="91" />
+    <svg className={cx("char", playing ? "is-playing" : "is-paused", isTalking && "talking", isListening && "listening")}
+      viewBox="0 0 200 400" aria-label={c.name}
+      style={{ ...rhythm, transform: mirrored ? "scaleX(-1)" : "none" }}>
+      <ellipse className="shadow" cx="100" cy="394" rx="62" ry="8" fill="#000" opacity=".18" style={{ ...VB, transformOrigin: "100px 394px" }} />
+      <g className="body-sway" style={{ ...VB, transformOrigin: "100px 392px" }}>
+        {/* oyoqlar */}
+        <rect x="72" y="290" width="22" height="98" rx="6" fill={c.legs} />
+        <rect x="106" y="290" width="22" height="98" rx="6" fill={c.legs} />
+        <ellipse cx="80" cy="390" rx="20" ry="8" fill={c.shoes} />
+        <ellipse cx="120" cy="390" rx="20" ry="8" fill={c.shoes} />
+        <g className="breath" style={{ ...VB, transformOrigin: "100px 300px" }}>
+          <Arm side="l" c={c} gesture={g} />
+          <Torso c={c} id={id} />
+          {/* bo'yin va bosh */}
+          <rect x="90" y="128" width="20" height="24" fill={c.skin} />
+          <g className="head-pose" style={headStyle}>
+            <g className={cx("head-idle", react === "nod" && "nodding")} style={{ ...VB, transformOrigin: "100px 140px" }}>
+              {c.hair === "braids" && <Hair c={c} />}
+              <circle cx="58" cy="100" r="9" fill={c.skin} />
+              <circle cx="142" cy="100" r="9" fill={c.skin} />
+              <ellipse cx="100" cy="96" rx="42" ry="46" fill={c.skin} />
+              {c.hair !== "braids" && <Hair c={c} />}
+              <g className="blush" style={{ opacity: emotion === "happy" ? 0.55 : 0 }}>
+                <ellipse cx="72" cy="108" rx="7" ry="4" fill="#e8746a" />
+                <ellipse cx="128" cy="108" rx="7" ry="4" fill="#e8746a" />
+              </g>
+              <Beard c={c} />
+              <Eyes c={c} emotion={emotion} blink={blink} gaze={gaze} />
+              <Brows emotion={emotion} color={brow} raise={react === "brow"} />
+              <path d="M100 96 Q96 106 100 108" stroke="#a8673f" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+              {c.beard === "long" && <path d="M84 110 Q100 102 116 110" stroke={c.beardColor} strokeWidth="6" fill="none" strokeLinecap="round" />}
+              <Mouth emotion={emotion} talking={isTalking} viseme={viseme} />
+              {c.glasses && (
+                <g fill="none" stroke="#1d1d1d" strokeWidth="3">
+                  <circle cx="84" cy="91" r="12" /><circle cx="116" cy="91" r="12" /><line x1="96" y1="91" x2="104" y2="91" />
+                </g>
+              )}
+              <Hat c={c} />
+            </g>
+          </g>
+          <Arm side="r" c={c} gesture={g} />
         </g>
-      )}
-      <Hat c={c} />
-      <Arm side="r" c={c} gesture={gesture} />
+      </g>
     </svg>
   );
 }

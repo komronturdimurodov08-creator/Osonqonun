@@ -13,6 +13,7 @@ const esbuild = require("esbuild");
 const ORDER = [
   "lib/core.js",
   "components/Character.jsx",
+  "lib/director.js",
   "components/Backgrounds.jsx",
   "lib/scriptTools.js",
   "data/helpers.js",
@@ -54,7 +55,7 @@ window.React=req("react");window.ReactDOM=req("react-dom/client");})();`;
 const audioDir = join(root, "dist", "audio");
 const audioKeys = existsSync(audioDir) ? readdirSync(audioDir).filter((f) => /^[0-9a-f]{8}\.mp3$/.test(f)).map((f) => f.slice(0, 8)).sort() : [];
 
-const css = readFileSync(join(root, "src/styles.css"), "utf8");
+const css = ["styles.css", "scene.css", "character.css"].map((f) => readFileSync(join(root, "src", f), "utf8")).join("\n");
 const html = `<!DOCTYPE html>
 <html lang="uz">
 <head>

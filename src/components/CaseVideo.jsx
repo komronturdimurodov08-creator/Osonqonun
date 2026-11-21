@@ -38,14 +38,24 @@ function CaseVideo({ cs, onBack }) {
     );
   };
   const st = { ok: "✓", partial: "~", miss: "✗" };
+  const flow = [
+    ["Voqeani ko'ring", !!(store.watched[cs.id] || prev.answer || result || prev.solved)],
+    ["Javob yozing", !!(prev.answer || result)],
+    ["5 bosqichli yechim", !!prev.solved],
+    ["Taqqoslash", !!result]
+  ];
+  const curStep = flow.findIndex((f) => !f[1]);
   return (
     <div className="stack-lg">
-      <button className="link-back" onClick={onBack}>← Barcha kazuslar</button>
+      <button className="link-back" onClick={onBack}><span aria-hidden="true">←</span> Barcha kazuslar</button>
       <div className="case-head">
         <span className="pill">{cs.subject}</span>
         <h2>{cs.title}</h2>
         <p className="muted">{cs.short}</p>
       </div>
+      <ol className="stepper" aria-label="Kazus bosqichlari">
+        {flow.map(([t, ok], i) => <li key={i} className={cx(ok && "done", i === curStep && "cur")} aria-current={i === curStep ? "step" : undefined}>{t}</li>)}
+      </ol>
       <VideoPlayer key={cs.id} script={cs.script} seek={seek} renderStop={renderStop}
         onWatched={() => Store.set((s) => ({ ...s, watched: { ...s.watched, [cs.id]: true } }))}
         onEnd={() => save({ solved: true })} />
@@ -54,8 +64,8 @@ function CaseVideo({ cs, onBack }) {
         <p className="muted">Video to'xtaganda javobingizni shu yerga yozing — faktlar, masala, qoida, tahlil va xulosa tartibida. Yuborgach, yechim davom etadi va javobingiz 5 bosqich bo'yicha solishtiriladi.</p>
         <textarea ref={boxRef} rows={5} value={answer} onChange={(e) => setAnswer(e.target.value)}
           placeholder="Masalan: Faktlar - ... Masala - ... Qoida - ...-modda ... Xulosa - ..." />
-        <div className="row gap wrap">
-          <button className="btn" onClick={submit} disabled={checking}>{checking ? "Solishtirilmoqda…" : "Javobni yuborish va yechimni ko'rish"}</button>
+        <div className="row gap wrap answer-actions">
+          <button className="btn" onClick={submit} disabled={checking}>{checking && <span className="spinner" />}{checking ? "Solishtirilmoqda…" : "Javobni yuborish va yechimni ko'rish"}</button>
           <button className="btn ghost" onClick={continueVideo}>Javobsiz yechimni ko'rsat</button>
         </div>
         {result && (
@@ -73,7 +83,7 @@ function CaseVideo({ cs, onBack }) {
         )}
       </section>
       <section className="panel">
-        <h3>Yechim xaritasi</h3>
+        <div className="panel-head"><h3>Yechim xaritasi</h3><span className="muted sm">Bosqichni bosing — video shu joydan boshlanadi</span></div>
         <div className="stages">
           {cs.stages.map((s, i) => (
             <button key={i} className="stage-card" onClick={() => setSeek({ scene: stopIdx + 1 + i, n: Date.now() })}>
@@ -101,7 +111,7 @@ function CaseList({ onOpen }) {
           <b>{c.title}</b>
           <span className="muted">{c.short}</span>
           <span className="case-foot">
-            <span>{fmtTime(buildTimeline(c.script).total)} · 5 bosqichli yechim</span>
+            <span className="case-play">{fmtTime(buildTimeline(c.script).total)} · 5 bosqich</span>
             {store.cases[c.id] && store.cases[c.id].solved && <span className="done">Yechilgan ✓</span>}
           </span>
         </button>

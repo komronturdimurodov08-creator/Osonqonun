@@ -25,6 +25,36 @@ DARAJA = {
 }
 
 
+# Rejissyorlik ko'rsatmasi (src/lib/ScriptGenerator.js dagi DIRECTION bilan bir xil saqlang)
+REJISSYOR = """SAHNALASHTIRISH (haqiqiy qisqa multfilm-drama kabi):
+- Mavzuga mos tomonlar va fonni tanla: mehnat -> ishberuvchi va xodima, idora; savdo/iste'molchi -> sotuvchi va qoshni, bozor; sud jarayoni -> sudya (yoki inspektor) va qoshni, sud; oila -> xodima va qoshni, mahalla; ta'lim -> talabaqiz va bola, universitet; uy-joy -> qoshni va talabaqiz, mahalla; yo'l harakati, soliq, jarima -> inspektor va qoshni, idora yoki mahalla.
+- 1-sahna: shu tomonlar o'rtasida haqiqiy kichik nizo, FAQAT dialog orqali (hikoyachi yo'q, Afandi yo'q). Bir tomon noto'g'ri talab qiladi yoki qonunni noto'g'ri tushunadi, ikkinchisi hayron bo'ladi, e'tiroz bildiradi.
+- ISTISNO: zo'ravonlik, tahdid, jinsiy yoki bolaga qarshi tajovuz kabi jiddiy holatlarda 1-sahnada zo'ravonlikni ko'rsatma va nizo o'ynama: qahramon Aqlvoyga voqeani xotirjam hikoya qiladi, ohang hazilsiz va hamdard bo'ladi, oxirida 102 va bepul yuridik yordamga murojaat tavsiya etiladi.
+- 2-sahnada muammoli tomon Aqlvoy va Afandiga keladi va vaziyatni o'z so'zi bilan aytadi.
+- Ikki kishi bir-biriga qarab turadi: biri "left", biri "right". Uch kishi bo'lsa, tushuntiruvchi "center"da.
+- Har sahnada 3-6 replika, so'zlovchilar navbatma-navbat. Tinglovchi javob qaytaradi: "Nima?!", "Rostdanmi?", "Ha-ya...", "Shoshmang-chi". Bitta personaj ketma-ket 2 tadan ortiq gapirmasin.
+- Hissiyot yoyi: boshida worried/serious -> o'rtada surprised -> oxirida happy (yengil tortish, minnatdorlik).
+
+JONLI O'ZBEKCHA:
+- Har replika 1-2 qisqa gap, 18 so'zdan oshmasin. Og'zaki til: "-ku", "-da", "-chi", "xo'sh", "qarang", "axir", "nima qilay".
+- Qonun matnini so'zma-so'z O'QIMA. Sodda qilib qayta ayt ("Oddiy qilib aytsam, ...", "Qonun bo'yicha ..."); aniq modda havolasi onScreenText kartasida turadi.
+- Savollar, gapni bo'lish ("Lekin men... - Shoshmang, oxirigacha eshiting"), qisqa hayratlar bo'lsin. Rasmiy-quruq iboralardan qoch.
+- Afandi: dono, xotirjam, xalqona hazilkash - butun videoda ko'pi bilan BITTA qisqa hazil yoki maqol. Aqlvoy: qiziquvchan yosh yurist-talaba - savol beradi va "Demak, ..." deb xulosa qiladi.
+
+EMOTSIYA VA IMO-ISHORA har replikaning ma'nosiga mos bo'lsin:
+- savol -> think; raqam, modda, muddat -> point; ogohlantirish -> warn; salom/xayrlashuv -> wave; tushuntirish -> explain; ikkilanish, "bilmadim" -> shrug; oddiy javob va reaksiyalar -> none (replikalarning ko'pi "none" bo'lishi tabiiy).
+- Bitta personaj ketma-ket ikki marta bir xil gesture qilmasin. emotion gap ohangiga mos: hayrat -> surprised, xavotir -> worried, qat'iy gap -> serious.
+- "pause" (ixtiyoriy, 0-800 ms): muhim savol yoki hayratdan keyingi dramatik jimlik. Ko'p ishlatma.
+
+OHANG NAMUNASI (raqamlari faqat misol, ularni ko'chirma):
+YOMON: {"speaker":"afandi","text":"Kodeksning tegishli moddasiga muvofiq dastlabki sinov muddati belgilangan muddatdan ortiq bo'lishi mumkin emas, bundan tashqari ...","emotion":"neutral","gesture":"explain"}
+YAXSHI:
+{"speaker":"ishberuvchi","text":"Sizni olamiz, lekin olti oy sinov bilan.","emotion":"neutral","gesture":"explain"}
+{"speaker":"xodima","text":"Olti oy?! Bu juda ko'p emasmi?","emotion":"surprised","gesture":"none","pause":400}
+{"speaker":"afandi","text":"Oddiy qilib aytsam, sinov uch oydan oshmaydi. Olti oy - faqat rahbarlarga.","emotion":"neutral","gesture":"point"}
+{"speaker":"aqlvoy","text":"Demak, Malika opaga olti oy noto'g'ri ekan-da!","emotion":"happy","gesture":"none"}"""
+
+
 class AIXato(RuntimeError):
     pass
 
@@ -104,29 +134,32 @@ def ssenariy(hujjat_nomi: str, url: str, moddalar: list[dict], sorov: str, daraj
     """lex.uz moddalaridan 5 sahnali multfilm ssenariysi (ilova JSON formatida)."""
     matn = "\n\n".join(f"{m['n']}-modda. {m['sarlavha']}\n{m['matn']}" for m in moddalar)
     raqamlar = ", ".join(m["n"] for m in moddalar)
-    prompt = f"""Sen "OsonQonun" platformasining ssenariy yozuvchisisan. Qonunni o'zbek milliy personajlari ishtirokidagi 1-3 daqiqalik multfilmga aylantirasan.
+    qisqa_nom = hujjat_nomi.replace("O'zbekiston Respublikasining ", "")
+    prompt = f"""Sen "OsonQonun" platformasining ssenariy yozuvchisi va rejissyorisan. Qonunni o'zbek milliy personajlari ishtirokidagi 1-3 daqiqalik jonli multfilmga aylantirasan: tirik odamlar, haqiqiy nizo, tabiiy suhbat.
 
-QOIDALAR:
+HUQUQIY ANIQLIK (eng muhim qoida):
 - FAQAT quyidagi lex.uz matniga tayan. Bu hujjat: "{hujjat_nomi}". Faqat shu moddalarni tilga ol: {raqamlar}. Boshqa modda raqamini yoki matnda yo'q raqam, muddat, summani o'ylab topma.
-- Foydalanuvchi so'rovi: "{sorov}". Ssenariy shu savolga javob bersin.
-- Hazil bo'lishi mumkin, lekin huquqiy mazmun buzilmaydi; hech kimni kamsitma.
-- Til: o'zbek tili, lotin yozuvi (o', g' uchun oddiy apostrof). Har replika 1-2 gap, 25 so'zdan oshmasin. Raqamlarni so'z bilan emas, raqam bilan yozsang bo'ladi.
+- Foydalanuvchi so'rovi: "{sorov}". Ssenariy shu savolga javob bersin; 1-sahnadagi nizo aynan shu vaziyatni ko'rsatsin.
+- Hazil bo'lishi mumkin, lekin huquqiy mazmun buzilmaydi; hech kimni kamsitma. Jiddiy holatda (zo'ravonlik, hibs, hayotga xavf) hazil qilma va 5-sahnada bepul yuridik yordam hamda tegishli davlat organiga murojaatni maslahat ber.
+- Til: o'zbek tili, lotin yozuvi (o', g' uchun oddiy apostrof). Raqamlarni raqam bilan yozsang bo'ladi.
 - Daraja: {DARAJA.get(daraja, DARAJA['fuqaro'])}
 - Personajlar: afandi (dono hazilkash ustoz, tushuntiradi), aqlvoy (zukko yosh yurist-talaba, savol beradi, xulosa qiladi), yordamchilar: {", ".join(PERSONAJLAR[2:])}.
 - Fonlar: {", ".join(FONLAR)}. emotion: {"|".join(EMOTSIYA)}. gesture: {"|".join(IMO)}.
 - onScreenText.kind: title|article|keyword|warning|steps (steps uchun items massivi).
 
+{REJISSYOR}
+
 TUZILMA (aynan 5 sahna):
-1. "Hayotiy vaziyat" - qahramon muammoga duch keladi.
-2. "Savol" - Aqlvoy so'raydi: "Bu holatda qonun nima deydi?"
-3. "Tushuntirish" - Afandi sodda tilda tushuntiradi; onScreenText kind=article, label: "{hujjat_nomi.replace("O'zbekiston Respublikasining ", "")}, N-modda".
-4. "Ehtiyot bo'ling!" - xavfli joylar (kind=warning).
-5. "Endi nima qilish kerak?" - 3-5 qadam (kind=steps).
+1. "Hayotiy vaziyat" - mavzu tomonlari o'rtasidagi kichik nizo (3-5 replika, faqat dialog).
+2. "Savol" - muammoli tomon Aqlvoy va Afandiga keladi; Aqlvoy so'raydi: "Bu holatda qonun nima deydi?"
+3. "Tushuntirish" - Afandi sodda tilda qayta aytadi, Aqlvoy yoki qahramon savol berib, hayron bo'lib turadi; onScreenText kind=article, label: "{qisqa_nom}, N-modda".
+4. "Ehtiyot bo'ling!" - xavfli joylar, qahramon reaksiyasi bilan (kind=warning).
+5. "Endi nima qilish kerak?" - 3-5 qadam (kind=steps); oxirida qahramon yengil tortadi, minnatdorchilik bildiradi.
 
 FAQAT JSON:
 {{"title":"...","summary":["3-6 ta qisqa konspekt bandi, modda raqami bilan"],
  "scenes":[{{"title":"...","background":"...","characters":[{{"id":"...","position":"left|center|right"}}],
- "lines":[{{"speaker":"...","text":"...","emotion":"...","gesture":"..."}}],
+ "lines":[{{"speaker":"...","text":"...","emotion":"...","gesture":"...","pause":0}}],
  "onScreenText":{{"kind":"...","label":"...","text":"...","items":[]}}}}]}}
 
 LEX.UZ MATNI ({url}):
@@ -149,12 +182,16 @@ def tozala(s: dict, hujjat_nomi: str, url: str, ruxsat: set[str]) -> dict:
         for ln in sc.get("lines") or []:
             if not isinstance(ln, dict) or not str(ln.get("text", "")).strip():
                 continue
-            lines.append({
+            qator = {
                 "speaker": ln.get("speaker") if ln.get("speaker") in PERSONAJLAR else "afandi",
                 "text": str(ln["text"]).strip()[:400],
                 "emotion": ln.get("emotion") if ln.get("emotion") in EMOTSIYA else "neutral",
                 "gesture": ln.get("gesture") if ln.get("gesture") in IMO else "none",
-            })
+            }
+            pauza = ln.get("pause")  # ixtiyoriy dramatik jimlik (ms)
+            if isinstance(pauza, (int, float)) and not isinstance(pauza, bool) and pauza == pauza and pauza > 0:
+                qator["pause"] = int(min(1200, pauza))
+            lines.append(qator)
         ost = sc.get("onScreenText") if isinstance(sc.get("onScreenText"), dict) else None
         if ost and ost.get("kind") == "article":
             nums = set(re.findall(r"(\d+)\s*[-–]\s*modda", str(ost.get("label", "")) + " " + str(ost.get("text", ""))))

@@ -33,23 +33,34 @@ function App() {
     if (location.hash.replace("#", "") === target) { setRoute(target); window.scrollTo(0, 0); }
     else location.hash = target;
   };
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const f = () => setScrolled(window.scrollY > 8);
+    f(); window.addEventListener("scroll", f, { passive: true });
+    return () => window.removeEventListener("scroll", f);
+  }, []);
   const tab = TAB_OF[route];
-  const nav = [["home", "Bosh sahifa"], ["make", "Multfilm yasash"], ["learn", "Darslar va kazuslar"], ["profile", "Profil"]];
+  const nav = [["home", "Bosh sahifa", "Bosh sahifa"], ["make", "Multfilm yasash", "Yasash"], ["learn", "Darslar va kazuslar", "Darslar"], ["profile", "Profil", "Profil"]];
   return (
     <div className="app">
-      <header className="topbar">
+      <header className={cx("topbar", scrolled && "scrolled")}>
         <a className="logo" href="#home" aria-label="OsonQonun bosh sahifa">
           <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#1f4e9c" /><path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#f2b134" /><circle cx="20" cy="20" r="4" fill="#fff" /></svg>
           <span className="notr">Oson<b>Qonun</b></span>
         </a>
+        <nav className="top-nav" aria-label="Asosiy menyu">
+          {nav.map(([k, label]) => (
+            <a key={k} href={"#" + k} className={cx(tab === k && "on")} aria-current={tab === k ? "page" : undefined}><NavIcon name={k} />{label}</a>
+          ))}
+        </nav>
         <div className="top-actions">
           <button className="chip" onClick={() => Store.set((s) => ({ ...s, settings: { ...s.settings, alphabet: s.settings.alphabet === "lat" ? "cyr" : "lat" } }))}
             aria-label="Alifboni almashtirish"><span className="notr">{store.settings.alphabet === "lat" ? "Lot → Кир" : "Кир → Lot"}</span></button>
-          <button className={cx("chip", store.settings.bigFont && "on")} onClick={() => Store.set((s) => ({ ...s, settings: { ...s.settings, bigFont: !s.settings.bigFont } }))} aria-pressed={!!store.settings.bigFont} aria-label="Katta shrift">A+</button>
+          <button className={cx("chip", store.settings.bigFont && "on")} onClick={() => Store.set((s) => ({ ...s, settings: { ...s.settings, bigFont: !s.settings.bigFont } }))} aria-pressed={!!store.settings.bigFont} aria-label="Katta shrift" title="Katta shrift">A+</button>
         </div>
       </header>
       <main className="main">
-        {tab === "home" && route === "roadmap" && <><button className="link-back" onClick={() => go("home")}>← Bosh sahifa</button><RightsRoadmap /></>}
+        {tab === "home" && route === "roadmap" && <><button className="link-back" onClick={() => go("home")}><span aria-hidden="true">←</span> Bosh sahifa</button><RightsRoadmap /></>}
         {route === "home" && <HomePage go={go} />}
         {tab === "make" && <MakePage initialMode={route === "savol" ? "savol" : undefined} />}
         {tab === "learn" && <LearnPage sub={route} go={go} />}
@@ -57,9 +68,9 @@ function App() {
         <footer className="foot"><span className="notr">OsonQonun</span> · Lex hackatoni, 2-yo'nalish: huquqiy ta'lim va targ'ibot · Videolar ta'limiy maqsadda, yuridik maslahat emas · Manba: <a href="https://lex.uz" target="_blank" rel="noopener">lex.uz</a></footer>
       </main>
       <nav className="bottom-nav" aria-label="Asosiy menyu">
-        {nav.map(([k, label]) => (
-          <a key={k} href={"#" + k} className={cx(tab === k && "on")} aria-current={tab === k ? "page" : undefined}>
-            <NavIcon name={k} /><span>{label}</span>
+        {nav.map(([k, label, short]) => (
+          <a key={k} href={"#" + k} className={cx(tab === k && "on")} aria-current={tab === k ? "page" : undefined} aria-label={label}>
+            <span className="ni"><NavIcon name={k} /></span><span>{short}</span>
           </a>
         ))}
       </nav>

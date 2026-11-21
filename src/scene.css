@@ -1,0 +1,173 @@
+/* Sahna: kamera, personaj joylari, kirish, gap pufakchasi, ekrandagi matn, subtitr (SceneRenderer.jsx) */
+.scene{position:absolute;inset:0;overflow:hidden;font-family:Nunito,system-ui,sans-serif}
+
+/* ---- kamera ---- */
+.cam{position:absolute;inset:0;transform-origin:50% 86%;transition:transform .85s cubic-bezier(.45,.05,.25,1);will-change:transform}
+.cam-push{position:absolute;inset:0;transform-origin:50% 82%;animation:kenBurns 18s cubic-bezier(.3,.1,.3,1) both}
+@keyframes kenBurns{from{transform:scale(1)}to{transform:scale(1.045)}}
+.scene.paused .cam-push,.scene.paused .amb{animation-play-state:paused}
+
+.scene-bg{position:absolute;inset:0;animation:fadeIn .6s ease both}
+.bg{position:absolute;inset:0;width:100%;height:100%}
+
+/* ---- personajlar ---- */
+.char-slot{position:absolute;bottom:4%;height:66%;aspect-ratio:1/2;transform:translateX(-50%);z-index:2}
+.char-act,.char-talk{position:absolute;inset:0;transform-origin:50% 100%}
+.char-act{transition:transform .6s cubic-bezier(.3,.7,.3,1),filter .6s ease}
+.char-slot .char{width:100%;height:100%;display:block;overflow:visible}
+.char-slot.speaking .char-act{transform:translateY(-.6%) scale(1.035);filter:brightness(1.05) saturate(1.05)}
+.char-slot.listening .char-act{transform:scale(.99);filter:brightness(.94) saturate(.9)}
+.char-slot.talking .char-talk{animation:talkSway 2.8s ease-in-out infinite}
+.scene.paused .char-slot.talking .char-talk{animation-play-state:paused}
+@keyframes talkSway{
+  0%,100%{transform:rotate(0) translateY(0)}
+  22%{transform:rotate(-.7deg) translateY(-.5%)}
+  48%{transform:rotate(.25deg) translateY(-.1%)}
+  70%{transform:rotate(.6deg) translateY(-.4%)}
+}
+/* kontakt soya — personaj polda turadi */
+.char-shadow{position:absolute;left:50%;bottom:-1.2%;width:92%;height:5%;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(20,16,10,.38),rgba(20,16,10,.16) 60%,transparent);transition:transform .6s ease,opacity .6s ease}
+.char-slot.speaking .char-shadow{transform:translateX(-50%) scale(1.08);opacity:.9}
+.char-name{position:absolute;left:50%;bottom:-3%;transform:translateX(-50%);z-index:1;background:rgba(11,18,32,.72);color:#fff;font-weight:800;
+  font-size:clamp(9px,1.25cqi,15px);padding:.15em .7em;border-radius:999px;white-space:nowrap;letter-spacing:.01em;
+  box-shadow:0 .15em .5em rgba(0,0,0,.2);transition:background .3s,color .3s}
+.scene.subs-on .char-name{display:none}
+.char-slot.speaking .char-name{background:var(--saf);color:#2d1f00}
+
+/* kirish: yurib keladi (qadam tebranishi bilan) */
+.enter-slide.left{animation:walkInL 1.15s linear both}
+.enter-slide.right{animation:walkInR 1.15s linear both}
+.enter-slide.center,.enter-fade{animation:fadeUp .7s cubic-bezier(.2,.8,.2,1) both}
+.enter-pop{animation:pop .6s cubic-bezier(.3,1.45,.5,1) both}
+@keyframes walkInL{
+  0%{translate:-150% 0;opacity:0}12%{opacity:1}
+  20%{translate:-108% -2.2%}34%{translate:-72% 0}48%{translate:-42% -1.8%}62%{translate:-20% 0}76%{translate:-7% -1%}88%{translate:-1.5% 0}
+  100%{translate:0 0;opacity:1}
+}
+@keyframes walkInR{
+  0%{translate:150% 0;opacity:0}12%{opacity:1}
+  20%{translate:108% -2.2%}34%{translate:72% 0}48%{translate:42% -1.8%}62%{translate:20% 0}76%{translate:7% -1%}88%{translate:1.5% 0}
+  100%{translate:0 0;opacity:1}
+}
+@keyframes fadeUp{from{translate:0 8%;opacity:0}to{translate:0 0;opacity:1}}
+@keyframes pop{0%{scale:.6;opacity:0}60%{opacity:1}100%{scale:1;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes bubbleIn{0%{scale:.6;opacity:0}60%{scale:1.03;opacity:1}100%{scale:1;opacity:1}}
+
+/* ---- gap pufakchasi ---- */
+.bubble{position:absolute;left:0;top:0;max-width:34%;width:max-content;z-index:5;background:#fff;color:#14213d;border-radius:1.15em;padding:.6em .95em .65em;
+  font-size:clamp(11px,1.8cqi,22px);line-height:1.34;font-weight:700;border:2px solid #14213d;
+  box-shadow:0 .5em 1.4em rgba(11,18,32,.22),0 .1em .25em rgba(11,18,32,.15);animation:bubbleIn .38s cubic-bezier(.3,1.3,.5,1) both}
+.bubble b{display:block;font-size:.74em;font-weight:900;color:var(--lapis);letter-spacing:.02em;margin-bottom:.1em}
+.bubble-text{display:block;min-height:1.34em}
+.bubble-tail{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.bubble-tail .tail-fill{fill:#fff;stroke:#14213d;stroke-width:2;stroke-linejoin:round}
+.bubble-tail .tail-seam{stroke:#fff;stroke-width:4;stroke-linecap:round}
+.caret{display:inline-block;width:.09em;min-width:2px;height:1em;margin-left:.08em;vertical-align:-.12em;background:var(--tq);border-radius:1px;animation:caret .8s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+
+/* ---- subtitr ---- */
+.subtitle{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);z-index:6;width:max-content;max-width:90%;background:rgba(8,12,22,.78);color:#fff;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:.4em .9em;border-radius:.6em;font-size:clamp(12px,1.9cqi,24px);font-weight:700;line-height:1.38;
+  text-align:center;box-shadow:0 .3em 1em rgba(0,0,0,.25);text-wrap:balance}
+.subtitle b{color:var(--saf);font-weight:900;margin-right:.25em}
+.subtitle b::after{content:":"}
+
+.scene-chip{position:absolute;left:2.5%;top:3.5%;z-index:3;display:flex;align-items:center;gap:.45em;background:rgba(11,18,32,.62);color:#fff;font-weight:800;
+  font-size:clamp(9px,1.25cqi,15px);padding:.3em .85em;border-radius:999px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn .5s ease both}
+.scene-chip::before{content:"";width:.55em;height:.55em;border-radius:50%;background:var(--saf);box-shadow:0 0 0 .2em rgba(242,177,52,.25)}
+
+/* ---- ekrandagi matn kartalari ---- */
+.ost{position:absolute;left:50%;top:5%;transform:translateX(-50%);width:30%;z-index:3;background:#fff;color:#14213d;border-radius:.8em;padding:.65em .9em .7em;
+  border-top:.32em solid var(--lapis);box-shadow:0 .6em 1.6em rgba(11,18,32,.25),0 .1em .3em rgba(11,18,32,.12);animation:ostIn .55s cubic-bezier(.3,1.3,.5,1) both}
+@keyframes ostIn{from{opacity:0;translate:0 -12%;scale:.94}to{opacity:1;translate:0 0;scale:1}}
+.ost-label{display:flex;align-items:center;gap:.4em;font-weight:900;color:var(--lapis);font-size:clamp(9px,1.35cqi,17px);line-height:1.2;letter-spacing:.01em}
+.ost-ico{display:inline-grid;place-items:center;flex:none;width:1.35em;height:1.35em;border-radius:50%;background:currentColor;font-size:.95em;line-height:1}
+.ost-ico{color:inherit}
+.ost-text{font-weight:800;font-size:clamp(10px,1.8cqi,22px);line-height:1.28;margin-top:.3em;text-wrap:balance}
+.ost-article{border-top-color:var(--lapis);background:linear-gradient(180deg,#fff,#f3f7fd)}
+.ost-article .ost-ico{background:var(--lapis);color:#fff}
+.ost-warning{border-top-color:var(--anor);background:linear-gradient(180deg,#fff,#fff3f2)}
+.ost-warning .ost-label{color:var(--anor)}
+.ost-warning .ost-ico{background:var(--anor);color:#fff;animation:warnPulse 1.6s ease-in-out infinite}
+@keyframes warnPulse{50%{box-shadow:0 0 0 .3em rgba(200,50,60,.2)}}
+.ost-stage{border-top-color:var(--tq)}.ost-stage .ost-label{color:var(--tq)}
+.ost-keyword{border-top-color:var(--saf)}.ost-keyword .ost-label{color:#a86d00}
+.ost-steps{width:34%;border-top-color:var(--tq);text-align:left}.ost-steps .ost-label{color:var(--tq)}
+.ost-steps ol{list-style:none;margin:.4em 0 0;padding:0;font-size:clamp(9px,1.45cqi,18px);font-weight:700;line-height:1.28}
+.ost-steps li{display:flex;gap:.5em;align-items:flex-start}
+.ost-steps li+li{margin-top:.3em}
+.ost-n{flex:none;display:inline-grid;place-items:center;width:1.45em;height:1.45em;border-radius:50%;background:var(--tq);color:#fff;font-weight:900;font-size:.85em;margin-top:.05em}
+.pop-in{animation:stepIn .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes stepIn{from{opacity:0;translate:-6% 0}to{opacity:1;translate:0 0}}
+
+.ost-title{inset:0;top:0;left:0;transform:none;width:auto;border:0;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  color:#fff;background:radial-gradient(circle at 50% 42%,rgba(31,78,156,.9),rgba(13,30,61,.96) 70%);padding:6%;animation:fadeIn .5s both;box-shadow:none;overflow:hidden}
+.ost-title-deco{position:absolute;inset:-20%;opacity:.12;pointer-events:none;
+  background:repeating-conic-gradient(from 22.5deg,var(--saf) 0 12.5%,transparent 0 25%);-webkit-mask:radial-gradient(circle,#000 20%,transparent 60%);mask:radial-gradient(circle,#000 20%,transparent 60%);animation:decoSpin 60s linear infinite}
+@keyframes decoSpin{to{rotate:360deg}}
+.scene.paused .ost-title-deco{animation-play-state:paused}
+.ost-title .ost-label{position:relative;font-size:clamp(11px,1.9cqi,24px);background:var(--saf);color:#2d1f00;padding:.25em .9em;border-radius:999px;margin-bottom:.7em;animation:ostIn .6s .1s both}
+.ost-big{position:relative;font-size:clamp(17px,4.4cqi,56px);font-weight:900;line-height:1.1;max-width:22ch;text-wrap:balance;text-shadow:0 .08em .3em rgba(0,0,0,.3);animation:fadeUp .7s .2s cubic-bezier(.2,.8,.2,1) both}
+
+/* ---- fon: jonli detallar (pauzada to'xtaydi) ---- */
+.amb{transform-box:fill-box;transform-origin:center}
+.amb-cloud{animation:cloudDrift 90s linear infinite}
+@keyframes cloudDrift{0%{transform:translateX(-160px)}50%{transform:translateX(160px)}100%{transform:translateX(-160px)}}
+.amb-birds{animation:birdsFly 26s linear infinite}
+@keyframes birdsFly{0%{transform:translate(-200px,20px)}50%{transform:translate(900px,-30px)}100%{transform:translate(1900px,10px)}}
+.amb-flap{animation:flap .5s ease-in-out infinite alternate;transform-origin:center bottom}
+@keyframes flap{to{transform:scaleY(.45)}}
+.amb-sway{transform-origin:50% 100%;animation:sway 5s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-1.2deg)}to{transform:rotate(1.2deg)}}
+.amb-leaf{animation:leafFall 9s linear infinite}
+@keyframes leafFall{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:1}50%{transform:translate(40px,150px) rotate(180deg)}90%{opacity:1}100%{transform:translate(-10px,300px) rotate(360deg);opacity:0}}
+.amb-steam{opacity:0;animation:steam 2.7s ease-out infinite}
+@keyframes steam{0%{transform:translateY(8px) scaleY(.6);opacity:0}30%{opacity:.75}100%{transform:translateY(-34px) scaleY(1.1);opacity:0}}
+.amb-flicker{animation:flicker 4s steps(1) infinite}
+@keyframes flicker{0%,100%{opacity:.9}41%{opacity:.6}43%{opacity:.95}70%{opacity:.8}72%{opacity:.95}}
+.amb-pulse{animation:pulse 6s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.12);opacity:.25}}
+.amb-flag{transform-origin:0 50%;animation:flag 2.2s ease-in-out infinite alternate}
+@keyframes flag{from{transform:skewY(-3deg) scaleX(.96)}to{transform:skewY(3deg) scaleX(1)}}
+.amb-bunting{transform-origin:50% 0;animation:bunting 2.6s ease-in-out infinite alternate}
+@keyframes bunting{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.amb-awning{transform-origin:50% 0;animation:awning 4s ease-in-out infinite alternate}
+@keyframes awning{from{transform:scaleY(1)}to{transform:scaleY(1.025)}}
+.amb-tick{transform-box:view-box;transform-origin:0 0;animation:tick 60s steps(60) infinite}
+@keyframes tick{to{transform:rotate(360deg)}}
+.amb-scale{transform-origin:50% 0;animation:scaleTip 5s ease-in-out infinite alternate}
+@keyframes scaleTip{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+.amb-screen{animation:screen 3s ease-in-out infinite alternate}
+@keyframes screen{to{opacity:.75}}
+
+/* ---- kichik ekran ---- */
+@container (max-width:560px){
+  .bubble{display:none}
+  .ost{left:3%;right:3%;top:3%;transform:none;width:auto;padding:.4em .6em}
+  .ost-text{font-size:11px}.ost-label{font-size:10px}
+  .ost-steps{width:auto}
+  .ost-steps ol{font-size:10px}
+  .ost-title{left:0;right:0;top:0}
+  .scene-chip{display:none}
+  .char-slot{height:58%}
+}
+
+/* ---- vertikal (9:16) ---- */
+.scene.vertical .char-slot{height:40%;bottom:6%}
+.scene.vertical .bubble{display:block;max-width:84%;font-size:clamp(12px,3.6cqi,26px)}
+.scene.vertical .ost{left:5%;right:5%;top:4%;width:auto;transform:none}
+.scene.vertical .ost-title{inset:0;top:0;left:0;right:0}
+.scene.vertical .ost-text{font-size:clamp(12px,3.6cqi,24px)}.scene.vertical .ost-label{font-size:clamp(11px,3cqi,20px)}
+.scene.vertical .ost-steps ol{font-size:clamp(11px,3.2cqi,20px)}
+.scene.vertical .subtitle{font-size:clamp(12px,3.4cqi,22px);bottom:2%}
+.scene.vertical .scene-chip{display:none}
+.scene.vertical .char-name{font-size:clamp(9px,2.6cqi,14px)}
+
+@media (prefers-reduced-motion:reduce){
+  .cam{transition:none}
+  .cam-push,.amb,.char-slot.talking .char-talk,.ost-title-deco,.ost-warning .ost-ico,.caret{animation:none!important}
+  .enter-slide,.enter-pop,.enter-fade,.scene-bg,.ost,.bubble,.pop-in,.ost-big,.ost-title .ost-label,.scene-chip{animation:none!important}
+  .amb-steam{opacity:.5}
+}

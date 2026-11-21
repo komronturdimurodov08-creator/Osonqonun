@@ -93,11 +93,19 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
 
   const begin = (i) => {
     const st = S.current, it = tl.items[i];
-    st.idx = i; st.elapsed = 0; st.speechDone = true; st.studio = false;
+    st.idx = i; st.elapsed = 0; st.speechDone = true; st.studio = false; st.leadPending = false;
     const sc = script.scenes[it.s];
     if (it.first && sc.stop && !st.unlocked[it.s]) {
       st.playing = false; silenceAll(); setStopOpen(true); render(); return;
     }
+    // Rejissyor pauzasi (lead): replikadan oldin qisqa jimlik — ovoz keyinroq boshlanadi
+    if (st.playing && it.lead > 0 && it.text && !(st.reading && i >= st.reading.from && i <= st.reading.to)) {
+      st.leadPending = true; stopReading(); Speech.cancel(); ElevenAudio.stop(); render(); return;
+    }
+    startVoice(i);
+  };
+  const startVoice = (i) => {
+    const st = S.current, it = tl.items[i];
     const au = it.l >= 0 ? script.scenes[it.s].lines[it.l].audio : undefined;
     if (au) [1, 2].forEach((d) => { const n = tl.items[i + d]; if (n && n.l >= 0) ElevenAudio.prefetch(script.scenes[n.s].lines[n.l].audio); });
     if (st.playing && st.voice && it.text && ElevenAudio.has(it.speaker, it.text, au)) {
@@ -134,7 +142,10 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
     st.elapsed += dt * st.speed;
     const it = tl.items[st.idx];
     let done;
-    if (st.studio && it.text) {
+    if (st.leadPending) {
+      done = false;
+      if (st.elapsed >= it.lead) { st.leadPending = false; startVoice(st.idx); }
+    } else if (st.studio && it.text) {
       // audio tugagach qisqa pauza; fayl "osilib" qolsa — xavfsizlik chegarasi
       done = (st.speechDone && performance.now() - (st.doneAt || 0) > 220) || st.elapsed >= it.dur * 4 + 4000;
     } else if (st.reading && it.text) {
@@ -142,7 +153,7 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
       if (performance.now() - st.lastLineAt > it.dur * 3 + 6000) { stopReading(); st.engine = "browser"; begin(st.idx); }
     } else {
       const spoken = st.voice && it.text && Speech.ok;
-      done = spoken ? (st.speechDone && st.elapsed >= it.dur * 0.5 + 250) || st.elapsed >= it.dur * 2.6 : st.elapsed >= it.dur;
+      done = spoken ? (st.speechDone && st.elapsed >= (it.lead || 0) + (it.dur - (it.lead || 0)) * 0.5 + 250) || st.elapsed >= it.dur * 2.6 : st.elapsed >= it.dur;
     }
     if (done) {
       if (st.idx + 1 < tl.items.length) begin(st.idx + 1); else { finish(); return; }
@@ -212,23 +223,29 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
       if (p && p.catch) p.catch(() => setPseudoFs(true)); else if (!p) setPseudoFs(true);
     } catch (e) { setPseudoFs(true); }
   };
+  const toggleVoice = () => Store.set((s) => ({ ...s, settings: { ...s.settings, voice: !s.settings.voice } }));
   const onKey = (e) => {
     if (e.target.closest("textarea,input,select")) return;
     if (e.key === " ") { e.preventDefault(); toggle(); }
     else if (e.key === "ArrowRight") seekScene(Math.min(script.scenes.length - 1, curScene() + 1));
     else if (e.key === "ArrowLeft") seekScene(Math.max(0, curScene() - 1));
     else if (e.key === "Escape" && pseudoFs) { e.preventDefault(); setPseudoFs(false); }
+    else if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey) fullscreen();
+    else if ((e.key === "c" || e.key === "C") && !e.ctrlKey && !e.metaKey) setSubs((v) => !v);
+    else if ((e.key === "m" || e.key === "M") && !e.ctrlKey && !e.metaKey) toggleVoice();
   };
 
   const st = S.current;
   const it = tl.items[st.idx];
   const scene = script.scenes[it.s];
   const line = it.l >= 0 ? scene.lines[it.l] : null;
-  const frac = Math.min(1, st.elapsed / it.dur);
+  const lead = it.lead || 0;
+  const frac = Math.min(1, Math.max(0, st.elapsed - lead) / Math.max(1, it.dur - lead));
+  const inLead = st.elapsed < lead;
   const sceneItems = tl.items.filter((x) => x.s === it.s);
   const sceneProgress = (sceneItems.indexOf(it) + frac) / sceneItems.length;
   const now = it.start + Math.min(st.elapsed, it.dur);
-  const talking = st.playing && !!line && (st.studio ? !st.speechDone : st.reading ? true : st.voice && Speech.ok ? !st.speechDone : frac < 0.9);
+  const talking = st.playing && !!line && !inLead && !st.leadPending && (st.studio ? !st.speechDone : st.reading ? true : st.voice && Speech.ok ? !st.speechDone : frac < 0.9);
 
   return (
     <div ref={wrap} className={cx("player", vertical && "is-vertical", pseudoFs && "pseudo-fs", isFs && "is-fs")} tabIndex={0} onKeyDown={onKey}
@@ -258,24 +275,29 @@ function VideoPlayer({ script, onEnd, onWatched, seek, renderStop, allowVertical
         </div>
       </div>
       <div className="controls">
-        <button className="cbtn" onClick={() => seekScene(Math.max(0, it.s - 1))} aria-label="Oldingi sahna" title="Oldingi sahna"><Icon name="prev" /></button>
-        <button className="cbtn cbtn-main" onClick={toggle} aria-label={st.playing ? "Pauza" : "Ijro etish"}><Icon name={st.playing ? "pause" : "play"} /></button>
-        <button className="cbtn" onClick={() => seekScene(Math.min(script.scenes.length - 1, it.s + 1))} aria-label="Keyingi sahna" title="Keyingi sahna"><Icon name="next" /></button>
-        <div className="seek">
-          <input type="range" min="0" max={tl.total} step="100" value={now} aria-label="Video vaqti"
+        <div className="seek" style={{ "--p": (tl.total ? (now / tl.total) * 100 : 0) + "%" }}>
+          <input type="range" min="0" max={tl.total} step="100" value={now} aria-label="Video vaqti" aria-valuetext={fmtTime(now) + " / " + fmtTime(tl.total)}
             onChange={(e) => { const t = +e.target.value; let k = tl.items.findIndex((x) => x.start + x.dur > t); seekItem(k < 0 ? tl.items.length - 1 : k); }} />
-          <div className="ticks">{script.scenes.map((_, s) => <i key={s} style={{ left: (sceneStart(tl, s) / tl.total) * 100 + "%" }} />)}</div>
+          <div className="ticks">{script.scenes.map((_, s) => { const at = sceneStart(tl, s); return <i key={s} className={cx(at <= now && "past")} style={{ left: (at / tl.total) * 100 + "%" }} />; })}</div>
         </div>
-        <span className="time">{fmtTime(now)} / {fmtTime(tl.total)}</span>
-        <select className="speed" value={st.speed} aria-label="Tezlik"
-          onChange={(e) => setSpeed(+e.target.value)}>
-          {SPEEDS.map((v) => <option key={v} value={v}>{v}x</option>)}
-        </select>
-        <button className={cx("cbtn", "cc", subs && "on")} onClick={() => setSubs(!subs)} aria-pressed={subs} title="Subtitr">CC</button>
-        <button className="cbtn" onClick={() => Store.set((s) => ({ ...s, settings: { ...s.settings, voice: !s.settings.voice } }))}
-          aria-label={settings.voice ? "Ovozni o'chirish" : "Ovozni yoqish"} title="Ovoz"><Icon name={settings.voice ? "sound" : "mute"} /></button>
-        {allowVertical && <button className={cx("cbtn", vertical && "on")} onClick={() => setVertical(!vertical)} aria-pressed={vertical} title="Vertikal 9:16"><Icon name="phone" /></button>}
-        <button className="cbtn" onClick={fullscreen} aria-label="To'liq ekran" title="To'liq ekran"><Icon name="full" /></button>
+        <div className="ctrl-row">
+          <div className="ctrl-l">
+            <button className="cbtn" onClick={() => seekScene(Math.max(0, it.s - 1))} aria-label="Oldingi sahna" title="Oldingi sahna (←)"><Icon name="prev" /></button>
+            <button className="cbtn cbtn-main" onClick={toggle} aria-label={st.playing ? "Pauza" : "Ijro etish"} title={st.playing ? "Pauza (probel)" : "Ijro etish (probel)"}><Icon name={st.playing ? "pause" : "play"} /></button>
+            <button className="cbtn" onClick={() => seekScene(Math.min(script.scenes.length - 1, it.s + 1))} aria-label="Keyingi sahna" title="Keyingi sahna (→)"><Icon name="next" /></button>
+            <span className="time"><b>{fmtTime(now)}</b> / {fmtTime(tl.total)}</span>
+            <span className="scene-ix">Sahna {it.s + 1}/{script.scenes.length}</span>
+          </div>
+          <div className="ctrl-r">
+            <button className="cbtn spd" onClick={() => setSpeed(SPEEDS[(SPEEDS.indexOf(st.speed) + 1) % SPEEDS.length])}
+              aria-label={"Tezlik: " + st.speed + "x"} title="Tezlik"><span>{st.speed}x</span></button>
+            <button className={cx("cbtn", "cc", subs && "on")} onClick={() => setSubs(!subs)} aria-pressed={subs} aria-label="Subtitr" title="Subtitr (C)"><span>CC</span></button>
+            <button className={cx("cbtn", !settings.voice && "on")} onClick={toggleVoice}
+              aria-label={settings.voice ? "Ovozni o'chirish" : "Ovozni yoqish"} title="Ovoz (M)"><Icon name={settings.voice ? "sound" : "mute"} /></button>
+            {allowVertical && <button className={cx("cbtn", vertical && "on")} onClick={() => setVertical(!vertical)} aria-pressed={vertical} aria-label="Vertikal 9:16" title="Vertikal 9:16"><Icon name="phone" /></button>}
+            <button className={cx("cbtn", (isFs || pseudoFs) && "on")} onClick={fullscreen} aria-label="To'liq ekran" title="To'liq ekran (F)"><Icon name="full" /></button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -294,10 +316,10 @@ function VideoMeta({ script, extra }) {
       </div>
       <ul className="konspekt">{script.summary.map((x, i) => <li key={i}>{x}</li>)}</ul>
       <p className="src">Manba: <a href={script.source.url} target="_blank" rel="noopener">{script.source.title}</a> <span className="muted notr">({script.source.url.replace("https://", "")})</span></p>
-      <div className="row wrap gap">
+      <div className="row wrap gap vmeta-actions">
         <button className="btn" onClick={async () => { const r = await downloadKonspekt(script); flash(r === "ok" ? "Konspekt PDF tayyor" : "Yuklab olish bekor qilindi"); }}>Konspekt (PDF)</button>
         <button className="btn ghost" onClick={() => { Store.set((s) => ({ ...s, saved: [script, ...s.saved.filter((x) => x.id !== script.id)].slice(0, 20) })); flash("Offline ko'rish uchun saqlandi"); }}>Offline saqlash</button>
-        <a className="btn ghost" href={share} target="_blank" rel="noopener">Telegramda ulashish</a>
+        <a className="btn tonal" href={share} target="_blank" rel="noopener">Telegramda ulashish</a>
         <button className="btn ghost" onClick={async () => flash((await copyText(script.title + "\n\n" + script.summary.map((x) => "• " + x).join("\n") + "\n\nManba: " + script.source.url + "\n#OsonQonun")) ? "Reels/Shorts uchun matn nusxalandi" : "Nusxalab bo'lmadi")}>Reels/Shorts matni</button>
         {extra}
       </div>

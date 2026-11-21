@@ -14,6 +14,7 @@ function RightsRoadmap() {
     <div className="stack-lg">
       <div className="road-hero" ref={top}>
         <div>
+          <span className="eyebrow">7 yoshdan 70 yoshgacha</span>
           <h2>Huquqlar yo'l xaritasi</h2>
           <p className="muted">7 yoshdan 70 yoshgacha: yoshingizni kiriting — qaysi huquq va majburiyatlar ochilganini ko'rasiz.</p>
           <label className="age-input">
@@ -43,8 +44,8 @@ function RightsRoadmap() {
                     <div className="row between wrap gap-sm"><b>{it.title}</b><span className="ref notr">{it.ref}</span></div>
                     <p>{it.text}</p>
                     <div className="row between wrap gap-sm">
-                      <span className="sm muted">{on ? (it.duty ? "Majburiyat" : "Huquq ochilgan") : "Hali ochilmagan: " + (m.age - age) + " yil qoldi"}</span>
-                      <button className="btn sm" onClick={() => open(it, m)}>1 daqiqalik multfilm</button>
+                      <span className={cx("sm", on ? (it.duty ? "tag-duty" : "tag-ok") : "muted")}>{on ? (it.duty ? "Majburiyat" : "Huquq ochilgan ✓") : "Hali ochilmagan: " + (m.age - age) + " yil qoldi"}</span>
+                      <button className={cx("btn", "sm", !on && "tonal")} onClick={() => open(it, m)}>▶ 1 daqiqalik multfilm</button>
                     </div>
                   </div>
                 ))}
@@ -60,7 +61,7 @@ function RightsRoadmap() {
             <div key={i} className="tl-card">
               <div className="row between wrap gap-sm"><b>{it.title}</b><span className="ref notr">{it.ref}</span></div>
               <p>{it.text}</p>
-              <button className="btn sm" onClick={() => open(it, { label: "Har qanday yosh", bg: "sud" })}>1 daqiqalik multfilm</button>
+              <button className="btn sm" onClick={() => open(it, { label: "Har qanday yosh", bg: "sud" })}>▶ 1 daqiqalik multfilm</button>
             </div>
           ))}
         </div>

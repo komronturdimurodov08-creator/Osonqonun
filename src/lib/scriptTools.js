@@ -10,7 +10,9 @@ const BACKGROUNDS = ["mahalla", "bozor", "idora", "sud", "universitet"];
 const EMOTIONS = ["neutral", "happy", "worried", "surprised", "serious"];
 const GESTURES = ["none", "point", "wave", "explain", "think", "warn", "shrug"];
 
-function normalizeScript(raw) {
+/* opts.direct = true: normallashtirishdan keyin "rejissor" (director.js) sahnalashtiradi.
+   opts siz — oldingidek (qo'lda yozilgan ssenariylar o'zgarmaydi). */
+function normalizeScript(raw, opts) {
   const s = JSON.parse(JSON.stringify(raw || {}));
   s.id = s.id || "v-" + uid();
   s.title = s.title || "Nomsiz video";
@@ -23,7 +25,8 @@ function normalizeScript(raw) {
       text: String(l.text).trim(),
       emotion: EMOTIONS.includes(l.emotion) ? l.emotion : "neutral",
       gesture: GESTURES.includes(l.gesture) ? l.gesture : "none",
-      ...(typeof l.audio === "string" ? { audio: l.audio } : {})
+      ...(typeof l.audio === "string" ? { audio: l.audio } : {}),
+      ...(Number.isFinite(l.pause) && l.pause > 0 ? { pause: Math.min(2000, Math.round(l.pause)) } : {})
     }));
     let chars = (Array.isArray(scene.characters) ? scene.characters : [])
       .map((c) => (typeof c === "string" ? { id: c } : c))
@@ -42,6 +45,7 @@ function normalizeScript(raw) {
   if (!s.scenes.length) s.scenes = [{ id: s.id + "-s0", background: "mahalla", characters: [{ id: "afandi", position: "center" }], lines: [{ speaker: "afandi", text: "Bu ssenariy bo'sh. Matn kiritib qaytadan urinib ko'ring.", emotion: "worried", gesture: "shrug" }] }];
   if (!Array.isArray(s.summary) || !s.summary.length) s.summary = autoSummary(s);
   s.source = s.source && s.source.url ? s.source : LEX.lex;
+  if (opts && opts.direct && typeof directScript === "function") return directScript(s, { text: opts.text, mode: opts.mode });
   return s;
 }
 
@@ -56,9 +60,13 @@ function autoSummary(s) {
   return out.slice(0, 8);
 }
 
+// so'zlar + tinish belgilaridagi tabiiy pauzalar (vergul ~150ms, gap oxiri ~300ms)
 const estimateDur = (text) => {
-  const words = String(text || "").split(/\s+/).filter(Boolean).length;
-  return Math.max(1900, Math.min(9500, 900 + words * 360));
+  const t = String(text || "");
+  const words = t.split(/\s+/).filter(Boolean).length;
+  const commas = (t.match(/[,;:]/g) || []).length;
+  const ends = (t.replace(/\.{3}|…/g, ".").match(/[.!?]+(?=\s|["»”)]|$)/g) || []).length;
+  return Math.max(1900, Math.min(10500, 900 + words * 360 + commas * 150 + Math.max(0, ends - 1) * 300));
 };
 
 function buildTimeline(script) {
@@ -70,8 +78,10 @@ function buildTimeline(script) {
       items.push({ s, l: -1, dur, start: t, first: true, text: "" }); t += dur;
     } else {
       sc.lines.forEach((ln, l) => {
-        const dur = estimateDur(ln.text);
-        items.push({ s, l, dur, start: t, first: l === 0, text: ln.text, speaker: ln.speaker }); t += dur;
+        // lead: replikadan oldingi "nafas" (ms) — personaj hali gapirmaydi; dur ichiga kiradi
+        const lead = Number.isFinite(ln.pause) && ln.pause > 0 ? Math.min(2000, ln.pause) : 0;
+        const dur = estimateDur(ln.text) + lead;
+        items.push({ s, l, dur, lead, start: t, first: l === 0, text: ln.text, speaker: ln.speaker }); t += dur;
       });
     }
   });
