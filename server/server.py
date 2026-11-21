@@ -18,6 +18,7 @@ import re
 import sys
 import threading
 import time
+import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
@@ -236,6 +237,7 @@ class H(BaseHTTPRequestHandler):
                     return self._fayl(f, cache="no-cache" if f.suffix == ".html" else "public, max-age=604800")
             return self._json(404, {"xato": "topilmadi"})
         except Exception as e:  # noqa: BLE001
+            traceback.print_exc()
             return self._json(502, {"xato": str(e)[:300]})
 
     def do_POST(self):
@@ -254,8 +256,10 @@ class H(BaseHTTPRequestHandler):
                 return self._json(200, api_multfilm(body))
             return self._json(404, {"xato": "topilmadi"})
         except (ai.AIXato, RuntimeError, ValueError) as e:
+            traceback.print_exc()
             return self._json(502, {"xato": str(e)[:300]})
         except Exception as e:  # noqa: BLE001
+            traceback.print_exc()
             return self._json(502, {"xato": "lex.uz yoki AI bilan bog'lanib bo'lmadi: " + str(e)[:200]})
 
 

@@ -80,7 +80,8 @@ FAQAT JSON: {{"hujjatlar":[{{"nomi":"O'zbekiston Respublikasining Mehnat kodeksi
                 out.append({"nomi": str(h.get("nomi") or nom), "qidiruv": nom,
                             "moddalar": [str(int(x)) for x in h.get("moddalar", []) if str(x).isdigit()][:5]})
         return out
-    except (AIXato, ValueError, TypeError):
+    except Exception as e:  # noqa: BLE001 — yo'naltirish ixtiyoriy: xato bo'lsa faqat lex.uz qidiruvi ishlaydi
+        print("Gemini yo'naltirish xatosi:", repr(e)[:300])
         return []
 
 

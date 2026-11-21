@@ -1,6 +1,7 @@
 """lex.uz bilan ishlash: qidiruv, hujjat matnini olish, moddalarga ajratish, mos moddalarni tanlash."""
 from __future__ import annotations
 
+import difflib
 import html
 import re
 import threading
@@ -97,11 +98,17 @@ def moslik(title: str, soz: str) -> float:
 def topish(soz: str, limit: int = 8) -> list[dict]:
     """So'rov bo'yicha eng mos hujjatlar: avval asosiy ro'yxat, keyin lex.uz qidiruvi (2 sahifa)."""
     q = norm(soz).lower()
-    natija = [dict(d, ball=100) for d in ASOSIY if any(k in q for k in d["kalit"])]
+    sozlar = re.findall(r"[a-z']+", q)
+    def mos(kalit):  # imlo xatolariga chidamli: "konistitutsiya" ~ "konstitutsiya"
+        return kalit in q or all(difflib.get_close_matches(k, sozlar, n=1, cutoff=0.8) for k in kalit.split())
+    natija = [dict(d, ball=100) for d in ASOSIY if any(mos(k) for k in d["kalit"])]
     try:
         topilgan = qidir(soz, 1) + qidir(soz, 2)
-    except requests.RequestException:
+    except Exception as e:  # noqa: BLE001
+        print("lex.uz qidiruv xatosi:", repr(e)[:300])
         topilgan = []
+        if not natija:
+            raise RuntimeError("lex.uz bilan bog'lanib bo'lmadi: " + repr(e)[:150])
     for d in topilgan:
         if any(x["id"] == d["id"] for x in natija):
             continue
